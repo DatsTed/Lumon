@@ -14,11 +14,11 @@ async function duoEndSide(side){const m=side==='p'?B.me:foeM(),r=side==='p'?B.pm
  if(m.status==='brn'||m.status==='psn'){const dmg=Math.max(1,Math.floor(m.mhp/(m.status==='brn'?16:8)));m.hp=Math.max(0,m.hp-dmg);await statusFx(r,m.status);hitNum(r,'-'+dmg,m.status==='brn'?'#ff9a3c':'#c77dff');hud();await msg(m.status==='brn'?`${label(side)} souffre de sa brûlure !`:`${label(side)} souffre du poison !`)}}
 async function duoLoop(cfg){const n=cfg.duo,FO=B.foes,D={fs:[],ps:[]};let next=0;
  const liveF=()=>D.fs.filter(s=>s&&FO[s.i].hp>0),liveP=()=>D.ps.filter(s=>s&&s.m.hp>0);
- const ctx=(p,f)=>{if(p){B.me=p.m;B.pm=p.r;B.st.p=p.st}if(f){B.fi=f.i;B.fm=f.r;B.st.f=f.st}hud();duoHud(D)};
+ const ctx=(p,f)=>{if(p){B.me=p.m;B.pm=p.r;B.st.p=p.st}if(f){B.fi=f.i;B.fm=f.r;B.st.f=f.st}hud();$('bFoe').style.display='none';duoHud(D)};
  // les adversaires entrent
  if(B.fm){disposeModel(B.fm);B.fm=null}
  for(let k=0;k<n&&next<FO.length;k++){const i=next++;S.dex.seen[FO[i].sp]=1;const s={i,k,st:{atk:0,def:0,acc:0},r:duoPlace('f',FO[i],k,n)};s.r.g.scale.setScalar(0);D.fs.push(s)}
- $('bFoe').style.display='block';ctx(null,D.fs[0]);await msg(`${B.tr.name} envoie ${D.fs.map(s=>nm(FO[s.i])).join(', ')} !`);for(const s of D.fs)await popIn(s.r);
+ ctx(null,D.fs[0]);await msg(`${B.tr.name} envoie ${D.fs.map(s=>nm(FO[s.i])).join(', ')} !`);for(const s of D.fs)await popIn(s.r);
  // ton équipe entre
  const team=alive().slice(0,n);team.forEach((m,k)=>{const s={m,k,st:{atk:0,def:0,acc:0},r:duoPlace('p',m,k,n)};s.r.g.scale.setScalar(0);B.part.add(m);D.ps.push(s)});
  ctx(D.ps[0],D.fs[0]);$('bMe').style.display='block';await msg(`Vas-y, ${D.ps.map(s=>nm(s.m)).join(' et ')} !`);for(const s of D.ps)await popIn(s.r);if(OPT.anim)await camHome(400);

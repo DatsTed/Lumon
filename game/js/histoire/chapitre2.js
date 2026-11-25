@@ -43,11 +43,11 @@ async function r2Fight(all){const[k1,k2,p1,p2]=all,G=cur.group,mons=[];
  const mid=()=>{const v=new V();all.forEach(c=>v.add(c.g.position));return v.multiplyScalar(1/4)};
  cineOn();const M=mid();
  try{
-  camShot([M.x,1.5,M.z+4.2],[M.x,.8,M.z]);sfx(90,.4,'sawtooth',.18);
+  camShot([M.x,2.8,M.z+6],[M.x,.7,M.z]);sfx(90,.4,'sawtooth',.18);
   const sc=await pop(SP.scorion?'scorion':'pigeolet',k1,1),sb=await pop(SP.sambrax?'sambrax':'pigeolet',k2,1),kr=await pop(SP.krakapitaine?'krakapitaine':'pigeolet',p1,-1),pg=await pop('pigeolet',p2,-1);
   await say('Pirate Bob',"Krakapitaine, Pigeolet… À L'ABORDAGE !",{auto:500,fast:true});
   const duel=[[sc,kr],[kr,sb],[sb,pg],[pg,sc],[sc,kr],[sb,pg]],fx=['star','dust','star','dust','star','star'];
-  const shots=[[[M.x-3.2,1,M.z+1.5],[M.x,.6,M.z]],[[M.x+3.2,1.4,M.z+2.2],[M.x,.6,M.z]],[[M.x,3.6,M.z+3],[M.x,.4,M.z]],[[M.x-1,.7,M.z+2.4],[M.x,.7,M.z]]];
+  const shots=[[[M.x-2.6,2.2,M.z+4.6],[M.x,.6,M.z]],[[M.x+2.8,2.4,M.z+4.4],[M.x,.6,M.z]],[[M.x,4.6,M.z+4.2],[M.x,.4,M.z]],[[M.x-1.2,1.6,M.z+4.2],[M.x,.7,M.z]]];
   for(let r=0;r<duel.length;r++){const[a,b]=duel[r];if(r%2===0)camShot(...shots[(r/2)%shots.length],{move:true,sm:.08,silent:true});
    const ax=a.g.position.x,az=a.g.position.z,bx=b.g.position.x,bz=b.g.position.z;
    await tween(220,q=>{const k=Math.sin(q*PI)*.7;a.g.position.x=ax+(bx-ax)*k;a.g.position.z=az+(bz-az)*k;a.g.position.y=.1+Math.sin(q*PI)*.35});
@@ -58,6 +58,6 @@ async function r2Fight(all){const[k1,k2,p1,p2]=all,G=cur.group,mons=[];
    const h=all[r%2],o=all[2+(r+1)%2],hx=h.g.position.x,hz=h.g.position.z;
    await tween(160,q=>{const k=Math.sin(q*PI)*.35;h.g.position.x=hx+(o.g.position.x-hx)*k;h.g.position.z=hz+(o.g.position.z-hz)*k});
    sfx(110,.1,'square',.18);o.g.rotation.z=.25*(r%2?-1:1);await sleep(220);o.g.rotation.z=0}
-  camShot([M.x,1.2,M.z+2.8],[M.x,.7,M.z]);for(let i=0;i<3;i++){flashScr('#ffffff',120,.5);camShake(300,.18);sfx(50+i*20,.4,'sawtooth',.2);await sleep(200)}
+  camShot([M.x,2,M.z+4.6],[M.x,.7,M.z]);for(let i=0;i<3;i++){flashScr('#ffffff',120,.5);camShake(300,.18);sfx(50+i*20,.4,'sawtooth',.2);await sleep(200)}
   await Promise.all(mons.map(r=>tween(300,q=>r.g.scale.setScalar((1-q)*r._s))))}
  finally{mons.forEach(r=>{G.remove(r.g);disposeModel(r)});cineOff()}}
