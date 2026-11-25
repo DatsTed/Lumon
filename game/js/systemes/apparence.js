@@ -17,7 +17,7 @@ function pickLook(){return new Promise(r=>{const G=S.gender?1:0,L=Object.assign(
  const sw=(k,arr)=>`<div class="sws">${arr.map(v=>`<span class="sw${L[k]===v?' on':''}" data-k="${k}" data-v="${v}" style="background:${v}"></span>`).join('')}</div>`;
  const tx=(k,arr)=>`<div class="txs">${arr.map(v=>`<span class="tx${L[k]===v[0]?' on':''}" data-k="${k}" data-v="${v[0]}">${v[1]}</span>`).join('')}</div>`;
  const sec=(t,h)=>`<div class="lkr"><b>${t}</b>${h}</div>`;
- const draw=()=>{$('lkPrev').src=svgURI(chibi(heroLook(L)));$('lkTabs').innerHTML=['Coiffure','Tenue','Accessoires'].map((t,i)=>`<span class="lkt${i===tab?' on':''}" data-t="${i}">${t}</span>`).join('');
+ const draw=()=>{$('lkPrev').src=lookPreview(heroLook(L));$('lkTabs').innerHTML=['Coiffure','Tenue','Accessoires'].map((t,i)=>`<span class="lkt${i===tab?' on':''}" data-t="${i}">${t}</span>`).join('');
   let h='';if(tab===0)h=sec('Coiffure',tx('hs',LOOKS[G].hs))+sec('Couleur des cheveux',sw('hair',PAL.hair))+sec('Couleur des yeux',sw('eye',PAL.eye))+(G?'':sec('Barbe',tx('beard',[[0,'Sans'],[1,'Barbe']])));
   else if(tab===1)h=sec('Tenue',tx('outfit',LOOKS[G].out))+sec(L.outfit==='dress'?'Couleur de la robe':'Haut',sw('top',PAL.top))+(L.outfit==='dress'?'':sec(L.outfit==='skirt'||L.outfit==='blazer'?'Jupe':'Pantalon',sw('bottom',PAL.bottom)))+sec('Chaussures',sw('boots',PAL.boots));
   else h=sec('Couvre-chef',tx('hat',PAL.hat))+(L.hat?sec('Couleur du couvre-chef',sw('hatC',PAL.hatC)):'')+sec('Accessoires',tx('acc',PAL.acc));
@@ -26,3 +26,13 @@ function pickLook(){return new Promise(r=>{const G=S.gender?1:0,L=Object.assign(
  draw();show('look');$('lkOk').onclick=()=>{hide('look');S.look=L;r(L)}})}
 function rebuildHero(){if(!player)return;const old=player.g,par=old.parent,nb=human(heroLook());par&&par.remove(old);old.traverse(o=>{if(o.geometry&&!o.geometry.parameters)o.geometry.dispose()});player.b=nb;player.g=nb.g;par&&par.add(nb.g);player.place();player.snap()}
 function pickGender(){return new Promise(r=>{$('gBoy').src=svgURI(chibi(CH.boy));$('gGirl').src=svgURI(chibi(CH.girl));show('gender');document.querySelectorAll('#gender .opt').forEach(o=>o.onclick=()=>{hide('gender');r(+o.dataset.g)})})}
+// Aperçu de la panoplie : rendu 3D du vrai modèle du héros (repli sur le dessin 2D si WebGL indisponible)
+let lookR=null;
+function lookPreview(o){try{if(!lookR){lookR=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});lookR.setPixelRatio(1);lookR.setSize(240,320)}
+ const sc=new THREE.Scene();sc.add(new THREE.HemisphereLight(0xffffff,0x6a6a8a,.95));const dl=new THREE.DirectionalLight(0xffffff,.75);dl.position.set(2,4,5);sc.add(dl);
+ const h=human(o);sc.add(h.g);h.g.rotation.y=-.35;const bx=new THREE.Box3().setFromObject(h.g),size=bx.getSize(new V()),ctr=bx.getCenter(new V());
+ const cam=new THREE.PerspectiveCamera(28,240/320,.05,60),dist=size.y*2.35+.4;cam.position.set(ctr.x+dist*.08,ctr.y+dist*.12,ctr.z+dist);cam.lookAt(ctr.x,ctr.y+size.y*.06,ctr.z);
+ lookR.render(sc,cam);const url=lookR.domElement.toDataURL();
+ h.g.traverse(x=>{if(x.geometry&&!x.geometry.parameters)x.geometry.dispose()});
+ if(typeof url==='string'&&url.length>500)return url}catch(e){}
+ return svgURI(chibi(o))}

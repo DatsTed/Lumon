@@ -1,5 +1,5 @@
 function objText(){const f=F();if(!f.introDone)return'';if(f.ch3)return'Chapitre 3 terminé · La suite bientôt';if(f.hired)return`Période d'essai chez Amin : ${f.trial||0}/3 services`;
- if(f.nourMet){if(f.nourBox===2)return"Un Pigeolet a volé le colis ! Il s'est posé au Garage Alex, sur la Route 3";if(f.nourBox===1)return"Livre le colis de Nour à Amin, à Jourdanfritte (Route 3, à l'est de Bruxellia)";return"Rejoins Amin à Jourdanfritte par la Route 3, à l'est de Bruxellia"}
+ if(f.nourMet){if(f.nourBox===2)return"Un Pigeolet a volé le colis ! Il s'est posé au Garage Wagner, sur la Route 3";if(f.nourBox===1)return"Livre le colis de Nour à Amin, à Jourdanfritte (Route 3, à l'est de Bruxellia)";return"Rejoins Amin à Jourdanfritte par la Route 3, à l'est de Bruxellia"}
  if(f.brux){return f.nourTry?"Retente le test d'embauche de Nour (Night White de Bruxellia)":"Passe le test d'embauche chez Nour, au Night White de Bruxellia"}
  if(f.north)return`Remonte à Charleroc et prends la Route 2, au nord de la ville : Bruxellia avant le Jour 200 (aujourd'hui : Jour ${dayNum()})`;
  if(f.rap1)return S.bag.sphereEclat?"Redescends la Route 1 jusqu'à Ixellette : rapporte la Lumisphère d'Éclat et montre ta médaille à la Prof":"Redescends la Route 1 jusqu'à Ixellette et montre ta médaille à la Prof Verhaegen";

@@ -202,7 +202,10 @@ def sauvegarde_ancienne(ctx, url, nom, ref):
 
 
 def ancien_depuis_git(ref, dest):
-    data = subprocess.run(['git', '-C', RACINE, 'show', ref + ':lumons.zip'], capture_output=True, check=True).stdout
+    r = subprocess.run(['git', '-C', RACINE, 'show', ref + ':lumons.zip'], capture_output=True)
+    if r.returncode != 0:   # commit postérieur à la refonte : on prend le dossier game/ tel quel
+        r = subprocess.run(['git', '-C', RACINE, 'archive', '--format=zip', ref, 'game'], capture_output=True, check=True)
+    data = r.stdout
     with zipfile.ZipFile(io.BytesIO(data)) as z:
         for n in z.namelist():
             if n.startswith('game/'):

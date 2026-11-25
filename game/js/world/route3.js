@@ -14,10 +14,10 @@ function buildRoute3(){
   m.signs['9,11']=m.signs['10,11']="Une Audi A6. Gris métallisé, sièges en cuir, phares qui te regardent de travers. Sobre et classe.";
   m.signs['12,11']=m.signs['13,11']="Une Rolls-Royce Phantom. Bordeaux et noir, une calandre plus grande que ta chambre chez ta mère. La petite statuette sur le capot brille.";
   m.signs['15,11']=m.signs['16,11']="Une Rolls-Royce Ghost. Blanche, silencieuse comme… un fantôme. Ce soir, elle te fait rêver.";
-  npc(m,'alex',13,9,'down',async()=>{const A='Alex';if(!F().alex){F().alex=1;await say(A,"Bienvenue au Garage Alex Prestige. Alex, enchanté. Ici, que du haut de gamme : une Audi A6, une Rolls-Royce Phantom et une Rolls-Royce Ghost.");
+  npc(m,'alex',13,9,'down',async()=>{const A='Alex';if(!F().alex){F().alex=1;await say(A,"Bienvenue au Garage Wagner. Alex, enchanté. Ici, que du haut de gamme : une Audi A6, une Rolls-Royce Phantom et une Rolls-Royce Ghost.");
     await say(A,"Tu travailles où, toi ? Au Night White ? Ah, très bien, très bien. Pour la Phantom, compte… disons quelques milliers de services. Hé hé.");await say(A,"Mais un jour, qui sait ? Les plus belles histoires commencent souvent au fond d'un night shop.")}
    else await say(A,["Une voiture, c'est comme un Lumon : il faut en prendre soin, et elle te le rend au centuple.","La Ghost ? Je l'ai lustrée trois fois ce matin. Il pleuvait. Je l'ai relustrée.","Captain est passé hier. Il voulait la Phantom « en échange de services ». J'ai dit non. Poliment. Très poliment."][(rnd()*3)|0])});
-  sg(m,6,8,"Route 3 — Bruxellia ↔ Jourdanfritte. Garage Alex Prestige à 200 m. Attention : Pirates signalés !",true);item(m,24,2,'mitraillette',1,'r3i1');item(m,4,14,'lumisphere',2,'r3i2');
+  sg(m,6,8,"Route 3 — Bruxellia ↔ Jourdanfritte. Garage Wagner à 200 m. Attention : Pirates signalés !",true);item(m,24,2,'mitraillette',1,'r3i1');item(m,4,14,'lumisphere',2,'r3i2');
   for(let z=8;z<=10;z++){m.steps['0,'+z]=()=>goMap(BRUX,28,12,'left');m.steps[(W-1)+','+z]=()=>goMap(JF,1,11,'right')}arrows(m,[[0,8],[0,9],[0,10]],'left');arrows(m,[[31,8],[31,9],[31,10]],'right');
   m.grassRate=.12;m.wildAt=wildNight(()=>[['pigeolet',13,15,25],['hannetonne',13,16,25],['terrilou',14,16,25],['gaufrelin',13,15,25]]);
   const p1=npc(m,'pirate',22,12,'down',async()=>say('Pirate Bob',F().pir1?"On a même pas de quoi s'acheter des fringues… Tout ce qu'on vend, on le… enfin bref.":"…"));

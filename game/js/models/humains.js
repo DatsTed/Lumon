@@ -36,12 +36,12 @@ function human(o){const g=new THREE.Group(),P={arms:[],legs:[]};const inner=new 
  else if(hs==='slick'){tp(head,HEMI,hc,0,.02,-.03,.305,.26,.31,{r:[-.35,0,0]});tp(head,SPH,hc,0,.04,-.17,.25,.17,.17)}
  else if(hs==='mullet'){tp(head,HEMI,hc,0,.02,-.01,.31,.24,.3,{r:[-.2,0,0]});tp(head,SPH,hc,0,-.2,-.19,.23,.27,.12)}
  else if(hs==='messy'||hs==='shag'){tp(head,HEMI,hc,0,.02,-.01,.315,.27,.315,{r:[-.15,0,0]});for(let k=0;k<6;k++){const a=k/6*PI*2;tp(head,CONE,hc,Math.cos(a)*.17,.24,Math.sin(a)*.15,.07,.12,.07,{r:[Math.sin(a)*.6,0,-Math.cos(a)*.6]})}for(const sd of[-1,1])tp(head,SPH,hc,sd*.25,-.12,0,.07,hs==='shag'?.26:.18,.14);tp(head,SPH,hc,0,-.14,-.2,.26,hs==='shag'?.28:.2,.11)}
- else if(hs==='dreads'){tp(head,HEMI,hc,0,.02,-.01,.31,.25,.31,{r:[-.2,0,0]});for(let k=0;k<11;k++){const a=PI*.15+k/10*PI*1.7;tp(head,CYL,hc,Math.cos(a)*.27,-.2,Math.sin(a)*.27-.02,.035,.36,.035)}}
+ else if(hs==='dreads'){tp(head,HEMI,hc,0,.02,-.01,.31,.25,.31,{r:[-.2,0,0]});for(let k=0;k<11;k++){const a=PI*.92+k/10*PI*1.16;tp(head,CYL,hc,Math.cos(a)*.27,-.2,Math.sin(a)*.27-.02,.035,.36,.035)}}
  else if(hs==='sidecut'){tp(head,HEMI,hc,.03,.02,-.01,.31,.26,.31,{r:[-.2,0,-.15]});tp(head,SPH,hc,.22,-.2,-.03,.1,.32,.2)}
  else if(hs==='horseshoe'){for(const sd of[-1,1])tp(head,SPH,hc,sd*.255,-.03,-.04,.07,.12,.17);tp(head,SPH,hc,0,-.04,-.21,.21,.12,.09)}
  else if(hs==='buzz')tp(head,HEMI,hc,0,.0,-.01,.302,.29,.29,{r:[-.22,0,0]});
  else if(hs==='undercut'){tp(head,HEMI,hc,0,.0,-.01,.302,.29,.29,{r:[-.22,0,0],op:.6});tp(head,SPH,hc,0,.2,0,.24,.12,.27)}
- else if(hs==='afro'){if(hat)tp(head,SPH,hc,0,-.02,-.05,.36,.3,.34);else tp(head,SPH,hc,0,.1,-.05,.44,.42,.42)}
+ else if(hs==='afro'){if(hat)tp(head,SPH,hc,0,-.02,-.05,.36,.3,.34);else tp(head,SPH,hc,0,.12,-.17,.42,.4,.36)}
  else{tp(head,HEMI,hc,0,.02,-.01,hat?.305:.315,hat?.26:.3,hat?.29:.3,{r:[-.28,0,0]});tp(head,SPH,hc,0,-.03,-.07,.3,.27,.25)}
  if(hs==='long')tp(head,SPH,hc,0,-.28,-.12,.3,.36,.19);
  if(hs==='mid')tp(head,SPH,hc,0,-.14,-.1,.31,.24,.22);

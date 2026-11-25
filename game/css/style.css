@@ -172,3 +172,4 @@ html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:'Fred
 @keyframes effp{50%{box-shadow:0 0 16px #ff3b5c;transform:scale(1.06)}}
 #fxflash{position:fixed;inset:0;pointer-events:none;z-index:19;opacity:0;mix-blend-mode:screen}
 .mvb.empty{opacity:.25;pointer-events:none;border-style:dashed!important}
+.padf{outline:3px solid #ffd84a!important;outline-offset:2px;box-shadow:0 0 14px #ffd84a!important}

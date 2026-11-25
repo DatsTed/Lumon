@@ -12,7 +12,7 @@ function buildBruxellia(){
   fountain(g,m,15,10);m.signs['15,10']="La fontaine du Manneken-Lumon. Un petit Moulinet en bronze qui fait… ce qu'il fait depuis quatre cents ans. C'est ça, Bruxellia.";
   [[9,8],[21,8],[9,13],[12,21],[18,21]].forEach(([x,z])=>lamp(g,m,x,z));house(g,m,2,2,4,3,'#d9a05b','#5a3a3a',3);house(g,m,24,2,4,3,'#efe4c4','#33363f',25);
   m.doors['3,4']=async()=>say('',"Fermé. Une plaque : « Chocolatier Pierre — de retour dans dix minutes. » La plaque est poussiéreuse.");m.doors['25,4']=async()=>say('',"Une odeur de gaufre de Bruxelles. Personne ne répond.");
-  sg(m,16,23,"Bruxellia, capitale d'Ardenval. « Ici, même les pigeons ont un accent. »",true);sg(m,26,13,"→ Route 3 : vers Jourdanfritte et le Garage Alex Prestige.");
+  sg(m,16,23,"Bruxellia, capitale d'Ardenval. « Ici, même les pigeons ont un accent. »",true);sg(m,26,13,"→ Route 3 : vers Jourdanfritte et le Garage Wagner.");
   for(let x=13;x<=15;x++)m.steps[x+',25']=()=>goMap(ROUTE2,11,1,'down');arrows(m,[[13,25],[14,25],[15,25]],'down');m.steps['29,12']=()=>goMap(ROUTE3,1,9,'right');
   wand(npc(m,'granny',12,10,'down',async()=>say('Bonne-maman Ghislaine',"De mon temps, Bruxellia sentait la gaufre et le chocolat. Maintenant, la nuit, ça sent la fumée des concerts de Snow…")));
   wand(npc(m,'kid',18,12,'left',async()=>say('Petit Mehdi',"T'as vu la Ligue ? Un jour, j'y entrerai avec huit médailles ! Bon, d'abord faut que j'aie un Lumon…")));

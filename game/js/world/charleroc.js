@@ -2,7 +2,7 @@ function buildCharleroc(){
  /* ---- Charleroc (30x26) ---- */
  {const W=30,H=26,m=CHARL=makeMap('charl',W,H,0,-110,'charl'),g=m.group,T=grid(W,H);
   for(let z=0;z<H;z++)for(let x=0;x<W;x++)if(x===0||(z===0&&x!==19&&x!==20)||(z===H-1&&(x<13||x>15))||x===W-1)T[z][x]='T';
-  rect(T,1,16,11,24,'D');rect(T,19,16,28,24,'D');rect(T,1,1,9,4,'D');rect(T,21,1,28,4,'D');
+  rect(T,1,16,11,24,'D');rect(T,19,16,28,24,'c');rect(T,1,1,9,4,'D');rect(T,21,1,28,4,'D');
   [[1,9],[2,10],[1,13],[27,8],[28,15],[11,23],[18,23],[10,7],[19,7],[1,20],[28,20]].forEach(([x,z])=>T[z][x]='T');
   rect(T,13,6,15,25,'#');rect(T,7,10,21,15,'c');rect(T,6,9,6,9,'#');rect(T,22,9,22,9,'#');rect(T,4,21,25,21,'#');rect(T,5,20,5,20,'#');rect(T,23,20,23,20,'#');rect(T,22,12,29,12,'#');
   [[8,17],[12,18],[17,18],[20,15],[8,15],[16,24],[12,24]].forEach(([x,z])=>{if(T[z][x]==='.')T[z][x]='f'});
@@ -20,7 +20,7 @@ function buildCharleroc(){
   const gy=bigBuilding(g,m,10,1,9,5,'#7a5040','#33333a',14,'ARÈNE DE CHARLEROC','#2b2b2b','#f6c80f');
   for(const s of[-1,1])add(g,new THREE.CylinderGeometry(.25,.25,2.4,10),'#c9c2b0',gy.cx+s*1.2,1.3,gy.fz+.35,{ol:.03});
   const em=new THREE.Group();em.position.set(gy.cx,gy.top+.6,gy.cz+1);g.add(em);tp(em,CONE,'#3a3a42',0,0,0,.7,1,.7,{th:.04});tp(em,SPH,'#ff8a2c',0,.1,.45,.18,.18,.08,{emi:'#ff7a1a',ol:false});m.anim.push(t=>em.rotation.y=Math.sin(t)*.3);
-  house(g,m,3,17,4,3,'#8a4a32','#33363f',5);house(g,m,22,17,4,3,'#a0603a','#3a3a42',23);
+  house(g,m,3,17,4,3,'#8a4a32','#33363f',5);
   terril(g,m,4,2.5,3.4,5.5);terril(g,m,25,2.5,3.4,6.2);terril(g,m,3,23,2.6,4);terril(g,m,26.5,23.5,2.6,4.4);headframe(g,m,9,18);
   for(const zz of[10,15])for(let k=0;k<29;k++)box(g,.16,.24,.02,m.ox+7.2+k*.48,2.05-Math.sin(k/28*PI)*.35,m.oz+zz,['#1b1b1f','#f6c80f','#d8232a'][k%3],{cast:false});
   [[7,10],[21,10],[7,15],[21,15]].forEach(([x,z])=>lamp(g,m,x,z));fountain(g,m,14,12,'terrilou');
@@ -29,7 +29,7 @@ function buildCharleroc(){
   sg(m,10,19,"Le chevalement de l'ancien charbonnage Sainte-Lumière. Les mineurs disent qu'on y trouvait de l'Éclat, autrefois.");
   m.signs['14,12']="La fontaine du Terrilou. Les enfants de Charleroc y jettent des pièces pour avoir de la chance à l'arène.";
   m.doors['6,8']=()=>goMap(CENTRE,4,5,'up');m.doors['22,8']=()=>goMap(SHOP,4,5,'up');m.doors['14,5']=()=>goMap(GYM,5,13,'up');
-  m.doors['5,19']=async()=>say('',"Une odeur de boulets à la liégeoise… mais la porte est fermée.");m.doors['23,19']=async()=>say('',"Quelqu'un regarde le foot à la télé. « Allez les Zèbres ! »");
+  m.doors['5,19']=async()=>say('',"Une odeur de boulets à la liégeoise… mais la porte est fermée.");
   m.steps['19,0']=m.steps['20,0']=()=>goMap(ROUTE2,11,38,'up');arrows(m,[[19,0],[20,0]],'up');for(let x=13;x<=15;x++)m.steps[x+',25']=()=>goMap(ROUTE,11,1,'down');arrows(m,[[13,25],[14,25],[15,25]],'down');
   sg(m,21,1,"↑ Route 2 — vers Bruxellia, la capitale. ← Vieux terril (à l'ouest, derrière la Maison des Lumons).");
   m.mist=[];for(let k=0;k<12;k++){const mm=new THREE.Mesh(new THREE.SphereGeometry(.8+rnd()*.6,10,8),new THREE.MeshBasicMaterial({color:'#c9b6e8',transparent:true,opacity:.42,depthWrite:false}));mm.position.set(m.ox+18.5+rnd()*3,.5+rnd()*1.3,m.oz+.6+rnd()*2.2);mm.userData.p=rnd()*6;g.add(mm);m.mist.push(mm)}

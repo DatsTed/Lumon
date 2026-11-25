@@ -23,8 +23,8 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
  if(k==='town'&&f.prank&&!f.baldSeen){f.baldSeen=1;await younesBaldScene();return}
  if(k==='brux'&&!f.nourMet){if(!f.nourTry){
    if(f.younesMet&&!f.monsieurNour){f.monsieurNour=1;await say(S.name,"Bonjour, Monsieur Nour ! Euh… Comment va votre petit frère Amin ?");
-    await say(N,"…« Monsieur Nour » ? Mon… PETIT frère ?");await say('',"Le téléphone de Nour vibre sur le comptoir. Un message de Younes, depuis Ixellette : « Il l'a dit ??? 😂😂😂 »");
-    await say(N,"…Ok. D'accord. Je vois. Amin va très bien, merci. Il sera ravi d'apprendre que tu t'inquiètes pour lui.");sfx(220,.15,'triangle',.1)}
+    await say(N,"…« Monsieur Nour » ? … Mon PETIT frère Amin ?");await say('',"Le téléphone de Nour vibre sur le comptoir. Un message de Younes, depuis Ixellette : « Il l'a dit ??? 😂😂😂 »");
+    await say(N,"…Ok. D'accord. Je vois. Oui. C'est bien moi, le GRAND frère. L'aîné. Le petit Amin va très bien, merci. Il sera ravi d'apprendre que tu t'inquiètes pour lui.");sfx(220,.15,'triangle',.1)}
    await say(N,"Bref. C'est toi, {P} ? Younes m'a parlé de toi. Il paraît que t'as du cran… et une chienne qui fait peur aux Kétosaures.");
    await say(N,"Moi c'est Nour. Le Night White, on l'a monté à deux, mon frère Amin et moi. Tu veux bosser chez nous ? Alors on fait comme tout le monde : un test d'embauche.");
    await say(N,"Caisse, réassort, rendu de monnaie… Trois épreuves. Il me faut au moins 8 points. Prêt·e ?")}else await say(N,"Tu reviens pour le test ? J'aime ça, les gens qui insistent.");
@@ -34,7 +34,7 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
    await say(N,"Première mission : tu lui apportes ce colis. Douze canettes de Cisoa Pomme-Poire, sa commande perso. Il en boit trois par jour, et il devient insupportable quand il en a plus.");
    f.nourBox=1;give('colisnw');sfx(784,.12);await banner('Tu as reçu le Colis de Nour !','À livrer à Amin, à Jourdanfritte',1800);
    await say(N,"Prends la Route 3, à l'est. Tu feras ta période d'essai chez lui : trois services. Si Amin est content, ta place t'attendra au Night White d'Ixellette, à côté de chez toi.");
-   await say(N,"Ah, et… dis-lui que son « petit frère » lui passe le bonjour. Hé hé.");
+   await say(N,"Ah, et… dis à mon PETIT frère que son GRAND frère, Monsieur Nour, lui passe le bonjour. Hé hé.");
    await say(N,"Et fais gaffe sur la route… Les Pirates de Captain traînent par là. Lui, il est pas net dans sa tête.")}
   else await say(N,`${r.score} point${r.score>1?'s':''}… C'est pas encore ça. Va boire un café et reviens retenter quand tu veux.`);setObj();return}
  if(k==='jf'&&!f.trialDone){if(!f.nourMet){await say(N,"Salut ! Moi c'est Amin. Tu cherches du boulot ? Faut d'abord passer le test de mon frère Nour, au Night White de Bruxellia.");return}
@@ -53,7 +53,7 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
  for(;;){const i=await pickList(`Night White · ${S.money} €${c.disc?' · −20 %':''}`,ks.map(x=>({html:`${ico(x)}<span class="grow"><b>${ITEMS[x].n}</b> — ${pr(x)} €${c.disc?` <s style="opacity:.5">${ITEMS[x].price} €</s>`:''}<br><small>${ITEMS[x].d} · Tu en as ${S.bag[x]||0}</small></span>`,dis:S.money<pr(x)})));
   if(i<0)break;const x=ks[i];S.money-=pr(x);give(x);sfx(1568,.05,'square',.08)}
  await say(N,k==='jf'&&F().hired?"À plus, collègue ! Et ramène pas Laïka derrière le comptoir.":"Merci et bonne route ! Garde ton ticket, hein.")}}
-function nwRoom(k,exitFn){const c=NWSHOP[k],X=c.ox,m=room('nw_'+k,11,8,X,'N','#0e0e12',exitFn),g=m.group;m.nw=k;m.song='nw';
+function nwRoom(k,exitFn){const c=NWSHOP[k],X=c.ox,m=room('nw_'+k,11,8,X,'N','#0e0e12',exitFn),g=m.group;m.nw=k;m.song='lift';
  box(g,9.8,.05,.05,X+5,2.55,.44,'#ffffff',{emi:'#ffffff',cast:false});plane(g,2.6,.8,X+5.6,2.0,.46,nwLogo());
  plane(g,1.3,.72,X+3.2,2.2,.46,labelTex('SPÉCULOOS −20 %','#0e0e12','#ffffff',512,256,58));plane(g,1.2,.68,X+8.1,2.0,.46,labelTex('OUVERT 24/7','#0e0e12','#ffffff',512,256,64));
  const pal={chips:['#e8402a','#ffd23a','#3a8ae8','#2fbf5a','#ff8a2c'],choco:['#5a2e16','#7a4a22','#d8232a','#f6c80f','#c07a3a'],pet:['#8a5a32','#3a7ae8','#c9ccd4','#2f6f5a','#e8402a']};

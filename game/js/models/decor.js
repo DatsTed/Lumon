@@ -34,7 +34,7 @@ function friterie(g,m,x0,z,label){const{ox,oz}=m,fx=ox+x0+.5,fz2=oz+z;add(g,new 
  plane(g,1.9,.42,fx,1.62,fz2+.4,labelTex(label||'FRITERIE CHEZ FERNAND','#d8232a','#ffffff',768,128,50));const cone=add(g,new THREE.ConeGeometry(.22,.5,8),'#ffffff',fx+.8,1.85,fz2,{ol:.02});cone.rotation.x=PI;
  for(let k=0;k<6;k++)box(g,.06,.32,.06,fx+.7+(k%3)*.08,2.15+(k%2)*.05,fz2-.05+(k>2?.08:0),'#f2c14e');solidRect(m,x0,z,2,1)}
 function lamp(g,m,x,z){const{ox,oz}=m;add(g,new THREE.CylinderGeometry(.05,.07,1.6,6),'#2b2b2b',ox+x,.9,oz+z);box(g,.22,.28,.22,ox+x,1.8,oz+z,'#fff4c0',{emi:'#ffd24a',ol:.02});setSolid(m,x,z)}
-function signPost(g,m,x,z,big){const{ox,oz}=m;add(g,new THREE.CylinderGeometry(.05,.05,big?1.1:.7,6),'#7a5230',ox+x,big?.65:.45,oz+z);box(g,big?.9:.6,big?.5:.36,.06,ox+x,big?1.05:.75,oz+z,'#c89a5a',{ol:.02});setSolid(m,x,z)}
+function signPost(g,m,x,z,big){const{ox,oz}=m;add(g,new THREE.CylinderGeometry(.05,.05,big?1.1:.7,6),'#7a5230',ox+x,big?.65:.45,oz+z);box(g,big?.9:.6,big?.5:.36,.06,ox+x,big?1.05:.75,oz+z+.09,'#c89a5a',{ol:.02});setSolid(m,x,z)}
 function arch(g,m,x0,x1,z,label){const{ox,oz}=m;for(const x of[x0,x1]){add(g,new THREE.BoxGeometry(.6,3,.6),'#9a8f80',ox+x,1.5,oz+z,{ol:.03});setSolid(m,x,z)}
  const w=x1-x0+.6;add(g,new THREE.BoxGeometry(w,.55,.7),'#8a7f70',ox+(x0+x1)/2,3.1,oz+z,{ol:.03});plane(g,Math.min(w-.6,3.4),.42,ox+(x0+x1)/2,3.1,oz+z+.36,labelTex(label,'#2b2b2b','#f6c80f'));
  [['#1b1b1f',-.3],['#f6c80f',0],['#d8232a',.3]].forEach(([c,o])=>box(g,.28,.5,.03,ox+(x0+x1)/2+o,3.75,oz+z,c,{cast:false}))}

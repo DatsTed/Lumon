@@ -62,8 +62,8 @@ async function younesBaldScene(){const Y='Younes',c=NPC.younesB;setSong('lift');
 async function amineReveal(N){const f=F();
  if(f.nourBox===3){delete S.bag.colisnw;await say(N,"C'est toi que Nour m'envoie ? Et… MES CISOA ! Merci, frère ! Il en manque une, mais je vais faire comme si j'avais rien vu.")}
  else await say(N,"Alors c'est toi que Nour m'envoie ? {P}, c'est ça ? Bienvenue à Jourdanfritte !");
- await say('',"Tu te redresses et tu transmets le message, avec le plus grand respect : « Votre petit frère Nour vous passe le bonjour, Monsieur Amin. »");
- await say(N,"…Mon quoi ?");sfx(330,.2,'triangle',.12);await sleep(400);await say(N,"Mon PETIT frère ? NOUR ?");
+ await say('',"Tu te redresses et tu transmets le message, avec le plus grand respect : « Votre grand frère, Monsieur Nour, vous passe le bonjour, petit Amin. »");
+ await say(N,"…Mon quoi ?");sfx(330,.2,'triangle',.12);await sleep(400);await say(N,"Mon GRAND frère ? NOUR ? « Petit » Amin ?");
  camShake(300,.08);await say(N,"HAHAHAHAHA ! Frère… C'est MOI le grand ! J'ai trois ans de plus que Nour ! C'est moi qui lui ai appris à faire du vélo, et c'est moi qui ai pris la raclée quand il a cassé la vitrine du voisin !");
  await say(N,"Laisse-moi deviner… C'est Younes qui t'a dit ça ?");
  await say('',"Tu repenses au « Monsieur Nour ». Au regard bizarre de Nour. Et à Younes, ton vieux pote de la formation d'animateur, si sérieux derrière sa caisse d'Ixellette.");

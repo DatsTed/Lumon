@@ -15,7 +15,7 @@ let joyVec=null;{const zone=$('joyzone'),joy=$('joy'),knob=$('knob');let jid=nul
 {let t0=0,p0=null;const c=$('c');c.addEventListener('pointerdown',e=>{t0=performance.now();p0=[e.clientX,e.clientY]});c.addEventListener('pointerup',e=>{if(p0&&performance.now()-t0<300&&Math.hypot(e.clientX-p0[0],e.clientY-p0[1])<12)pressA();p0=null})}
 $('btnA').addEventListener('pointerdown',e=>{e.preventDefault();pressA()});
 let kRun=false;addEventListener('keydown',e=>{if(e.key==='Shift')kRun=true});addEventListener('keyup',e=>{if(e.key==='Shift')kRun=false});
-function inputVec(){if(joyVec)return joyVec;const dx=(held.right?1:0)-(held.left?1:0),dz=(held.down?1:0)-(held.up?1:0);return dx||dz?[dx,dz,kRun?1:.9]:null}
+function inputVec(){if(joyVec)return joyVec;if(typeof padVec!=='undefined'&&padVec)return padVec;const dx=(held.right?1:0)-(held.left?1:0),dz=(held.down?1:0)-(held.up?1:0);return dx||dz?[dx,dz,kRun?1:.9]:null}
 function inputDir(){if(lastDir&&held[lastDir])return lastDir;for(const d in held)if(held[d])return d;return null}
 function pressA(){if(dlgResolve){advance();return}if(!busy&&player&&!player.moving)interact()}
 async function runScript(fn){busy=true;setCtrl(false);try{await fn()}catch(e){console.error(e)}busy=false;for(const k in held)held[k]=false;window.resetJoy&&resetJoy();setCtrl(true);setObj();saveGame()}
