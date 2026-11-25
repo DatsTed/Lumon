@@ -33,6 +33,6 @@ function refreshNPCs(){const f=F();
 
 /* Défaite : Maison des Lumons la plus proche DÉJÀ DÉCOUVERTE (null = chez maman à Ixellette) */
 const RESPAWN={town:[],lab:[],nw_town:[],route:[],charl:['charl'],centre:['charl'],shop:['charl'],gym:['charl'],
- route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],centre_j:['jf'],nw_jf:['jf']};
+ route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],smile:['jf'],centre_j:['jf'],nw_jf:['jf']};
 function respawnCentre(m){const f=F(),known={charl:!!f.charl,brux:!!f.brux,jf:!!(f.jfSeen||f.hired||f.ch3)},C={charl:CENTRE,brux:CENTREB,jf:CENTREJ};
  const L=m&&RESPAWN[m.id];if(!L)return C[f.healAt]||null;for(const k of L)if(known[k])return C[k];return null}

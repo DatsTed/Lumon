@@ -17,9 +17,13 @@ async function pigeonFight(){const f=F(),A='Alex';player.face('down');
  const w=mkMon('pigeolet',16);w.iv=[24,24,24,28];calc(w);w.hp=w.mhp;const res=await battle({wild:w,music:'boss'});
  if(res==='win'||res==='caught'){f.nourBox=3;give('colisnw');pigeonSync();unlock('pigeon');
   await say('',res==='caught'?"Le Pigeolet royal est dans ta Lumisphère. Le colis de Nour tombe sur le capot de la Ghost avec un petit « poc ».":"Le Pigeolet royal lâche le colis et s'enfuit vers Bruxellia en roucoulant des insultes.");
-  await say(A,"Ma Ghost… Il y a une fiente sur le capot. UNE FIENTE. Sur une Rolls-Royce.");await sleep(300);await say(A,"…Bon. Merci, vraiment. Tiens, pour ta peine. Et dis à Amin que la prochaine fois, il se fait livrer par camion. Pas par pigeon.");
-  give('mitraillette');sfx(784,.12);sfx(1046,.2);await say('',"Tu récupères le colis. Il est intact… enfin presque : il manque une canette. Le Pigeolet avait l'air de très bien digérer le Cisoa Pomme-Poire.");
-  await say('',"Tu reçois aussi une Mitraillette d'Alex. Direction Jourdanfritte !")}
+  await say(A,"Ma Ghost… Il y a une fiente sur le capot. UNE FIENTE. Sur une Rolls-Royce.");await sleep(300);
+  await say(A,"…Attends. C'est quoi, dans ton colis ? … Des CISOA POMME-POIRE ?! Ma boisson préférée ! Introuvable à Bruxellia, ça !");
+  await say(A,"Écoute, je te propose un deal entre gentlemen : UNE canette de Cisoa contre une Mitraillette maison. Pain, frites, deux fricadelles, sauce andalouse. Deal ?");
+  const c=await choose(A,"Une canette contre une Mitraillette ?",["Deal ! (donner une canette)","Non, c'est pour Amin"]);
+  if(c===0){f.cisoaAlex=1;give('mitraillette');sfx(784,.12);sfx(1046,.2);await say('',"Alex ouvre la canette et la boit d'une traite, les yeux fermés, comme un grand vin. Il en a des larmes.");
+   await say(A,"Ahhh… Merci, vraiment. Et dis à Amin que la prochaine fois, il se fait livrer par camion. Pas par pigeon.");await say('',"Tu récupères le colis… avec onze canettes. Et une Mitraillette. Direction Jourdanfritte !")}
+  else{f.cisoaAlex=0;await say(A,"…Pfff. Un livreur honnête. On n'en fait plus, des comme toi. Respect, hein. Mais tu me fends le cœur.");await say('',"Tu récupères le colis, intact : douze Cisoa Pomme-Poire. Direction Jourdanfritte !")}}
  else await say(A,"Il est toujours là… Reviens quand tes Lumons seront en forme. Et VITE !");setObj()}
 async function captainScene(){const f=F(),C='Captain';f.captain=1;const sp=freeNear(3)||freeNear(2)||[player.x+1,player.z];const c=await tempChar('captain',sp[0],sp[1],'left');c.keyName='captain';c.k=.01;c.place();await tween(300,q=>{c.k=q;c.place()});
  c.face(dirTo(c,player.x,player.z));player.face(dirTo(player,c.x,c.z));player.yawOv=null;sfx(110,.4,'sawtooth',.2);camShake(300,.15);

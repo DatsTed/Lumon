@@ -20,7 +20,7 @@ async function talkColinNW(){const H='Colin',f=F();
 async function talkFifi(){const f=F(),L=f.younesBald?FIFI_POST.concat(FIFI):FIFI;await say('Fifi le Firat',L[(rnd()*L.length)|0])}
 const NWSTAFF=["Pas le temps, chef ! Le camion vient de livrer huit palettes de chips paprika !","Les frigos se vident plus vite que je les remplis. C'est la soif du samedi soir, ça.","Si tu cherches les Spéculoos, c'est rayon biscuits. Si tu cherches le patron, il est parti chercher des frites.","Attention, ça glisse, je viens de passer la serpillière ! … Bon, ok, c'était il y a trois heures.","Le rayon animaux, c'est mon préféré. Les Lumons adorent les croquettes au bœuf. Les chats aussi, mais ils font les difficiles."];
 function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+', patron du Night White':'Caissier '+c.cash;const f=F();
- if(k==='town'&&f.prank&&!f.baldSeen){f.baldSeen=1;await younesBaldScene();return}
+ if(k==='brux'&&f.prank&&!f.younesSick){await younesSickScene(N);return}if(k==='town'&&f.prank&&!f.baldSeen){f.baldSeen=1;await younesBaldScene();return}
  if(k==='brux'&&!f.nourMet){if(!f.nourTry){
    if(f.younesMet&&!f.monsieurNour){f.monsieurNour=1;await say(S.name,"Bonjour, Monsieur Nour ! Euh… Comment va votre petit frère Amin ?");
     await say(N,"…« Monsieur Nour » ? … Mon PETIT frère Amin ?");await say('',"Le téléphone de Nour vibre sur le comptoir. Un message de Younes, depuis Ixellette : « Il l'a dit ??? 😂😂😂 »");
@@ -40,12 +40,7 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
  if(k==='jf'&&!f.trialDone){if(!f.nourMet){await say(N,"Salut ! Moi c'est Amin. Tu cherches du boulot ? Faut d'abord passer le test de mon frère Nour, au Night White de Bruxellia.");return}
   if(!f.hired){if(f.nourBox===1||f.nourBox===2){await say(N,"C'est toi que Nour m'envoie ? Il m'a dit que tu m'apportais mes Cisoa Pomme-Poire… Ils sont où ?");if(f.nourBox===2)await say(N,"Un PIGEOLET ?! Il a volé mes Cisoa ?! Frère… Va me récupérer ça. Au Garage d'Alex ? Cours !");return}
    await amineReveal(N);f.hired=1}
-  const ch=await choose(N,`Période d'essai : ${f.trial||0}/3 services. On y va ?`,["Prendre mon service","Acheter","Plus tard"]);if(ch===2)return;
-  if(ch===0){const r=await nwJob('trial',N);f.trial=(f.trial||0)+1;await say(N,`Service ${f.trial}/3 terminé : ${r.score} points, ${r.earn} € de paie.`);
-   if(f.trial>=3){f.trialDone=1;await say(N,"Trois services, et pas une seule bêtise. Période d'essai validée, collègue ! Ta place t'attend au Night White d'Ixellette, avec Younes et sa nouvelle coupe. Et Fifi, évidemment.");unlock('worker');
-    if(!f.ch3){f.ch3=1;await banner('Chapitre 3 terminé !','Un vrai travail, enfin',2600);$('endH').textContent='Chapitre 3 terminé !';
-     $('endTxt').innerHTML=`Tu as réussi le test de <b>Nour</b>, survécu à la blague de <b>Younes</b>, sauvé la Rolls d'Alex d'un Pigeolet, et validé ta période d'essai chez <b>Amin</b>. Ta place t'attend au <b>Night White d'Ixellette</b>, à côté de chez toi.<br><br>Snow prépare quelque chose à Bruxellia, Captain rôde, et Alias compte sur toi… La suite arrive bientôt.`;
-     show('endc');await new Promise(r=>$('endOk').onclick=()=>{hide('endc');r()})}}setObj();return}}
+  if(await aminTrial(N))return}
  await say(N,k==='town'?(F().younesBald?YOUNES_POST[(rnd()*YOUNES_POST.length)|0]:"Yo {P} ! Qu'est-ce que je te sers, frère ? Comme au camp de Bouillon : une gaufre et un Cisoa ?"):"Bienvenue au Night White ! Ouvert jour et nuit, sept jours sur sept, une fois.");
  if(!F()['nwVisit_'+k]){F()['nwVisit_'+k]=1}unlock('nw');
  if((k==='town'||k==='jf')&&F().trialDone){const ch=await choose(N,"Alors, collègue, tu viens acheter quelque chose, ou tu prends ton service ?",["Acheter","Prendre mon service","Rien"]);if(ch===1){const r=await nwJob('shift',N);await say(N,`Bon service ! ${r.score} points, ${r.earn} € de paie.`);return}if(ch===2)return}
@@ -69,7 +64,7 @@ function nwRoom(k,exitFn){const c=NWSHOP[k],X=c.ox,m=room('nw_'+k,11,8,X,'N','#0
  box(g,1.9,.95,.8,X+8.5,.55,5,'#121216',{ol:.03});box(g,2,.06,.86,X+8.5,1.05,5,'#f4f4f8',{cast:false});box(g,.4,.3,.3,X+9,1.25,5,'#1c1c22',{ol:.02});box(g,.34,.2,.02,X+9,1.32,4.84,'#bfeaff',{emi:'#9ad8ff',cast:false});
  box(g,.18,.05,.12,X+8.2,1.1,5.1,'#ff2a3a',{emi:'#ff1020',cast:false});setSolid(m,8,5);setSolid(m,9,5);
  {const cs=npc(m,c.ck||'nwcash',9,4,'down',nwShopMenu(k));if(k==='town'){NPC.younesH=cs;NPC.younesB=npc(m,'younes',9,4,'down',nwShopMenu(k));NPC.younesB.show(false)}}m.signs['8,5']=m.signs['9,5']=nwShopMenu(k);
- const st=npc(m,c.sk||'nwstaff',2,2,'right',async()=>{if(k==='brux'){await talkColinNW();return}if(k==='town'){await talkFifi();return}await say('Employé '+c.staff,NWSTAFF[(rnd()*NWSTAFF.length)|0])});st.patrol=[[3,2],[8,2],[8,4],[2,4]];st.pi=0;st.wt=1;if(k==='town')NPC.fifi=st;
+ const st=npc(m,c.sk||'nwstaff',2,2,'right',async()=>{if(k==='brux'){await talkColinNW();return}if(k==='town'){await talkFifi();return}if(k==='jf'&&await huile('sofiane'))return;await say('Employé '+c.staff,NWSTAFF[(rnd()*NWSTAFF.length)|0])});st.patrol=[[3,2],[8,2],[8,4],[2,4]];st.pi=0;st.wt=1;if(k==='town')NPC.fifi=st;
  if(c.rest){box(g,.5,1.3,.5,X+1,.75,5,'#1a1a20',{ol:.03});box(g,.3,.2,.02,X+1,1.15,5.26,'#ffffff',{emi:'#ffffff',cast:false});box(g,.9,.35,.5,X+1,.28,6,'#2a2a30',{ol:.03});setSolid(m,1,5);setSolid(m,1,6);
   m.signs['1,5']=m.signs['1,6']=async()=>{await say('',"Le coin repos du Night White : une banquette, une machine à café… Tu t'assieds deux minutes.");healAll();for(const q of[523,659,784])sfx(q,.15,'triangle',.15);await say('',"Tes Lumons se reposent et repartent en pleine forme ! Rien de tel qu'un café avant le prochain combat.")}}
  m.signs['3,0']=m.signs['2,0']="Des chips à tous les goûts : paprika, sel, pickles… et un paquet « andalouse » en édition limitée.";

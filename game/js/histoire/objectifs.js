@@ -1,4 +1,6 @@
-function objText(){const f=F();if(!f.introDone)return'';if(f.ch3)return'Chapitre 3 terminé · La suite bientôt';if(f.hired)return`Période d'essai chez Amin : ${f.trial||0}/3 services`;
+function objText(){const f=F();if(!f.introDone)return'';if(f.ch3)return'Chapitre 3 terminé · La suite bientôt';if(f.hired){if(f.food===1)return"Va chercher à manger pour Amin au Smile and Eat (collé à la friterie de la place)";if(f.food===2)return"Rapporte le repas du Smile and Eat à Amin, au Night White";
+  if(f.huile===1){const n=huileVus();return n>=HUILE.length?"Il se fait tard… Retourne voir Amin au Night White":`Trouve de l'huile de coude à Jourdanfritte (pharmacie, habitants…) : ${n}/${HUILE.length} personnes interrogées`}
+  return`Période d'essai chez Amin : service ${(f.trial||0)+1}`}
  if(f.nourMet){if(f.nourBox===2)return"Un Pigeolet a volé le colis ! Il s'est posé au Garage Wagner, sur la Route 3";if(f.nourBox===1)return"Livre le colis de Nour à Amin, à Jourdanfritte (Route 3, à l'est de Bruxellia)";return"Rejoins Amin à Jourdanfritte par la Route 3, à l'est de Bruxellia"}
  if(f.brux){return f.nourTry?"Retente le test d'embauche de Nour (Night White de Bruxellia)":"Passe le test d'embauche chez Nour, au Night White de Bruxellia"}
  if(f.north)return`Remonte à Charleroc et prends la Route 2, au nord de la ville : Bruxellia avant le Jour 200 (aujourd'hui : Jour ${dayNum()})`;

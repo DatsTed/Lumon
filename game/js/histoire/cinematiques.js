@@ -60,7 +60,9 @@ async function younesBaldScene(){const Y='Younes',c=NPC.younesB;setSong('lift');
  await say(Y,"Le pire ? Nour m'a envoyé une carte de condoléances. « À tes cheveux. Ils étaient plus intelligents que toi. Signé : Monsieur Nour. »");
  await say(Y,"Bon. Au moins, maintenant, je brille plus que les frigos. Bienvenue au Night White… collègue.");setSong(cur.song||'nw')}
 async function amineReveal(N){const f=F();
- if(f.nourBox===3){delete S.bag.colisnw;await say(N,"C'est toi que Nour m'envoie ? Et… MES CISOA ! Merci, frère ! Il en manque une, mais je vais faire comme si j'avais rien vu.")}
+ if(f.nourBox===3){delete S.bag.colisnw;if(f.cisoaAlex===1){await say(N,"C'est toi que Nour m'envoie ? Et… MES CISOA ! Merci, frère !");await say(N,"…Attends. Une, deux, trois… onze. ONZE. Il en manque une.");await say(N,"C'est Alex, hein ? Ce gros gourmand. Il me fait le coup à CHAQUE livraison. Il te l'a échangée contre quoi ? Une Mitraillette ? Classique.")}
+  else if(f.cisoaAlex===0){await say(N,"C'est toi que Nour m'envoie ? Et… MES CISOA ! Les douze ! Intactes !");await say(N,"T'es passé devant le garage d'Alex et il t'a rien pris ? Frère… Personne ne résiste à Alex. T'es un monstre. Respect.")}
+  else await say(N,"C'est toi que Nour m'envoie ? Et… MES CISOA ! Merci, frère ! Il en manque une, mais je vais faire comme si j'avais rien vu.")}
  else await say(N,"Alors c'est toi que Nour m'envoie ? {P}, c'est ça ? Bienvenue à Jourdanfritte !");
  await say('',"Tu te redresses et tu transmets le message, avec le plus grand respect : « Votre grand frère, Monsieur Nour, vous passe le bonjour, petit Amin. »");
  await say(N,"…Mon quoi ?");sfx(330,.2,'triangle',.12);await sleep(400);await say(N,"Mon GRAND frère ? NOUR ? « Petit » Amin ?");
@@ -68,7 +70,7 @@ async function amineReveal(N){const f=F();
  await say(N,"Laisse-moi deviner… C'est Younes qui t'a dit ça ?");
  await say('',"Tu repenses au « Monsieur Nour ». Au regard bizarre de Nour. Et à Younes, ton vieux pote de la formation d'animateur, si sérieux derrière sa caisse d'Ixellette.");
  await say(N,"Il t'a eu. Il t'a eu en beauté. Attends, faut que je les appelle.");
- await say('',"Amin sort son téléphone et lance un appel vidéo sur le groupe « Night White Family 🌙 ». Quatre visages hilares apparaissent à l'écran.");
+ await say('',"Amin sort son téléphone et lance un appel vidéo sur le groupe « Night White Family 🌙 ». Quatre visages hilares apparaissent à l'écran.");phoneOn([['Younes','younesH'],['Colin','colin'],['Nour','nour'],['Fifi','nwstaff']]);
  for(const q of[523,659,784])sfx(q,.08,'square',.08);
  await say('Younes (en vidéo)',"ALLÔÔÔ ? Alors, il l'a dit ? Il t'a appelé « Monsieur Amin » aussi ?! HAHAHAHA !");
  await say('Colin (en vidéo)',"IL A DEMANDÉ À NOUR DES NOUVELLES DU « PETIT FRÈRE » !!! DEVANT TOUTE LA FILE ! J'ai fait tomber un pack de Titvel ! … Je l'ai ramassé, hein. Je suis pas un sauvage.");
@@ -79,6 +81,19 @@ async function amineReveal(N){const f=F();
  await say('Younes (en vidéo)',"…");await sleep(300);await say('Younes (en vidéo)',"On est quel jour ?");await say(N,"Lundi, Younes. On est lundi.");
  await say('Younes (en vidéo)',"…Fifi. Va chercher la tondeuse.");await say('Fifi (en vidéo)',"La tondeuse du rayon animaux ? Le modèle « Fetit chien » ? Avec flaisir !");sfx(180,.5,'sawtooth',.08);f.younesBald=1;
  await say('Younes (en vidéo)',"Bienvenue dans l'équipe, frère ! Chez nous, tout le monde se fait avoir une fois. Toi, c'était le premier jour. C'est un record !");
- await say('',"Le groupe entier se met à chanter « Monsieur Nouuur, Monsieur Nouuur » sur l'air d'un chant de supporters. Amin raccroche en pleurant de rire.");
+ await say('',"Le groupe entier se met à chanter « Monsieur Nouuur, Monsieur Nouuur » sur l'air d'un chant de supporters. Amin raccroche en pleurant de rire.");phoneOff();
  f.prank=1;unlock('prank');
  await say(N,"Bon. Moi c'est Amin, le GRAND frère. Et le plus beau, aussi. Bienvenue à Jourdanfritte, collègue. Ta période d'essai : trois services ici. On commence ?")}
+
+/* Bruxellia, Night White : Younes aide Nour, crâne rasé… et se met en congé maladie */
+async function younesSickScene(N){const f=F(),Y='Younes';f.younesSick=1;const[x,z]=lucFree(cur,6,5);const y=await tempChar('younes',x,z,'right');
+ y.face(dirTo(y,player.x,player.z));player.face(dirTo(player,y.x,y.z));player.yawOv=null;
+ await say('',"Derrière Nour, quelqu'un remplit le rayon chips en rasant les murs. Un crâne tout lisse qui brille sous les néons… Younes.");
+ await say(Y,"…Salut. Je… je donne juste un coup de main à Nour. Il manquait quelqu'un. Regarde pas ma tête. REGARDE PAS MA TÊTE.");
+ await choose(S.name||'Toi',"Tu ne peux pas t'en empêcher…",["« Monsieur Younes ! Comment va votre GRAND frère ? »","« Ça brille, dis donc ! On peut éteindre les néons ! »"]);
+ camShake(200,.05);await say('Colin',"HAHAHAHA ! IL BRILLE ! ON VOIT LE PLAFOND DEDANS !");await say(N,"Respire, Younes. Respire.");
+ await say(Y,"…Ok. C'est bon. J'ai compris. Je me sens pas bien, là. Je crois que je couve quelque chose. Un truc grave. Une… allergie aux blagues.");
+ await say(Y,"Nour, je me mets en congé maladie. Je t'envoie mon certificat dans deux heures. … Enfin, dans le bus.");
+ y.face('down');await tween(700,q=>{y.k=1-q;y.place()});killTemp(y);sfx(900,.06,'square',.06);
+ await say(N,"Congé maladie, mon œil. Il rentre jouer à GTA 6. Il l'a précommandé il y a deux ans, il compte les jours sur son calendrier.");
+ await say('Colin',"Il est parti avec trois paquets de chips. Pour sa « convalescence ».")}
