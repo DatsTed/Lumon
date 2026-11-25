@@ -20,7 +20,7 @@ async function talkColinNW(){const H='Colin',f=F();
 async function talkFifi(){const f=F(),L=f.younesBald?FIFI_POST.concat(FIFI):FIFI;await say('Fifi le Firat',L[(rnd()*L.length)|0])}
 const NWSTAFF=["Pas le temps, chef ! Le camion vient de livrer huit palettes de chips paprika !","Les frigos se vident plus vite que je les remplis. C'est la soif du samedi soir, ça.","Si tu cherches les Spéculoos, c'est rayon biscuits. Si tu cherches le patron, il est parti chercher des frites.","Attention, ça glisse, je viens de passer la serpillière ! … Bon, ok, c'était il y a trois heures.","Le rayon animaux, c'est mon préféré. Les Lumons adorent les croquettes au bœuf. Les chats aussi, mais ils font les difficiles."];
 function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+', patron du Night White':'Caissier '+c.cash;const f=F();
- if(k==='brux'&&f.prank&&!f.younesSick){await younesSickScene(N);return}if(k==='town'&&f.prank&&!f.baldSeen){f.baldSeen=1;await younesBaldScene();return}
+ if(k==='brux'&&f.prank&&!f.younesSick){await younesSickScene(N);return}if(k==='brux'&&f.ch3&&f.pcWagner&&!f.ch4){await nourCh4(N);return}if(k==='town'&&f.prank&&!f.baldSeen){f.baldSeen=1;await younesBaldScene();return}
  if(k==='brux'&&!f.nourMet){if(!f.nourTry){
    if(f.younesMet&&!f.monsieurNour){f.monsieurNour=1;await say(S.name,"Bonjour, Monsieur Nour ! Euh… Comment va votre petit frère Amin ?");
     await say(N,"…« Monsieur Nour » ? … Mon PETIT frère Amin ?");await say('',"Le téléphone de Nour vibre sur le comptoir. Un message de Younes, depuis Ixellette : « Il l'a dit ??? 😂😂😂 »");

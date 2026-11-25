@@ -60,20 +60,15 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 - Caméra cinéma (`cine`), plafond/murs pendant les cinématiques. Garde-fous anti-écran noir.
 
 ## Reste à faire
-Fait en novembre 2026 (lots 1 à 6, voir `docs/CHANGELOG.md` et `docs/PROMPT-LOT2.md`) : refonte en fichiers, manette, volumes séparés, concert de MC Sambre, Luciole sans combat, Route 2, test de Nour, défaites, ouverture, voix, Jourdanfritte et période d'essai, voitures, combats à plusieurs, stade des fusions.
+Fait (novembre 2026) : lots 1 à 6 (`docs/PROMPT-LOT2.md`) et lot 3 + chapitre 4 (`docs/PROMPT-LOT3.md`). Voir `docs/CHANGELOG.md`.
 
-À valider avec Ted :
-- [ ] Caméra à boussole (N/S/E/O) : idée mise de côté.
-- [ ] Jour 200 : aucune conséquence si dépassé.
-- [ ] Équilibrage : seuil du test de Nour (18 points), difficulté du combat de Snow en 3 contre 3.
+**Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille (faites) · Liègenoir, Namuroc, Bastognac, Gandoux, Côte du Nord (à faire).
+Entre chaque route et chaque ville : petit scénario, énigmes, quêtes, mini-jeux.
 
-À vérifier sur les captures et au toucher :
-- [ ] Rendu sur téléphone de tout le lot (voitures, Smile and Eat, téléphone visio, duo/3 contre 3, ouverture), sons (voix, techno, ascenseur), manette Bluetooth.
+À vérifier avec de vraies mains : équilibrage (test de Nour 18 pts, Snow en duo, économie), son, manette Bluetooth, lisibilité du duo sur téléphone.
 
-Dettes connues :
-- [ ] PDF de présentation dépassé ; feuille de suivi pas à jour.
-
-Suite du jeu :
-- [ ] Chapitre 4+ : retour de Snow (combat 3 contre 3 avec `snowBattle`) et de Luciole (secret chez les Pirates), Lumons des boss en forme évoluée (`bossMon`).
-- [ ] Nouvelles villes (Liègenoir, Anversaille…), arènes, médailles, Ligue d'Ardenval, plus de Lumons sauvages.
-- [ ] APK Android via GitHub Actions ; autres cinématiques ; DA encore plus mature.
+À préparer / à jouer plus tard :
+- [ ] Chapitre 5 : Liègenoir (Snow y a filé), avec Luciole.
+- [ ] Chapitres 5-6 : trame positive / négative selon le Cisoa donné à Alex (`trameHistoire()`, `f.cisoaAlex`) : colocation avec Alex (positive) ou non, test d'honnêteté des frères (négative).
+- [ ] Arènes et médailles restantes (2/8 : Terril, Diamant), Ligue d'Ardenval, plus de Lumons sauvages.
+- [ ] APK Android, PDF de présentation et feuille de suivi.

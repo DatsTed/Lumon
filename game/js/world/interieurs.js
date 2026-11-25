@@ -33,7 +33,7 @@ function buildInterieursCharleroc(){
   NPC.nurse=npc(m,'nurse',4,1,'down',nurseHeal);for(let x=2;x<=6;x++)m.signs[x+',2']=nurseHeal;
   m.signs['7,1']=pcMenu;}
  setTimeout(()=>{CENTRE.song='hope';SHOP.song='charl';GYM.song='charl'},0);CENTRE.nurseN='Infirmière Josiane';CENTRE.healId='charl';
- CENTREB=centreRoom('centre_b',1000,()=>goMap(BRUX,5,13,'down'),'Infirmière Fatou','brux');CENTREJ=centreRoom('centre_j',1020,()=>goMap(JF,21,12,'down'),'Infirmier Pol','jf');
+ CENTREB=centreRoom('centre_b',1000,()=>goMap(BRUX,5,13,'down'),'Infirmière Fatou','brux');CENTREB.hook=(x,z)=>F().ch3&&!F().pcWagner?alexPCScene:null;CENTREJ=centreRoom('centre_j',1020,()=>goMap(JF,21,12,'down'),'Infirmier Pol','jf');
  NWB=nwRoom('brux',async()=>{await goMap(BRUX,23,12,'down');if(F().nourMet)shoutBubble('Nour (depuis la caisse) : « ET MERCIII ! » … HAHAHAHA !','Nour')});NWJ=nwRoom('jf',()=>goMap(JF,9,5,'down'));
 }
 function buildInterieursFin(){

@@ -1,4 +1,4 @@
-"""Test des combats à plusieurs (2 contre 2, Snow 3 contre 3, Captain), des stades de fusion,
+"""Test des combats en duo (2 contre 2 : sbires, Snow et MC Sambre, Captain), des stades de fusion,
 de la musique techno des Kétosaures et des évolutions des Lumons uniques.
 Usage : python tools/test_combats.py"""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
@@ -19,10 +19,10 @@ def main():
         ok = g.attendre('window.__res&&' + g.libre(), 600)
         verif('duo 2 contre 2 : combat jusqu’au bout', ok, 'résultat %s, %s Lumons placés' % (g.js('()=>window.__res'), g.js('()=>window.__slots')))
         verif('duo : 4 Lumons sur le terrain + remplaçant ennemi', g.js('()=>window.__slots>=5'))
-        # --- Snow 3 contre 3
+        # --- Snow et MC Sambre (2 contre 2)
         g.js('()=>{S.party.forEach(m=>{m.hp=m.mhp;m.status=null;m.moves.forEach(x=>x.pp=MV[x.id].pp)});window.__res=null;window.__slots=0;window.__song=null;runScript(async()=>{const p=snowBattle(30);setTimeout(()=>window.__song=Object.keys(SONGS).find(k=>SONGS[k]===song),4000);window.__res=await p})}')
         ok = g.attendre('window.__res&&' + g.libre(), 900)
-        verif('Snow : 3 contre 3 avec ses deux bras droits', ok and g.js('()=>window.__slots>=6'), 'résultat %s, %s placés, musique %s' % (g.js('()=>window.__res'), g.js('()=>window.__slots'), g.js('()=>window.__song')))
+        verif('Snow et MC Sambre : 2 contre 2', ok and g.js('()=>window.__slots>=4'), 'résultat %s, %s placés, musique %s' % (g.js('()=>window.__res'), g.js('()=>window.__slots'), g.js('()=>window.__song')))
         verif('Snow : formes évoluées (Givrâlpha…)', g.js('()=>bossMon("givrale",32).sp==="givralpha"&&bossMon("noctiluce",30).sp==="noctilumiere"&&!!SP.krakamiral'))
         # --- Captain en duo
         g.js('()=>{S.party.forEach(m=>{m.hp=m.mhp;m.status=null;m.moves.forEach(x=>x.pp=MV[x.id].pp)});window.__slots=0;runScript(async()=>{await goMap(ROUTE3,20,9,"up");await captainScene()})}')
