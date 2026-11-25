@@ -2,7 +2,7 @@
 let dlgResolve=null;const TSPD=()=>[20,32,20,6][OPT.txt]||20;
 const fmt=t=>t.replace(/\{P\}/g,S.name).replace(/\{S\}/g,S.party[0]?nm(S.party[0]):'');
 function say(name,text,o={}){text=fmt(text);return new Promise(res=>{const d=$('dlg');d.style.display='block';$('dnm').textContent=name;$('dnm').style.display=name?'block':'none';$('dch').innerHTML='';$('dmore').style.display='none';
- const tx=$('dtx');tx.textContent='';let i=0,typing=true,at=null;const iv=setInterval(()=>{i++;tx.textContent=text.slice(0,i);if(i%3===0)blip();if(i>=text.length){clearInterval(iv);typing=false;$('dmore').style.display='block';if(o.auto)at=setTimeout(()=>dlgResolve&&dlgResolve(true),o.auto*[1,1.4,1,.55][OPT.txt])}},TSPD()*(o.fast?.6:1));
+ const tx=$('dtx');tx.textContent='';let i=0,typing=true,at=null;const iv=setInterval(()=>{i++;tx.textContent=text.slice(0,i);if(!voiceBlip(name,text,i)&&i%3===0)blip();if(i>=text.length){clearInterval(iv);typing=false;$('dmore').style.display='block';if(o.auto)at=setTimeout(()=>dlgResolve&&dlgResolve(true),o.auto*[1,1.4,1,.55][OPT.txt])}},TSPD()*(o.fast?.6:1));
  dlgResolve=(force)=>{if(typing&&!force){clearInterval(iv);typing=false;tx.textContent=text;$('dmore').style.display='block';if(o.auto)at=setTimeout(()=>dlgResolve&&dlgResolve(true),o.auto*[1,1.4,1,.55][OPT.txt]);return false}clearInterval(iv);clearTimeout(at);dlgResolve=null;d.style.display='none';res();return true}})}
 const msg=t=>say('',t,{auto:900,fast:true});
 function advance(){if(dlgResolve)dlgResolve()}

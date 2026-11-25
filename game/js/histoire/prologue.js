@@ -22,9 +22,10 @@ async function talkProf(){const P='Prof. Verhaegen',f=F();
 /* ================= STORY ================= */
 const NARR=["Je n'ai pas choisi où j'ai grandi. Chez moi, les adultes se faisaient appeler les Pirates.",
  "Un soir, j'ai claqué la porte. Je n'avais plus rien. Juste la rue… et la drache.",
- "Les squats. Les nuits froides. Ce truc qui te ronge de l'intérieur… J'ai bien failli m'y perdre.",
- "Puis une nuit, sous un pont du canal, deux yeux m'ont regardé dans le noir.",
- "Une petite chienne trempée, aussi perdue que moi. Je l'ai appelée Laïka. Elle ne m'a plus jamais lâché.",
+ "Les squats. Les nuits froides. Ce truc qui te ronge de l'intérieur… J'étais complètement à l'ouest. J'ai bien failli m'y perdre.",
+ "Une nuit, sous le pont du canal, j'ai entendu des cris. Trois Kétosaures tabassaient une petite chienne qui ne pouvait même plus se relever.",
+ "J'avais plus rien à perdre. Je me suis jeté sur eux. J'ai pris des coups… mais c'est eux qui sont partis en courant.",
+ "Elle tremblait, trempée, blessée, aussi perdue que moi. Je l'ai appelée Laïka. Elle ne m'a plus jamais lâché.",
  "Aujourd'hui, je suis clean. Maman m'a repris chez elle, et tante Doudoune… me supporte. Je cherche un vrai boulot. Et Laïka est toujours là."];
 let narrIdx=0,narrOn=false,narrTap=null,narrT0=0,glitchUntil=0;
 const RAIN=Array.from({length:120},()=>[rnd(),rnd(),.6+rnd()*.8]),GRAF=Array.from({length:14},()=>[rnd(),rnd(),['#ff3b5c','#3ef0ff','#ffd84a','#b58cff'][(rnd()*4)|0],rnd()]),stars=Array.from({length:70},()=>[rnd(),rnd(),rnd()*6]);
@@ -48,10 +49,24 @@ function narrLoop(t){if(!narrOn)return;const c=$('nc'),dpr=Math.min(devicePixelR
   x.fillStyle='#141012';x.fillRect(0,gy,w,h-gy);x.fillStyle='#3a3036';x.fillRect(w*.18,gy-12,w*.34,14);const on=Math.sin(t*.02)>-.6||rnd()<.3;
   if(on){const g=x.createRadialGradient(w*.5,h*.12,2,w*.5,h*.12,h*.6);g.addColorStop(0,'rgba(255,240,200,.28)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,w,h)}x.fillStyle='#fff6d8';x.beginPath();x.arc(w*.5,h*.12,4,0,7);x.fill();
   silh(x,w*.36,gy-6,sc*.85,'#07050a',{sit:1})}
- else if(k===3){bg('#05060c','#0a0e18');x.fillStyle='#0d1220';x.beginPath();x.moveTo(0,0);x.lineTo(w,0);x.lineTo(w,gy*.5);x.quadraticCurveTo(w/2,gy*.05-gy*.0+gy*.1,0,gy*.5);x.fill();
-  x.fillStyle='#08101c';x.fillRect(0,gy,w,h-gy);for(let i=0;i<10;i++){x.fillStyle=`rgba(120,150,210,${.06+.05*Math.sin(t*.003+i)})`;x.fillRect((i*97+lt*12)%w,gy+10+i*8,40,2)}
-  silh(x,w*.3,gy,sc*.85,'#020306',{sit:1});const bl=(lt%3.2)>3.05?.1:1;for(const s2 of[-1,1]){const ex=w*.72+s2*sc*.28,ey=gy-sc*.9;const g=x.createRadialGradient(ex,ey,1,ex,ey,14);g.addColorStop(0,'rgba(255,190,60,.95)');g.addColorStop(1,'rgba(255,140,0,0)');x.fillStyle=g;x.beginPath();x.ellipse(ex,ey,14,14*bl,0,0,7);x.fill()}}
- else if(k===4){bg('#1a1020','#3a2418');x.fillStyle='#24160f';x.fillRect(0,gy,w,h-gy);const r=Math.min(w,h)*(.25+Math.min(1,lt/3)*.25);const g=x.createRadialGradient(w*.45,gy-sc,4,w*.45,gy-sc,r);g.addColorStop(0,'rgba(255,200,120,.5)');g.addColorStop(1,'rgba(255,200,120,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
+ else if(k===3){const bridge=()=>{bg('#05060c','#0a0e18');x.fillStyle='#0d1220';x.beginPath();x.moveTo(0,0);x.lineTo(w,0);x.lineTo(w,gy*.5);x.quadraticCurveTo(w/2,gy*.05-gy*.0+gy*.1,0,gy*.5);x.fill();
+  x.fillStyle='#08101c';x.fillRect(0,gy,w,h-gy);for(let i=0;i<10;i++){x.fillStyle=`rgba(120,150,210,${.06+.05*Math.sin(t*.003+i)})`;x.fillRect((i*97+lt*12)%w,gy+10+i*8,40,2)}};bridge();
+  // le héros, à moitié défoncé, titube au loin ; trois Kétosaures frappent une petite chienne
+  silh(x,w*.16+Math.sin(lt*1.3)*sc*.15,gy,sc*.8,'#020306');const dx=w*.66;
+  for(let i=0;i<3;i++){const kick=Math.max(0,Math.sin(lt*5+i*2.1)),X=dx+(i-1)*sc*1.25+(i-1)*kick*sc*.15;silh(x,X,gy,sc*.95,'#030408',{band:'#a04ae8'});
+   x.fillStyle='#030408';x.save();x.translate(X+(i<1?.2:-.2)*sc,gy-sc*.05);x.rotate((i<1?-1:1)*kick*.9);x.fillRect(-sc*.1,0,sc*.2,sc*.62);x.restore()}
+  const hit=Math.max(0,Math.sin(lt*5))>.92;dogS(x,dx-sc*.15+(hit?sc*.08:0),gy,sc*.75,false);
+  if(hit){x.fillStyle='rgba(255,60,90,.18)';x.fillRect(0,0,w,h)}}
+ else if(k===4){const bridge=()=>{bg('#05060c','#0a0e18');x.fillStyle='#0d1220';x.beginPath();x.moveTo(0,0);x.lineTo(w,0);x.lineTo(w,gy*.5);x.quadraticCurveTo(w/2,gy*.05-gy*.0+gy*.1,0,gy*.5);x.fill();
+  x.fillStyle='#08101c';x.fillRect(0,gy,w,h-gy);for(let i=0;i<10;i++){x.fillStyle=`rgba(120,150,210,${.06+.05*Math.sin(t*.003+i)})`;x.fillRect((i*97+lt*12)%w,gy+10+i*8,40,2)}};const sh=(Math.sin(lt*23)*(lt%1.1<.25?1:0))*sc*.12;x.save();x.translate(sh,0);bridge();
+  // la bagarre : le héros fonce, les Kétosaures volent
+  const ph=lt%1.1,lunge=ph<.3?ph/.3:ph<.6?1-(ph-.3)/.3:0,hx=w*.38+lunge*sc*1.2;silh(x,hx,gy,sc*1.05,'#020306');
+  x.fillStyle='#020306';x.save();x.translate(hx+sc*.35,gy-sc*1.05);x.rotate(-1.2+lunge*1.3);x.fillRect(0,-sc*.1,sc*.75,sc*.2);x.restore();
+  for(let i=0;i<3;i++){const gone=Math.min(1,Math.max(0,(lt-1.2-i*1.1)/.8)),X=w*(.62+i*.11)+gone*w*.5,Y=gy-Math.sin(gone*PI)*sc*.6;x.globalAlpha=1-gone*.8;x.save();x.translate(X,Y);x.rotate(gone*1.6);silh(x,0,0,sc*.95,'#030408',{band:'#a04ae8'});x.restore();x.globalAlpha=1}
+  dogS(x,w*.24,gy,sc*.7,false);
+  if(ph>.27&&ph<.36){x.fillStyle='rgba(255,255,255,.55)';x.fillRect(0,0,w,h);x.fillStyle='#ffd84a';for(let j=0;j<8;j++){const a2=j/8*PI*2;x.fillRect(hx+sc*1.1+Math.cos(a2)*sc*.5,gy-sc*1.1+Math.sin(a2)*sc*.5,5,5)}}
+  x.restore()}
+ else if(k===5){bg('#1a1020','#3a2418');x.fillStyle='#24160f';x.fillRect(0,gy,w,h-gy);const r=Math.min(w,h)*(.25+Math.min(1,lt/3)*.25);const g=x.createRadialGradient(w*.45,gy-sc,4,w*.45,gy-sc,r);g.addColorStop(0,'rgba(255,200,120,.5)');g.addColorStop(1,'rgba(255,200,120,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
   silh(x,w*.38,gy,sc*.85,'#100a08',{sit:1});dogS(x,w*.52,gy,sc*1.05,true)}
  else{bg('#0b0b12','#2c2c3a');stars.forEach(st=>{x.globalAlpha=.3+.5*Math.abs(Math.sin(t*.001+st[2]));x.fillStyle='#fff';x.fillRect(st[0]*w,st[1]*h*.35,1.5,1.5)});x.globalAlpha=1;x.fillStyle='#0d0d10';x.fillRect(w*.18,gy-sc*3.2,w*.64,sc*3.2);x.fillStyle='#16161c';x.fillRect(w*.42,gy-sc*1.9,w*.16,sc*1.9);
   x.shadowColor='#ffffff';x.shadowBlur=16;x.fillStyle='#f4f4f8';const bx=w*.34,bw=w*.32,by=gy-sc*3,bh=sc*.62;const bars=[3,1,2,1,1,3,2,1,3,1,2,2,1,3,1];let px=bx;const u=bw/bars.reduce((a2,b3)=>a2+b3+1,0);bars.forEach((b4,i)=>{if(i%2===0)x.fillRect(px,by,u*b4,bh);px+=u*(b4+1)});
@@ -61,15 +76,18 @@ function narrLoop(t){if(!narrOn)return;const c=$('nc'),dpr=Math.min(devicePixelR
  x.fillStyle='rgba(255,255,255,.025)';for(let i=0;i<h;i+=3)x.fillRect(0,i,w,1);
  const vg=x.createRadialGradient(w/2,h/2,Math.min(w,h)*.3,w/2,h/2,Math.max(w,h)*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.7)');x.fillStyle=vg;x.fillRect(0,0,w,h);
  // light glitch
- const gr=k===2?.035:k>=4?.008:.02;if(t>glitchUntil&&rnd()<gr)glitchUntil=t+70+rnd()*110;const tx=$('narrText');
+ const gr=k===2||k===4?.035:k>=5?.008:.02;if(t>glitchUntil&&rnd()<gr)glitchUntil=t+70+rnd()*110;const tx=$('narrText');
  if(t<glitchUntil){x.setTransform(1,0,0,1,0,0);for(let i=0;i<3;i++){const sy=(rnd()*c.height)|0,sh=(8+rnd()*30*dpr)|0,dx=((rnd()-.5)*28*dpr)|0;x.drawImage(c,0,sy,c.width,sh,dx,sy,c.width,sh)}x.fillStyle='rgba(255,0,80,.05)';x.fillRect(0,0,c.width,c.height);tx.classList.add('gl')}else tx.classList.remove('gl');
  requestAnimationFrame(narrLoop)}
 function narrType(t){return new Promise(r=>{const el=$('narrText');let i=0,done=false;el.textContent='';const iv=setInterval(()=>{i++;el.textContent=t.slice(0,i);if(i>=t.length){clearInterval(iv);done=true}},38);
  narrTap=skip=>{if(skip){clearInterval(iv);narrTap=null;r();return}if(!done){clearInterval(iv);el.textContent=t;done=true}else{narrTap=null;r()}}})}
 $('narr').addEventListener('pointerdown',()=>narrTap&&narrTap(false));
-async function narration(){show('narr');narrOn=true;narrIdx=0;narrT0=performance.now();requestAnimationFrame(narrLoop);setSong('memory');let skipped=false;$('skip').style.display='';$('skip').onpointerdown=e=>{e.stopPropagation();skipped=true;narrTap&&narrTap(true)};
- await fadeIn();for(let i=0;i<NARR.length&&!skipped;i++){if(i){$('narr').classList.add('xf');await sleep(260);$('narr').classList.remove('xf')}narrIdx=i;narrT0=performance.now();if(i===4)setSong('hope');await narrType(NARR[i])}
- narrIdx=5;setSong('hope');$('narrText').textContent='';$('skip').style.display='none';
+// bruitages des tableaux du pont (cris, coups)
+function narrSfx(i){if(i===3){[0,700,1400,2300].forEach(d=>setTimeout(()=>{if(narrIdx===3){sfx(700,.18,'triangle',.08);sfx(520,.25,'triangle',.06)}},d))}
+ if(i===4){for(let k=0;k<6;k++)setTimeout(()=>{if(narrIdx===4){sfx(90,.18,'square',.16);sfx(60,.25,'sawtooth',.12)}},300+k*1100)}}
+async function narration(){show('narr');narrOn=true;narrIdx=0;narrT0=performance.now();requestAnimationFrame(narrLoop);setSong('drame');let skipped=false;$('skip').style.display='';$('skip').onpointerdown=e=>{e.stopPropagation();skipped=true;narrTap&&narrTap(true)};
+ await fadeIn();for(let i=0;i<NARR.length&&!skipped;i++){if(i){$('narr').classList.add('xf');await sleep(260);$('narr').classList.remove('xf')}narrIdx=i;narrT0=performance.now();narrSfx(i);if(i===NARR.length-1)setSong('celeste');await narrType(NARR[i])}
+ narrIdx=NARR.length-1;setSong('celeste');$('narrText').textContent='';$('skip').style.display='none';
  await say('',"…Au fait. Toi qui m'écoutes. Tu es un garçon ou une fille ?");S.gender=await pickGender();
  await say('',"Et tu ressembles à quoi, aujourd'hui ? Choisis ta panoplie.");await pickLook();
  await say('',"Et c'est quoi, ton nom ?");S.name=await askName();await say('',"{P}. Ça sonne bien. Allez, on y va, une fois.");
