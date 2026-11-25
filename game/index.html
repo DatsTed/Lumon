@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1d1626">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lumons">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script>if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
+<title>Lumons – Les Éclats d'Ardenval</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="obj"></div>
+<button id="menuBtn" style="display:none">☰ Menu</button>
+<button id="mute" aria-label="Son">♪</button>
+<div id="ctrl" class="off">
+  <div id="joyzone"></div><div id="joy"><div id="knob"></div></div>
+  <button id="btnA">A</button>
+</div>
+<div id="bhud">
+  <div class="hpb" id="bFoe"><div class="row"><span id="fN"></span><span id="fL"></span></div><div id="fBalls"></div><div id="fT"></div><div class="bar"><i id="fB"></i></div><div class="chips" id="fS"></div></div>
+  <div class="hpb" id="bMe"><div class="row"><span id="mN"></span><span id="mL"></span></div><div class="bar"><i id="mB"></i></div><div class="chips" id="mS"></div><div id="mHP"></div><div class="xbar"><i id="mX"></i></div></div>
+  <div id="bMenu"></div>
+</div>
+<div id="dlg"><div id="dnm"></div><div id="dtx"></div><div id="dch"></div><div id="dmore">▼</div></div>
+
+<div id="title" class="ov show"><div class="box">
+  <h1>Lumons</h1><h2>Les Éclats d'Ardenval</h2>
+  <div id="loading"><div class="ldbar"><i></i></div>Chargement d'Ardenval, une fois…</div>
+  <button id="bNew" class="btn" style="display:none">Nouvelle partie</button>
+  <button id="bCont" class="btn alt" style="display:none">Continuer</button>
+  <button id="bGal" class="btn alt" style="display:none">Galerie des Lumons</button>
+  <small>Flèches ou croix pour bouger · A / Espace pour parler</small>
+</div></div>
+<div id="narr" class="ov"><canvas id="nc"></canvas><div id="narrText"></div><button class="skip" id="skip">Passer ›</button></div>
+<div id="prof" class="ov"><img id="profImg" alt=""><div id="mons"></div></div>
+<div id="look" class="ov"><div class="panel" style="max-width:min(600px,96vw);width:100%"><div style="font-size:20px;font-weight:600;margin-bottom:6px">Ta panoplie</div><div class="lkwrap"><div class="lkpv"><img id="lkPrev" alt=""></div><div style="flex:1;min-width:0"><div id="lkTabs"></div><div id="lkRows"></div></div></div><button class="btn" id="lkOk" style="margin-top:8px">C'est moi !</button></div></div>
+<div id="job" class="ov"><div class="panel" style="max-width:min(460px,94vw)"><div style="font-size:20px;font-weight:600">Service au Night White</div><div id="jobT" style="color:#3ef0ff;margin:4px 0"></div><div style="font-size:13px;color:#b9add6">Le client veut :</div><div id="jobO" style="min-height:48px;margin:4px 0 8px"></div><div id="jobG" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div></div></div>
+<div id="gender" class="ov"><div class="panel">Tu es…<div class="opts"><div class="opt" data-g="0"><img id="gBoy" alt="">Un garçon</div><div class="opt" data-g="1"><img id="gGirl" alt="">Une fille</div></div></div></div>
+<div id="nameOv" class="ov"><div class="panel">Comment tu t'appelles ?<br><input id="nameIn" maxlength="10" autocomplete="off"><div id="nameErr"></div><button class="btn" id="nameOk">C'est moi !</button></div></div>
+<div id="card" class="ov"><div class="panel"><div id="cName"></div><div id="cType"></div><p id="cDesc"></p><button id="cYes" class="btn">Je le choisis !</button><button id="cNo" class="btn alt">Pas encore</button></div></div>
+<div id="gal" class="ov"><div class="panel"><div id="gName" style="font-size:22px;font-weight:600"></div><div id="gType"></div><p id="gDesc" style="font-size:14px;line-height:1.35;margin:6px 0"></p><div id="gStory"></div><button class="btn alt" id="gPrev">◀</button><button class="btn" id="gClose">Fermer</button><button class="btn alt" id="gNext">▶</button></div></div>
+<div id="pick" class="ov"><div class="panel"><div id="pTitle" style="font-weight:600;font-size:18px"></div><div id="pList"></div><button class="btn alt" id="pBack">Retour</button></div></div>
+<div id="endc" class="ov"><div class="panel"><h2 id="endH">Prologue terminé !</h2><p id="endTxt"></p><button class="btn" id="endOk">Continuer</button></div></div>
+<div id="toast"></div><div id="hint"></div>
+<canvas id="minimap"></canvas><div id="clock" style="display:none"></div>
+<div id="wmap" class="ov"><div class="panel" style="max-width:440px"><div id="wmTitle" style="font-weight:600;font-size:18px;color:var(--ny);text-shadow:0 0 8px var(--ny)">Carte d'Ardenval</div><div id="wmSvg"></div><button class="btn" id="wmClose">Fermer</button></div></div>
+<div id="banner"><div id="bt"></div><div id="bs"></div></div>
+<div id="fade"></div><div id="fxflash"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/core/base.js"></script>
+<script src="js/data/musiques.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/data/personnages.js"></script>
+<script src="js/models/portraits2d.js"></script>
+<script src="js/data/types.js"></script>
+<script src="js/data/attaques.js"></script>
+<script src="js/data/especes.js"></script>
+<script src="js/data/objets.js"></script>
+<script src="js/data/icones.js"></script>
+<script src="js/systemes/lumons.js"></script>
+<script src="js/data/succes.js"></script>
+<script src="js/systemes/journal.js"></script>
+<script src="js/core/moteur.js"></script>
+<script src="js/models/humains.js"></script>
+<script src="js/models/lumons3d.js"></script>
+<script src="js/world/entites.js"></script>
+<script src="js/world/terrain.js"></script>
+<script src="js/models/decor.js"></script>
+<script src="js/systemes/cinema.js"></script>
+<script src="js/systemes/nightwhite.js"></script>
+<script src="js/histoire/cinematiques.js"></script>
+<script src="js/world/ixellette.js"></script>
+<script src="js/world/interieurs.js"></script>
+<script src="js/world/route1.js"></script>
+<script src="js/world/charleroc.js"></script>
+<script src="js/world/route2.js"></script>
+<script src="js/world/bruxellia.js"></script>
+<script src="js/world/route3.js"></script>
+<script src="js/world/jourdanfritte.js"></script>
+<script src="js/world/arene.js"></script>
+<script src="js/world/monde.js"></script>
+<script src="js/core/ui.js"></script>
+<script src="js/histoire/objectifs.js"></script>
+<script src="js/core/save.js"></script>
+<script src="js/core/menus.js"></script>
+<script src="js/systemes/lumidex.js"></script>
+<script src="js/core/input.js"></script>
+<script src="js/systemes/monture.js"></script>
+<script src="js/world/interactions.js"></script>
+<script src="js/combat/combat.js"></script>
+<script src="js/combat/ia.js"></script>
+<script src="js/combat/effets.js"></script>
+<script src="js/systemes/evolution.js"></script>
+<script src="js/systemes/fusion.js"></script>
+<script src="js/systemes/apparence.js"></script>
+<script src="js/histoire/prologue.js"></script>
+<script src="js/histoire/chapitre1.js"></script>
+<script src="js/histoire/chapitre2.js"></script>
+<script src="js/histoire/chapitre3.js"></script>
+<script src="js/systemes/oeufs.js"></script>
+<script src="js/systemes/embuscades.js"></script>
+<script src="js/systemes/mode-test.js"></script>
+<script src="js/systemes/jour-nuit.js"></script>
+<script src="js/world/carte-monde.js"></script>
+<script src="js/world/monde-vivant.js"></script>
+<script src="js/core/boucle.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

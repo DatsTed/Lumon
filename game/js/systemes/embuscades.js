@@ -1,0 +1,14 @@
+/* ---- Embuscades cachées : Kétosaures & Pirates ---- */
+const AMBUSH={route:[{x:3,z:3,k:'keto',lv:7,mons:['terrilou','pigeolet'],rw:['supersirop',1]},{x:21,z:15,k:'keto2',lv:8,mons:['hannetonne','scorion'],rw:['lumisphere',2]},{x:2,z:30,k:'keto',lv:6,mons:['gaufrelin','pigeolet'],rw:['speculoos',1]}],
+ route2:[{x:3,z:13,k:'keto2',lv:13,mons:['scorion','terrilou','pigeolet'],rw:['supersirop',2]},{x:19,z:5,k:'pirate',lv:14,mons:['hannetonne','terrilou'],rw:['frites',1]},{x:18,z:27,k:'keto',lv:13,mons:['pigeolet','gaufrelin'],rw:['lumisphere',3]}],
+ route3:[{x:28,z:2,k:'pirate2',lv:15,mons:['scorion','pigeolet','terrilou'],rw:['supersirop',2]},{x:3,z:15,k:'pirate',lv:15,mons:['terrilou','hannetonne'],rw:['fricadelle',1]}]};
+const PIRATE_LINES=["Hé, moussaillon ! Ce buisson, c'est le coffre aux trésors de Captain ! Tu l'as trouvé, alors tu paies la taxe… en combat !","Chut ! J'faisais la sieste. Tu m'as réveillé. Ça mérite une bagarre, ça.","Ahoy ! T'aurais pas vu passer un Pigeolet avec une capsule dorée ? Non ? Bon, bagarre quand même."];
+const KETO_HIDE=["T'as l'œil, toi… Personne trouve jamais ma planque. Bon, maintenant que t'es là, faut que je te fasse taire !","Psst… Tu cherches de la « poudre de lune » ? Non ? Alors pourquoi tu fouilles dans MON buisson ?!","On surveille la route pour Snow, nous. Et toi, t'as vu ce qu'il fallait pas voir."];
+function ambushAt(id,x,z){const L=AMBUSH[id];if(!L)return null;const f=F();if(id==='route'&&!f.keto1)return null;for(let i=0;i<L.length;i++){const a=L[i];if(f['amb_'+id+i])continue;if(Math.abs(a.x-x)+Math.abs(a.z-z)<=1)return{...a,flag:'amb_'+id+i}}return null}
+function ambushDecor(m){const L=AMBUSH[m.id];if(!L)return;m.ambBush=[];L.forEach((a,i)=>{const b=new THREE.Group();b.position.set(m.ox+a.x,0,m.oz+a.z);m.group.add(b);tp(b,SPH,'#3f8a36',0,.3,0,.42,.34,.42);tp(b,SPH,'#4c9e3e',.2,.42,.1,.26,.22,.26);tp(b,SPH,a.k.startsWith('pir')?'#d8232a':'#a04ae8',-.16,.5,.18,.05,.05,.05,{ol:false,emi:a.k.startsWith('pir')?'#d8232a':'#a04ae8'});
+  m.ambBush[i]=b;const ph=i*1.7;m.anim.push(t=>{if(!b.visible)return;const sh=(Math.sin(t*1.3+ph)>.9)?Math.sin(t*40)*.06:0;b.rotation.z=sh;b.visible=!F()['amb_'+m.id+i]})})}
+async function ambush(a){const f=F();f[a.flag]=1;const pir=a.k.startsWith('pir');const c=await ketoApproach(a.k);if(!c){f[a.flag]=0;return}c.keyName=a.k;
+ const N=pir?'Pirate embusqué':'Kétosaure embusqué',L=pir?PIRATE_LINES:KETO_HIDE;
+ await say(N,L[(rnd()*L.length)|0]);const res=await battle({trainer:{name:N,key:a.k,smart:.3,prize:pir?90:70,mons:a.mons.map((sp,i)=>mkMon(sp,a.lv+i)),win:pir?"Arrr… T'as gagné. Prends le butin et laisse-moi finir ma sieste.":"Pfff… Snow va pas être content. Garde ça, et oublie que tu m'as vu.",lose:"Hé hé ! On est partout, je te dis !"}});
+ if(res==='win'){if(!pir)f.ketoN=(f.ketoN||0)+1;if(a.rw)give(a.rw[0],a.rw[1])}else f[a.flag]=0;
+ await tween(300,q=>{c.k=1-q;c.place()});killTemp(c)}

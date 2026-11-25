@@ -19,12 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Décompresser le jeu
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Préparer le site (dossier game/ tel quel)
         run: |
-          unzip -q -o lumons.zip -d src
+          python tools/build.py
+          git diff --exit-code game/sw.js || { echo "::error::game/sw.js pas à jour : lance python tools/build.py et commite"; exit 1; }
           mkdir -p site
-          cp -r src/game/* site/
+          cp -r game/* site/
           sed -i "s/lumons-v1/lumons-${GITHUB_RUN_NUMBER}/" site/sw.js
+          grep -q "lumons-${GITHUB_RUN_NUMBER}" site/sw.js
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

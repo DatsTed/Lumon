@@ -1,0 +1,46 @@
+/* ================= 2D PORTRAITS (intro) ================= */
+const svgURI=s=>'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+function chibi(o){const st='#2a1f2e',sk=o.skin;let s='<svg xmlns="http://www.w3.org/2000/svg" width="128" height="192" viewBox="0 0 64 96">';
+ const HB=o.hs;if(HB==='afro'&&!o.hat)s+=`<circle cx="32" cy="24" r="24" fill="${o.hair}" stroke="${st}"/>`;
+ if(HB==='bob')s+=`<path d="M12 28 Q10 44 16 46 L48 46 Q54 44 52 28Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(HB==='curlyl'||HB==='bangs')s+=HB==='curlyl'?[[13,34],[12,46],[16,56],[51,34],[52,46],[48,56],[32,52]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="8" fill="${o.hair}" stroke="${st}"/>`).join(''):`<path d="M13 28 Q9 58 19 62 L45 62 Q55 58 51 28Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.hood)s+=`<path d="M16 50 Q32 40 48 50 L44 56 Q32 50 20 56Z" fill="${o.hood}" stroke="${st}"/>`;
+ if(o.hs==='mid')s+=`<path d="M13 28 Q10 46 18 48 L46 48 Q54 46 51 28Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.hs==='long')s+=`<path d="M13 28 Q9 58 19 62 L45 62 Q55 58 51 28Z" fill="${o.hair}" stroke="${st}"/>`;
+ s+=`<rect x="23" y="71" width="7" height="17" rx="3" fill="${o.pants}" stroke="${st}"/><rect x="34" y="71" width="7" height="17" rx="3" fill="${o.pants}" stroke="${st}"/><ellipse cx="26.5" cy="89" rx="5" ry="3" fill="${o.boots||'#3a2a28'}"/><ellipse cx="37.5" cy="89" rx="5" ry="3" fill="${o.boots||'#3a2a28'}"/>`;
+ const armC=o.jacket||(o.coat?'#f7f7f7':o.shirt);
+ s+=`<rect x="10" y="49" width="8" height="20" rx="4" fill="${armC}" stroke="${st}"/><circle cx="14" cy="70" r="3.5" fill="${sk}" stroke="${st}"/><rect x="17" y="46" width="30" height="29" rx="9" fill="${o.shirt}" stroke="${st}"/>`;
+ if(o.coat)s+=`<path d="M17 50 Q17 46 24 46 L27 80 L16 80Z" fill="#f7f7f7" stroke="${st}"/><path d="M47 50 Q47 46 40 46 L37 80 L48 80Z" fill="#f7f7f7" stroke="${st}"/>`;
+ if(o.jacket)s+=`<path d="M17 50 Q17 46 25 46 L28 78 L16 78Z" fill="${o.jacket}" stroke="${st}"/><path d="M47 50 Q47 46 39 46 L36 78 L48 78Z" fill="${o.jacket}" stroke="${st}"/>`;
+ if(o.shirtless)s+=`<rect x="17" y="46" width="30" height="29" rx="9" fill="${sk}" stroke="${st}"/><rect x="18" y="70" width="28" height="4" fill="#fff"/>`;
+ if(o.dress)s+=`<path d="M20 62 L44 62 L50 84 L14 84Z" fill="${o.dress}" stroke="${st}"/>`;
+ if(o.skirt)s+=`<path d="M19 68 L45 68 L49 80 L15 80Z" fill="${o.skirt}" stroke="${st}"/>`;
+ if(o.collar)s+=`<path d="M26 46 L32 52 L38 46 L35 45 L32 48 L29 45Z" fill="#fff" stroke="${st}" stroke-width=".6"/>`;
+ if(o.tie)s+=`<path d="M30.5 49 L33.5 49 L34.5 62 L32 65 L29.5 62Z" fill="${o.tie}" stroke="${st}" stroke-width=".6"/>`;
+ if(o.stripes)s+=`<rect x="12.5" y="50" width="1.6" height="18" fill="${o.stripeC||'#fff'}"/><rect x="49.9" y="50" width="1.6" height="18" fill="${o.stripeC||'#fff'}"/><rect x="24" y="72" width="1.4" height="15" fill="${o.stripeC||'#fff'}"/><rect x="38.6" y="72" width="1.4" height="15" fill="${o.stripeC||'#fff'}"/>`;
+ if(o.apron)s+=`<rect x="23" y="55" width="18" height="20" rx="3" fill="#fff" stroke="${st}"/>`;
+ s+=`<rect x="46" y="49" width="8" height="20" rx="4" fill="${armC}" stroke="${st}"/><circle cx="50" cy="70" r="3.5" fill="${sk}" stroke="${st}"/>`;
+ if((o.hs==='bun'||o.hs==='manbun')&&!o.hat)s+=`<circle cx="32" cy="${o.hs==='manbun'?11:9}" r="${o.hs==='manbun'?5.5:7}" fill="${o.hair}" stroke="${st}"/>`;
+ s+=`<circle cx="32" cy="29" r="19" fill="${sk}" stroke="${st}"/>`;
+ if(o.hs==='pony')s+=`<circle cx="51" cy="30" r="5" fill="${o.hair}" stroke="${st}"/><path d="M52 33 Q60 44 54 54 Q51 46 49 36Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.hs==='curly')s+=[[14,26],[18,15],[26,9],[38,9],[46,15],[50,26]].map(([x,y])=>o.hat&&y<20?'':`<circle cx="${x}" cy="${y}" r="7" fill="${o.hair}" stroke="${st}"/>`).join('');
+ if(o.hs==='pigtails')s+=`<circle cx="11" cy="30" r="6" fill="${o.hair}" stroke="${st}"/><circle cx="53" cy="30" r="6" fill="${o.hair}" stroke="${st}"/><path d="M8 34 Q4 46 10 52 Q11 42 13 35Z" fill="${o.hair}" stroke="${st}"/><path d="M56 34 Q60 46 54 52 Q53 42 51 35Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.hs==='braid')s+=[0,1,2,3].map(k=>`<ellipse cx="${50-k}" cy="${36+k*6}" rx="4" ry="3.6" fill="${o.hair}" stroke="${st}"/>`).join('');
+ if(o.hs==='mohawk'&&!o.hat)s+=`<path d="M27 12 L29 1 L32 8 L35 1 L37 12Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.hs==='spiky'&&!o.hat)s+=`<path d="M14 22 L9 10 L22 14 L27 3 L34 12 L44 4 L44 15 L55 12 L50 24Z" fill="${o.hair}" stroke="${st}"/>`;
+ if(o.beard&&o.beardC)s+=`<path d="M15 33 Q17 52 32 52 Q47 52 49 33 Q44 42 32 42 Q20 42 15 33Z" fill="${o.beardC}" stroke="${st}"/>`;
+ if(o.hs==='bald'||(o.hs==='afro'&&!o.hat)){}else if(o.hs==='undercut')s+=`<path d="M16 22 Q15 10 32 9 Q49 10 48 22 Q40 14 32 16 Q22 14 16 22Z" fill="${o.hair}" stroke="${st}"/><path d="M14 26 Q14 18 18 16 L18 26Z" fill="${o.hair}" opacity=".55"/><path d="M50 26 Q50 18 46 16 L46 26Z" fill="${o.hair}" opacity=".55"/>`;
+ else if(o.hs==='quiff')s+=`<path d="M13 30 Q13 10 32 10 Q51 10 51 30 Q46 20 38 21 Q32 22 25 21 Q18 20 13 30Z" fill="${o.hair}" stroke="${st}"/>`+(o.hat?'':`<path d="M20 16 Q22 2 40 4 Q46 6 44 14 Q34 10 20 16Z" fill="${o.hair}" stroke="${st}"/>`);
+ else if(o.hs==='bangs'||o.hs==='bob')s+=`<path d="M13 31 Q13 10 32 10 Q51 10 51 31 L49 24 Q32 22 15 24Z" fill="${o.hair}" stroke="${st}"/>`;
+ else if(o.hs==='pixie')s+=`<path d="M13 28 Q13 10 32 10 Q51 10 51 26 Q44 18 30 24 Q20 26 13 28Z" fill="${o.hair}" stroke="${st}"/>`;
+ else s+=o.hs==='buzz'?`<path d="M14 24 Q15 10 32 10 Q49 10 50 24 Q32 15 14 24Z" fill="${o.hair}" stroke="${st}" opacity=".8"/>`:`<path d="M13 31 Q13 10 32 10 Q51 10 51 31 Q46 20 38 21 Q35 25 32 22 Q28 25 25 21 Q18 20 13 31Z" fill="${o.hair}" stroke="${st}"/>`;
+ s+=`<ellipse cx="25" cy="32" rx="2.6" ry="3.6" fill="${o.eye||'#2a1f2e'}"/><ellipse cx="39" cy="32" rx="2.6" ry="3.6" fill="${o.eye||'#2a1f2e'}"/><circle cx="25.9" cy="30.6" r="1" fill="#fff"/><circle cx="39.9" cy="30.6" r="1" fill="#fff"/><ellipse cx="20" cy="38" rx="3.2" ry="2" fill="#f4a0a0" opacity=".6"/><ellipse cx="44" cy="38" rx="3.2" ry="2" fill="#f4a0a0" opacity=".6"/><path d="M29 40 Q32 43 35 40" fill="none" stroke="#2a1f2e" stroke-width="1.3" stroke-linecap="round"/>`;
+ if(o.glasses)s+=`<circle cx="25" cy="32" r="5.2" fill="none" stroke="#333" stroke-width="1.2"/><circle cx="39" cy="32" r="5.2" fill="none" stroke="#333" stroke-width="1.2"/>`;
+ if(o.hat==='cap')s+=`<path d="M12 24 Q13 7 32 7 Q51 7 52 24 Q32 19 12 24Z" fill="${o.hatC}" stroke="${st}"/><path d="M18 23 Q32 18 46 23 Q46 28 32 27 Q18 28 18 23Z" fill="#8a1a1a" stroke="${st}"/>`;
+ if(o.hat==='beret')s+=`<ellipse cx="30" cy="12" rx="17" ry="7" fill="${o.hatC}" stroke="${st}"/>`;
+ if(o.hat==='fisher')s+=`<ellipse cx="32" cy="16" rx="25" ry="5" fill="${o.hatC}" stroke="${st}"/><path d="M18 16 Q18 2 32 2 Q46 2 46 16Z" fill="${o.hatC}" stroke="${st}"/><rect x="18" y="11" width="28" height="3" fill="#1d1626" opacity=".55"/>`;
+ return s+'</svg>'}
+const STARTER_SVG=[
+`<svg xmlns="http://www.w3.org/2000/svg" width="188" height="256" viewBox="18 18 94 128"><path d="M45 72 Q38 30 58 48 Q60 62 58 74Z" fill="#cfe08a" stroke="#7fa83f"/><path d="M85 72 Q92 30 72 48 Q70 62 72 74Z" fill="#cfe08a" stroke="#7fa83f"/><path d="M58 70 Q65 22 72 70Z" fill="#9cc65a" stroke="#6b9a34"/><ellipse cx="65" cy="106" rx="35" ry="32" fill="#f1ecd2" stroke="#b9b089"/><path d="M52 80 Q65 88 78 80 L74 100 Q65 104 56 100Z" fill="#9cc65a"/><circle cx="53" cy="104" r="5" fill="#2b2b2b"/><circle cx="77" cy="104" r="5" fill="#2b2b2b"/><ellipse cx="65" cy="114" rx="4" ry="3" fill="#6b5a4a"/><ellipse cx="50" cy="137" rx="9" ry="5" fill="#d8d0ad"/><ellipse cx="80" cy="137" rx="9" ry="5" fill="#d8d0ad"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" width="212" height="184" viewBox="150 56 106 92"><path d="M218 122 Q246 120 240 92" fill="none" stroke="#4a4a55" stroke-width="5" stroke-linecap="round"/><circle cx="240" cy="84" r="10" fill="#ff9a3c"/><circle cx="240" cy="86" r="5.5" fill="#ffd24a"/><ellipse cx="190" cy="108" rx="33" ry="30" fill="#55555f" stroke="#33333a"/><ellipse cx="190" cy="118" rx="20" ry="16" fill="#8a8a96"/><path d="M164 84 Q190 62 216 84 Q190 78 164 84Z" fill="#f2c94c" stroke="#b8902a"/><circle cx="190" cy="74" r="5" fill="#fff6c8" stroke="#b8902a"/><path d="M176 98 Q180 94 184 98" fill="none" stroke="#1d1d22" stroke-width="2.2" stroke-linecap="round"/><path d="M196 98 Q200 94 204 98" fill="none" stroke="#1d1d22" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="190" cy="108" rx="6" ry="4.5" fill="#f19aa8"/></svg>`,
+`<svg xmlns="http://www.w3.org/2000/svg" width="180" height="184" viewBox="276 52 90 92"><ellipse cx="315" cy="114" rx="30" ry="24" fill="#8fd3f0" stroke="#4fa3c8"/><path d="M281 106 Q284 58 330 62 Q356 70 349 106 Q315 96 281 106Z" fill="#2b3550" stroke="#161c2c"/><circle cx="304" cy="114" r="5.5" fill="#1d2a3a"/><circle cx="326" cy="114" r="5.5" fill="#1d2a3a"/><circle cx="305.5" cy="112" r="1.8" fill="#fff"/><circle cx="327.5" cy="112" r="1.8" fill="#fff"/><path d="M310 124 Q315 128 320 124" fill="none" stroke="#1d2a3a" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="302" cy="137" rx="7" ry="4" fill="#6cbde0"/><ellipse cx="328" cy="137" rx="7" ry="4" fill="#6cbde0"/></svg>`];

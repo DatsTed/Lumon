@@ -1,0 +1,12 @@
+let riding=false,mountM=null,ridePh=0;const SEAT={laikador:{s:.7,back:.88,z:-.06},cerbiscuit:{s:.58,back:1.14,z:-.12}};function canRide(){const l=laika();return l&&(l.sp==='laikador'||l.sp==='cerbiscuit')}
+function toggleRide(on){if(on===riding)return;if(on){const l=laika(),st=SEAT[l.sp];mountM=monModel(l.sp,l.form);if(l.shiny)shinyfy(mountM);mountM.g.scale.setScalar(st.s);mountM.g.position.set(0,0,0);mountM.g.rotation.set(0,0,0);player.g.add(mountM.g);
+  player.b.inner.position.set(0,st.back*st.s-.42+.02,st.z);riding=true;if(follower){follower.g.visible=false;follower.sh.visible=false}sfx(523,.1);sfx(784,.15)}
+ else{if(mountM){player.g.remove(mountM.g);disposeModel(mountM);mountM=null}player.b.inner.position.set(0,0,0);const P=player.b.P;if(P){P.legs.forEach(l=>{l.rotation.set(0,0,0)});P.arms.forEach(a=>a.rotation.set(0,0,0));P.body.rotation.x=0}riding=false;if(follower){follower.g.visible=true;follower.sh.visible=true}}}
+function rideTick(dt,ts){if(!riding||!mountM)return;if(follower&&follower.g.visible){follower.g.visible=false;follower.sh.visible=false}const P=player.b.P,mv=player.walking||player.moving;
+ if(P){P.legs.forEach((l,i)=>{l.rotation.set(-1.35,0,(i?-1:1)*.5)});P.arms.forEach((a,i)=>{a.rotation.x=-.75;a.rotation.z=(i?-1:1)*.12});P.body.position.y=.42;P.body.rotation.x=mv?.12:0}
+ ridePh+=dt*(mv?(player.running?16:11):0);const b=mv?Math.abs(Math.sin(ridePh))*.07:0;mountM.g.position.y=b;mountM.g.rotation.x=mv?Math.sin(ridePh*2)*.05:0;player.b.inner.position.y=SEAT[laika().sp].back*SEAT[laika().sp].s-.4+b*1.1}
+async function petLaika(){const l=laika(),now=Date.now();follower.face(dirTo(follower,player.x,player.z));
+ const h=new THREE.Group();tp(h,SPH,'#ff5a8a',-.05,0,0,.07,.07,.05,{ol:false,emi:'#ff2a6a'});tp(h,SPH,'#ff5a8a',.05,0,0,.07,.07,.05,{ol:false,emi:'#ff2a6a'});tp(h,CONE,'#ff5a8a',0,-.07,0,.1,.1,.05,{ol:false,emi:'#ff2a6a',r:[PI,0,0]});h.position.y=1.3;follower.g.add(h);sfx(880,.08,'triangle',.12);sfx(1175,.12,'triangle',.12);
+ await tween(700,q=>{h.position.y=1.1+q*.5;h.scale.setScalar(1-q*.4);follower.g.position.y=.1+Math.abs(Math.sin(q*PI*2))*.12});follower.g.remove(h);follower.place();
+ if(now-(F().petT||0)>30000){F().petT=now;addFr(3)}const fr=l.fr||0;
+ await say(nm(l),fr>=200?"Elle se colle à toi et ne te quitte plus des yeux. Votre lien est incroyable.":fr>=100?"Elle remue la queue comme une folle et te lèche la main.":"Elle te renifle la main, puis remue doucement la queue.")}
