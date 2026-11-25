@@ -29,7 +29,7 @@ function blockedAt(fx,fz){const r=.26;for(let iz=Math.round(fz-r);iz<=Math.round
 const camTarget=new V(12,0,10),camLook=new V(12,0,10);
 const DV={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
 const NPC={};
-function npc(m,key,x,z,dir,talk){const c=new Char(human(CH[key]),m,x,z,dir);c.snap();c.talk=talk;m.npcs.push(c);return c}
+function npc(m,key,x,z,dir,talk){const c=new Char(human(CH[key]),m,x,z,dir);c.snap();c.talk=talk;m.npcs.push(c);addPet(c,key);return c}
 function walkable(m,x,z){if(x<0||z<0||x>=m.W||z>=m.H)return false;if(m.solid[z*m.W+x])return false;return !m.npcs.some(n=>!n.hidden&&n.x===x&&n.z===z)}
 const dirTo=(a,x,z)=>x>a.x?'right':x<a.x?'left':z>a.z?'down':'up';
 async function moveTo(c,pts,speed=4.6){for(const[tx,tz]of pts){while(c.x!==tx||c.z!==tz){const nx=c.x+Math.sign(tx-c.x),nz=nx!==c.x?c.z:c.z+Math.sign(tz-c.z);c.face(dirTo(c,nx,nz));await c.step(nx,nz,speed)}}}

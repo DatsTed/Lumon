@@ -5,12 +5,12 @@ function buildRoute3(){
   [[3,3],[5,6],[14,15],[30,3],[30,15],[12,2]].forEach(([x,z])=>T[z][x]='T');terrain(m,T);
   {const x0=10,z0=6,w=6,d=2,cx=m.ox+x0+(w-1)/2,cz=m.oz+z0+(d-1)/2,fz=cz+d*.48;add(g,new THREE.BoxGeometry(w*.96,1.9,d*.95),'#e8e8ee',cx,1.05,cz,{ol:.04});box(g,w,.16,d+.2,cx,2.06,cz,'#1c1c22',{ol:.03});
    box(g,w*.9,1.2,.05,cx,.8,fz,'#bfe0ff',{emi:'#9ab8d8',cast:false});plane(g,3.6,.5,cx,1.75,fz+.04,labelTex('GARAGE WAGNER','#1c1c22','#f6c80f',768,128,60));solidRect(m,x0,z0,w,d)}
-  const car=(x,z,kind)=>{const cg=carModel(kind);cg.position.set(m.ox+x+.5,.1,m.oz+z);g.add(cg);m.anim.push(t=>cg.rotation.y=Math.sin(t*.3+x)*.04);setSolid(m,x,z);setSolid(m,x+1,z)};
+  const car=(x,z,kind)=>{const cg=carModel(kind,kind==='a6'?{ruber:1}:{});cg.position.set(m.ox+x+.5,.1,m.oz+z);g.add(cg);m.anim.push(t=>cg.rotation.y=Math.sin(t*.3+x)*.04);setSolid(m,x,z);setSolid(m,x+1,z)};
   car(9,11,'a6');car(12,11,'phantom');car(15,11,'ghost');
-  m.signs['9,11']=m.signs['10,11']="Une Audi A6 Avant, finition S-line. Gris métallisé, jantes noires, un break qui ne s'excuse de rien. Sobre et classe.";
-  m.signs['12,11']=m.signs['13,11']="Une Rolls-Royce Phantom. Noire, interminable, une calandre plus grande que ta chambre chez ta mère. La petite statuette sur le capot brille.";
-  m.signs['15,11']=m.signs['16,11']="Une Rolls-Royce Ghost. Noire et silencieuse comme… un fantôme. Ce soir, elle te fait rêver.";
-  npc(m,'alex',13,9,'down',async()=>{const A='Alex';if(!F().alex){F().alex=1;await say(A,"Bienvenue au Garage Wagner. Alex, enchanté. Ici, que du haut de gamme : une Audi A6 Avant S-line, une Rolls-Royce Phantom et une Rolls-Royce Ghost. Toutes noires… sauf l'Audi, elle fait sa rebelle.");
+  m.signs['9,11']=m.signs['10,11']="Une Audi A6 Avant S-line, « Ruber » écrit en vert sur la portière. C'est le taxi d'Alex : il fait le chauffeur la nuit pour arrondir les fins de mois.";
+  m.signs['12,11']=m.signs['13,11']="Une Rolls-Royce Phantom, noire, interminable. Elle sert aux mariages de « Wagner Events », l'entreprise d'Alex. La petite statuette sur le capot brille.";
+  m.signs['15,11']=m.signs['16,11']="Une Rolls-Royce Ghost, noire et silencieuse comme… un fantôme. Wagner Events la loue pour les galas et les mariages. Ce soir, elle te fait rêver.";
+  npc(m,'alex',13,9,'down',async()=>{const A='Alex';if(!F().alex){F().alex=1;await say(A,"Bienvenue au Garage Wagner. Alex, enchanté. Ici, que du haut de gamme : une Audi A6 Avant S-line, une Rolls-Royce Phantom et une Rolls-Royce Ghost. L'Audi, c'est mon taxi Ruber. Les deux Rolls, c'est pour Wagner Events : mariages, galas, événements. Le luxe, mon ami, c'est un métier.");
     await say(A,"Tu travailles où, toi ? Au Night White ? Ah, très bien, très bien. Pour la Phantom, compte… disons quelques milliers de services. Hé hé.");await say(A,"Mais un jour, qui sait ? Les plus belles histoires commencent souvent au fond d'un night shop.")}
    else await say(A,["Une voiture, c'est comme un Lumon : il faut en prendre soin, et elle te le rend au centuple.","La Ghost ? Je l'ai lustrée trois fois ce matin. Il pleuvait. Je l'ai relustrée.","Captain est passé hier. Il voulait la Phantom « en échange de services ». J'ai dit non. Poliment. Très poliment."][(rnd()*3)|0])});
   sg(m,6,8,"Route 3 — Bruxellia ↔ Jourdanfritte. Garage Wagner à 200 m. Attention : Pirates signalés !",true);item(m,24,2,'mitraillette',1,'r3i1');item(m,4,14,'lumisphere',2,'r3i2');

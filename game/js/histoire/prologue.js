@@ -1,4 +1,5 @@
 async function talkProf(){const P='Prof. Verhaegen',f=F();
+ if(S.bag.colisprof&&f.starter2==null){await profColis(P);saveGame();if(!(f.badge1&&!f.profBadge))return}
  if(f.badge1&&!f.profBadge){f.profBadge=1;f.fusionOK=1;player.face('up');
   await say(P,"{P} ! Mais… qu'est-ce que je vois là, accroché à ta veste ? La Médaille Terril ?!");
   await say(P,"Ginette ne la donne pas à n'importe qui. Trente ans au fond de la mine, et elle ne fait de cadeau à personne. Je suis fière de toi. Et de toi aussi, Laïka.");
@@ -12,11 +13,11 @@ async function talkProf(){const P='Prof. Verhaegen',f=F();
   await banner('Fusionneur débloqué !',"Labo de la Prof · à côté de son bureau",2000);
   if(f.rap1){f.north=1;refreshNPCs();
    await say(P,"Et ce n'est pas tout. On m'a appelée de Charleroc : la brume au nord de la ville s'est dissipée cette nuit. C'étaient les fumigènes des concerts de Snow… depuis que son concert à Charleroc est fini, plus rien.");
-   await say(P,"La Route 2 est libre. Bruxellia, la capitale, t'attend. Il paraît que le Night White de Bruxellia recrute… mais seulement jusqu'au Jour 200. Ne traîne pas !");
-   await banner('Route 2 ouverte !',`Au nord de Charleroc · Bruxellia avant le Jour 200`,2400)}
+   await say(P,"La Route 2 est libre. Bruxellia, la capitale, t'attend. Il paraît que le Night White de Bruxellia recrute… mais seulement jusqu'au Jour 25. Ne traîne pas !");
+   await banner('Route 2 ouverte !',`Au nord de Charleroc · Bruxellia avant le Jour 25`,2400)}
   else await say(P,"Par contre, la Route 2, au nord de Charleroc, est toujours noyée dans la brume. On dit que c'est lié aux concerts de Snow, à Charleroc… Va voir ce qui se passe là-bas.");
   setObj();saveGame();return}
- if(f.rap1&&f.profBadge&&!f.north){f.north=1;refreshNPCs();await say(P,"La brume du nord s'est levée ! Les concerts de Snow sont finis. La Route 2 vers Bruxellia est ouverte, file — avant le Jour 200 !");setObj();return}
+ if(f.rap1&&f.profBadge&&!f.north){f.north=1;refreshNPCs();await say(P,"La brume du nord s'est levée ! Les concerts de Snow sont finis. La Route 2 vers Bruxellia est ouverte, file — avant le Jour 25 !");setObj();return}
  await say(P,"Tu veux que je soigne tes Lumons ? Allez, sous la lampe d'Éclat !");await healFx();
  await say(P,f.fusionOK?"Le Fusionneur d'Éclat t'attend à côté de mon bureau. Viens l'essayer quand tu veux !":f.badge1?"Montre-moi ta médaille, voyons !":"Tu vois la machine éteinte à côté de moi ? C'est mon Fusionneur d'Éclat. Je l'ouvrirai le jour où tu auras gagné ta première médaille, à l'arène de Charleroc.")}
 /* ================= STORY ================= */

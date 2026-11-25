@@ -21,10 +21,10 @@ function buildJourdanfritte(){
   wand(npc(m,'kid',16,13,'left',async()=>{if(await huile('ines'))return;await say('Petite Inès',"Jalal, du Smile and Eat, il a les plus beaux cheveux du monde. Il dit que c'est grâce à l'huile d'olive.")}));
   m.signs['12,17']=m.signs['13,17']=friteJF}
  // intérieur du Smile and Eat
- {const X=1200,m=SMILE=room('smile',11,8,X,'K','#1c1a22',()=>goMap(JF,16,19,'down')),g=m.group;m.song='hope';
+ {const X=1200,m=SMILE=room('smile',11,8,X,'K','#1c1a22',async()=>{await dannyPiece();await goMap(JF,16,19,'down')}),g=m.group;m.song='hope';
   box(g,5,.95,.8,X+5,.55,2,'#1c1a22',{ol:.03});box(g,5.1,.08,.9,X+5,1.05,2,'#d8b45a',{emi:'#5a4010',cast:false});solidRect(m,3,2,5,1);
   plane(g,4.2,.7,X+5,2.2,.46,labelTex('SMILE AND EAT · DEPUIS 2009','#1c1a22','#ffd84a',1024,160,54));
   for(const[tx,tz]of[[2,4],[8,4],[2,6],[8,6]]){tp(g,CYL,'#f4efe6',X+tx,.55,tz,.42,.06,.42);tp(g,CYL,'#d8b45a',X+tx,.28,tz,.06,.5,.06);setSolid(m,tx,tz)}
   for(let k=0;k<4;k++)box(g,.5,.5,.05,X+2.2+k*2,1.9,.47,['#e8402a','#ffd23a','#f6c80f','#ff8a2c'][k],{emi:'#5a3a10',cast:false});
-  NPC.jalal=npc(m,'jalal',5,1,'down',smileEat2);NPC.dannyJ=npc(m,'danny',3,5,'right',talkDannyJF)}
+  NPC.jalal=npc(m,'jalal',5,1,'down',smileEat2);for(let x=3;x<=7;x++)m.signs[x+',2']=smileEat2;NPC.dannyJ=npc(m,'danny',3,5,'right',talkDannyJF)}
 }

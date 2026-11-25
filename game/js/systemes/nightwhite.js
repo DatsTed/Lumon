@@ -8,7 +8,7 @@ function nightWhiteExt(g,m,x0,z0,w,d,doorX){const{ox,oz}=m,cx=ox+x0+(w-1)/2,cz=o
  for(let x=x0;x<x0+w;x++){if(x===doorX)continue;box(g,.86,1.05,.05,ox+x,.78,fz+.02,'#dfe8f6',{emi:'#c9d6ea',cast:false});for(let r=0;r<2;r++)for(let b=0;b<3;b++)box(g,.16,.18,.05,ox+x-.25+b*.25,.5+r*.36,fz+.05,['#e8402a','#ffd23a','#3a8ae8','#7a4a22','#2fbf5a'][(b+r+x)%5],{cast:false})}
  box(g,.78,1.2,.06,ox+doorX,.7,fz+.03,'#f4f6ff',{emi:'#eef2ff',cast:false,ol:.02});box(g,.04,1.1,.07,ox+doorX,.7,fz+.06,'#111',{cast:false});
  plane(g,Math.min(ww-.2,2.8),.86,cx,1.62,fz+.07,nwLogo());solidRect(m,x0,z0,w,d);return fz}
-const NWSHOP={town:{cash:'Younes',staff:'Fifi',ck:'younesH',disc:0,ox:200,boss:0},brux:{cash:'Nour',staff:'Colin',sk:'colin',boss:1,ck:'nour',disc:0,ox:1040},jf:{cash:'Amin',staff:'Sofiane',boss:1,ck:'amine',job:1,disc:0,ox:1060},charl:{cash:'Mehdi',staff:'Lou',disc:0,ox:220},route:{cash:'Nadia',staff:'Bart',disc:0,ox:240,rest:1}};
+const NWSHOP={town:{cash:'Younes',staff:'Fifi',ck:'younesH',disc:0,ox:200,boss:0},brux:{cash:'Nour',staff:'Colin',sk:'colin',boss:1,ck:'nour',disc:0,ox:1040},jf:{cash:'Amin',staff:'Adnan',boss:1,ck:'amine',job:1,disc:0,ox:1060},charl:{cash:'Mehdi',staff:'Adnan',disc:0,ox:220},route:{cash:'Nadia',staff:'Adnan',disc:0,ox:240,rest:1}};
 const YOUNES_POST=["« Monsieur Nour »… Frère, je vais la raconter à mes petits-enfants, celle-là. Même si ça m'a coûté mes cheveux.","Bonjour, Monsieur le stagiaire ! Comment va votre petit frère ? HAHAHA ! … Arrête de regarder mon crâne.","Ça repousse, hein. Le coiffeur dit trois mois. Fifi dit « trois fois ». J'ai pas compris.","Tu te souviens de la chanson du camp de Bouillon ? « Le Lumon dans la forêt »… Non ? Moi je la chante encore la nuit, quand y a personne."],
  HAKIM=["Bienvenue au Night White de Bruxellia ! … QUOI ? POURQUOI TU ME REGARDES COMME ÇA ?! … Pardon. Les Spéculoos, c'est au fond.","J'AI RANGÉ TOUS LES CHIPS PAR COULEUR ET QUELQU'UN A TOUT MÉLANGÉ !!! … Ça va. Ça va. Je respire. Comme m'a dit le psy.","Tu savais que le Cisoa Pomme-Poire, c'est fait avec des pommes ET des poires ? Moi je l'ai appris hier. Ça m'a mis une claque.","Mon tatouage ? C'est un Krakamoule. Enfin, normalement. Le tatoueur a dit que ça ressemblait à une saucisse. JE L'AI PAS FRAPPÉ, HEIN. Presque.","Nour dit que je dois « gérer mes émotions ». Alors je les range. Comme les chips. Par couleur.","Nour ? Il est à la caisse. Il connaît toutes les chansons de Disney par cœur. MOI AUSSI. … Mais ça, tu le dis à personne."],
  FIFI=["Bienvenue ! Moi c'est Fifi le Firat. Fas Firate, hein ! FIRAT ! … Bon, Fifi le Firate. Mais rien à voir avec le gang de Cafitain, hein !","Les Sfeculoos sont en fromo cette semaine : moins vingt four cent !","Fourquoi tout le monde rigole quand je dis « fomme de terre » ? C'est fourtant fas drôle.","J'ai rangé les fâtes, les fizzas et le fafier toilette. Le fafier, c'est le flus dur à dire.","Younes chante encore des chansons d'animateur quand y a fersonne. « Fetit fapa noël »… J'ai fas le droit d'en farler."],
@@ -29,7 +29,7 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
    await say(N,"Moi c'est Nour. Le Night White, on l'a monté à deux, mon frère Amin et moi. Tu veux bosser chez nous ? Alors on fait comme tout le monde : un test d'embauche.");
    await say(N,"Caisse, réassort, rendu de monnaie : trois épreuves chronométrées, et chaque erreur te coûte du temps. Ensuite, un petit entretien avec moi. Il me faut au moins 18 points. Prêt·e ?")}else await say(N,"Tu reviens pour le test ? J'aime ça, les gens qui insistent.");
   f.nourTry=(f.nourTry||0)+1;const r=await nwJob('test',N);
-  if(r.score>=18){f.nourMet=1;sfx(784,.15);sfx(1046,.3);await banner('Test réussi !',`${r.score} points`,2000);
+  if(r.score>=(f.nourHard?20:18)){f.nourMet=1;sfx(784,.15);sfx(1046,.3);await banner('Test réussi !',`${r.score} points`,2000);
    await say(N,"Pas mal du tout ! T'es embauché·e… à l'essai. Ici à Bruxellia mon équipe est complète, mais mon frère Amin a besoin de quelqu'un à Jourdanfritte.");
    await say(N,"Première mission : tu lui apportes ce colis. Douze canettes de Cisoa Pomme-Poire, sa commande perso. Il en boit trois par jour, et il devient insupportable quand il en a plus.");
    f.nourBox=1;give('colisnw');sfx(784,.12);await banner('Tu as reçu le Colis de Nour !','À livrer à Amin, à Jourdanfritte',1800);
@@ -44,7 +44,7 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
  await say(N,k==='town'?(F().younesBald?YOUNES_POST[(rnd()*YOUNES_POST.length)|0]:"Yo {P} ! Qu'est-ce que je te sers, frère ? Comme au camp de Bouillon : une gaufre et un Cisoa ?"):"Bienvenue au Night White ! Ouvert jour et nuit, sept jours sur sept, une fois.");
  if(!F()['nwVisit_'+k]){F()['nwVisit_'+k]=1}unlock('nw');
  if((k==='town'||k==='jf')&&F().trialDone){const ch=await choose(N,"Alors, collègue, tu viens acheter quelque chose, ou tu prends ton service ?",["Acheter","Prendre mon service","Rien"]);if(ch===1){const r=await nwJob('shift',N);await say(N,`Bon service ! ${r.score} points, ${r.earn} € de paie.`);return}if(ch===2)return}
- const ks=['sirop','chips','titzvel','zisoa','supersirop','choco','spa','speculoos','lumisphere'],pr=x=>Math.round(ITEMS[x].price*(1-c.disc)/10)*10;
+ const ks=['chips','titzvel','zisoa','choco','speculoos','biere','clopes','peket'],pr=x=>Math.max(1,Math.round(ITEMS[x].price*(1-c.disc)));
  for(;;){const i=await pickList(`Night White · ${S.money} €${c.disc?' · −20 %':''}`,ks.map(x=>({html:`${ico(x)}<span class="grow"><b>${ITEMS[x].n}</b> — ${pr(x)} €${c.disc?` <s style="opacity:.5">${ITEMS[x].price} €</s>`:''}<br><small>${ITEMS[x].d} · Tu en as ${S.bag[x]||0}</small></span>`,dis:S.money<pr(x)})));
   if(i<0)break;const x=ks[i];S.money-=pr(x);give(x);sfx(1568,.05,'square',.08)}
  await say(N,k==='jf'&&F().hired?"À plus, collègue ! Et ramène pas Laïka derrière le comptoir.":"Merci et bonne route ! Garde ton ticket, hein.")}}
@@ -91,7 +91,7 @@ async function nwJob(mode='shift',N){const f=F();const P=[['chips','Chips'],['zi
      $('jobG').querySelectorAll('.jb').forEach(b=>b.onclick=()=>{if(+b.dataset.v!==state.ch)return bad(b);good();pts+=2;sfx(988,.1);newRound()})}};
    show('job');newRound();const iv=setInterval(()=>{t--;head();if(t<=0){end()}},1000)});
   await sleep(300)}
- hide('job');if(TEST)score+=await nwInterview(N);const earn=mode==='test'?0:score*9+((rnd()*10)|0);S.money+=earn;if(mode!=='test'){f.shifts=(f.shifts||0)+1;if(f.shifts>=5)unlock('worker')}unlock('nw');return{score,earn}}
+ hide('job');if(TEST)score+=await nwInterview(N);const earn=mode==='test'?0:Math.round(25+score*1.3+rnd()*6);S.money+=earn;if(mode!=='test'){f.shifts=(f.shifts||0)+1;if(f.shifts>=5)unlock('worker')}unlock('nw');return{score,earn}}
 
 // Entretien oral de Nour (test d'embauche) : +2 par bonne réponse, -1 par mauvaise. Ordre des réponses mélangé.
 const NW_ITW=[

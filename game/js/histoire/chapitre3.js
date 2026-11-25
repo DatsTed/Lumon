@@ -8,11 +8,11 @@ async function pigeonHeist(){const f=F(),m=cur;player.face('right');sfx(1400,.05
  await say('Pigeolet royal',"ROUCOUUU !");await say('',"Il attrape le colis de Nour dans ses pattes et repart en battant des ailes ! Douze Cisoa Pomme-Poire s'envolent vers l'est…");
  const tx=m.ox+15.5,tz=m.oz+11;await tween(1600,q=>{pg.g.position.set(px+(tx-px)*q,1.4+Math.sin(q*PI)*2.5-(.35*q),pz+(tz-pz)*q);pg.g.rotation.y=Math.atan2(tx-px,tz-pz)});
  disposeModel(pg);pigeonSync();sfx(200,.4,'square',.1);
- await say('Alex (au loin)',"NOOOON ! PAS SUR LA GHOST ! PAS SUR LA GHOST ! Je l'ai lustrée QUATRE fois ce matin !");
+ await say('Alex (au loin)',"NOOOON ! PAS SUR LA GHOST ! PAS SUR LA GHOST ! Je l'ai lustrée QUATRE fois ce matin !");await say('Alex (au loin)',"DESCENDS DE LÀ, SALE FILS DE PUTE DE PIGEON ! JE VAIS TE NIQUER TA RACE ! JE VAIS T'ENCULER, RAT VOLANT !");
  await say('',"Le Pigeolet s'est posé sur le toit de la Rolls-Royce Ghost d'Alex, au garage un peu plus loin. Amin va te tuer si tu reviens sans ses Cisoa.");setObj()}
 async function pigeonFight(){const f=F(),A='Alex';player.face('down');
  await say(A,"Toi ! Le livreur ! C'est TON pigeon ?! Il squatte ma Ghost depuis dix minutes ! Il a déjà grignoté le cuir du rétroviseur !");
- await say(A,"Fais quelque chose ! Je n'ai pas fait trois ans de Solvay pour finir à chasser des pigeons sur une Rolls !");
+ await say(A,"Fais quelque chose ! Je n'ai pas fait trois ans de Solvay pour finir à chasser des pigeons sur une Rolls !");await say(A,"Toi, le fils de pute à plumes, je te jure que si tu chies sur le cuir, je te nique ta race et toute ta famille de pigeons jusqu'à la gare du Midi !");
  await say('Pigeolet royal',"ROUCOUUU ! ROUCOU-COU !");
  const w=mkMon('pigeolet',16);w.iv=[24,24,24,28];calc(w);w.hp=w.mhp;const res=await battle({wild:w,music:'boss'});
  if(res==='win'||res==='caught'){f.nourBox=3;give('colisnw');pigeonSync();unlock('pigeon');

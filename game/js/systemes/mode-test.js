@@ -4,5 +4,5 @@ async function testMode(){if(!S||!S.party||!player){await say('',"Lance ou conti
   while(SP[m.sp].evo&&m.lv>=SP[m.sp].evo[0])m.sp=SP[m.sp].evo[1];calc(m);m.hp=m.mhp};
  S.party.forEach(up);for(const sp of['chicorin','charbonnet','moulinet','gaufrelin']){if(S.party.length>=4)break;if(S.party.some(m=>m.sp===sp))continue;const m=mkMon(sp,5);up(m);S.party.push(m)}
  S.party.forEach(m=>{S.dex.seen[m.sp]=S.dex.caught[m.sp]=1;m.hp=m.mhp;m.status=null;m.moves.forEach(x=>x.pp=MV[x.id].pp)});
- give('lumisphere',10);give('supersirop',5);give('speculoos',3);S.money+=3000;S.testMode=1;refreshFollower();saveGame();
+ give('lumisphere',10);give('supersirop',5);give('speculoos',3);S.money+=300;S.testMode=1;refreshFollower();saveGame();
  await banner('Mode test activé !',S.party.map(m=>nm(m)+' N.'+m.lv).join(' · '),2600)}

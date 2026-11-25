@@ -13,8 +13,9 @@ async function buildWorld(){
  buildArene();
  placePNJIxellette();
  placePNJLuciole();
+ nightSetup();
 }
-async function goMap(m,x,z,dir){await fadeOut();gotoMap(m,x,z,dir);refreshNPCs();await fadeIn();
+async function goMap(m,x,z,dir){if(player){player.walking=false;player.running=false}if(follower)follower.walking=false;await fadeOut();gotoMap(m,x,z,dir);refreshNPCs();await fadeIn();
  if(m===ROUTE&&!F().r1){F().r1=1;await banner('Route 1','Ixellette ↔ Charleroc',2200)}
  if(m===JF&&!F().jfSeen)F().jfSeen=1;if(m===CHARL&&!F().charl){F().charl=1;await banner('Charleroc','La cité des terrils',2400)}
  if(m===GYM&&!F().gymIn){F().gymIn=1;await banner('Arène de Charleroc','Type Roche · Maître de Guilde Ginette',2400)}}

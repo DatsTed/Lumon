@@ -21,7 +21,10 @@ function carModel(kind,o={}){const D=CARS[kind==='a6'?'a6':'rolls'],g=new THREE.
  add(g,geo,paint,0,0,0,{ol:.03});
  // vitres (bandeau sombre un peu plus large que la caisse)
  const gs=new THREE.Shape(),[a,b]=D.G;gs.moveTo(X(a),D.GD[0]*SH);for(let i=a;i<=b;i++)gs.lineTo(X(i),D.GU[i-a]*SH-.015);for(let i=b;i>=a;i--)gs.lineTo(X(i),D.GD[i-a]*SH+.01);
- const gg=new THREE.ExtrudeGeometry(gs,{depth:W+.01,bevelEnabled:false});gg.translate(0,0,-(W+.01)/2);add(g,gg,'#1c2a3a',0,0,0,{ol:false,emi:'#0a1420'});
+ const gg=new THREE.ExtrudeGeometry(gs,{depth:W+.01,bevelEnabled:false});gg.translate(0,0,-(W+.01)/2);add(g,gg,kind==='a6'?'#7fa6c8':'#1c2a3a',0,0,0,{ol:false,emi:kind==='a6'?'#24384a':'#0a1420'});
+ if(kind==='a6'){// pare-brise, lunette et montants : on lit bien les vitres
+  for(const i of[a+1,a+6,b-1]){const h=(D.GU[i-a]-D.GD[i-a])*SH;box(g,.07,h+.02,W+.03,X(i),(D.GU[i-a]+D.GD[i-a])/2*SH,0,paint,{ol:false})}
+  for(const s of[-1,1])for(const i of[a+3,a+10]){const q=box(g,.5,.025,.01,X(i),(D.GU[i-a]*.6+D.GD[i-a]*.4)*SH,s*(W/2+.012),'#ffffff',{ol:false,emi:'#c8e0ff'});q.rotation.z=.5}}
  // montant central + ligne chromée
  box(g,.06,(D.GU[8]-D.GD[8])*SH,W+.03,X(a+8),(D.GU[8]+D.GD[8])/2*SH,0,paint,{ol:false});
  box(g,(X(N)-X(0))*.9,.025,W+.02,(X(0)+X(N))/2,D.GD[8]*SH-.02,0,trim,{ol:false,emi:kind==='a6'?null:'#6a6a70'});
@@ -33,4 +36,5 @@ function carModel(kind,o={}){const D=CARS[kind==='a6'?'a6':'rolls'],g=new THREE.
  else{box(g,.06,hy*.62,W*.36,fx+.03,hy*.5,0,'#e6e9ef',{ol:.02,emi:'#7a7a80'});for(let k=-2;k<=2;k++)box(g,.07,hy*.56,.012,fx+.05,hy*.5,k*W*.06,'#9aa0a8',{ol:false});
   tp(g,SPH,'#e6e9ef',fx-.02,hy+.06,0,.03,.07,.02,{emi:'#8a8a90',ol:false})}
  for(const s of[-1,1]){box(g,.05,.07,.2,fx+.02,hy*.7,s*W*.34,'#fff6d8',{emi:'#fff2c0',ol:false});box(g,.05,.08,.16,X(0)-.03,D.UP[0]*SH*.78,s*W*.36,'#d8232a',{emi:'#a01018',ol:false})}
+ if(o.ruber)for(const s of[-1,1]){const p=plane(g,.95,.22,(X(D.G[0])+X(D.G[1]))/2,D.GD[8]*SH-.2,s*(W/2+.045),labelTex('Ruber',paint,'#2fe06a',512,120,92));if(s<0)p.rotation.y=PI}
  return g}

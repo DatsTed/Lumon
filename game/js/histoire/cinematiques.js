@@ -23,7 +23,7 @@ async function nwIxCine(){const f=F(),Y='Younes',c=NPC.younesH,fi=NPC.fifi,X=NWS
  camShot(PROF,[X+5,H-.1,4.5]);await say(Y,"Le grand jeu « Chasse aux Lumons » où t'avais perdu la moitié des gamins dans la forêt ! On les a retrouvés à la friterie du village, ils avaient tous pris une mitraillette !");
  camShot([X+6.25,1.35,4.0],[X+5,H,5]);await say('',"Younes. Le gars qui faisait des chansons à gestes pendant trois heures, même sous la drache. Toujours la même coupe courte, propre, impeccable. Il la touche toutes les dix secondes.");
  camShot(OTS_P,[X+5,H,4]);await say(Y,"Quinze ans, frère ! T'es devenu quoi ? … Non, laisse, je vois. T'as besoin d'un boulot. Ça se lit dans tes yeux comme un menu de friterie.");
- camShot(PROF,[X+5,H-.1,4.5],{move:true,sm:.3});await say(Y,"Ici, je suis responsable du magasin. Le Night White, c'est aux frères Nour et Amin. Si tu veux bosser, va voir Nour au Night White de Bruxellia. Ils recrutent jusqu'au Jour 200.");
+ camShot(PROF,[X+5,H-.1,4.5],{move:true,sm:.3});await say(Y,"Ici, je suis responsable du magasin. Le Night White, c'est aux frères Nour et Amin. Si tu veux bosser, va voir Nour au Night White de Bruxellia. Ils recrutent jusqu'au Jour 25.");
  await say(Y,"Bruxellia ? Tu montes à Charleroc par la Route 1, puis la Route 2 tout au nord. Enfin… quand la brume de Snow voudra bien se lever.");
  camShot([X+6.25,1.3,5.0],[X+5,H,4]);camShot([X+5.9,1.22,4.75],[X+5,H+.03,4],{move:true,sm:.4,silent:true});
  await say(Y,"Et petit conseil, entre nous… Nour, c'est le GRAND frère. L'aîné. Le daron de la famille. Tu l'appelles « Monsieur Nour », et tu lui demandes des nouvelles de son petit frère Amin. Il adore. Fais-moi confiance.");
@@ -44,7 +44,7 @@ async function nwIxCineOld(){const f=F(),Y='Younes',c=NPC.younesH;f.nwCine=1;f.y
  await say(Y,"Le grand jeu « Chasse aux Lumons » où t'avais perdu la moitié des gamins dans la forêt ! On les a retrouvés à la friterie du village, ils avaient tous pris une mitraillette !");
  await say('',"Younes. Le gars qui faisait des chansons à gestes pendant trois heures, même sous la drache. Il avait déjà une coiffure impeccable, à l'époque. Il l'a toujours. Il la touche toutes les dix secondes.");
  await say(Y,"Quinze ans, frère ! T'es devenu quoi ? … Non, laisse, je vois. T'as besoin d'un boulot. Ça se lit dans tes yeux comme un menu de friterie.");
- await say(Y,"Ici, moi je suis responsable du magasin. Le Night White, c'est aux frères Nour et Amin. Si tu veux bosser, va voir Nour au Night White de Bruxellia. Ils recrutent jusqu'au Jour 200.");
+ await say(Y,"Ici, moi je suis responsable du magasin. Le Night White, c'est aux frères Nour et Amin. Si tu veux bosser, va voir Nour au Night White de Bruxellia. Ils recrutent jusqu'au Jour 25.");
  await say(Y,"Bruxellia ? Tu montes à Charleroc par la Route 1, puis la Route 2 tout au nord. Enfin… quand la brume de Snow voudra bien se lever.");
  await say(Y,"Et petit conseil, entre nous… Nour, c'est le GRAND frère. L'aîné. Le daron de la famille. Tu l'appelles « Monsieur Nour », et tu lui demandes des nouvelles de son petit frère Amin. Il adore. Fais-moi confiance.");
  await say('',"Younes a l'air très sérieux. Peut-être un peu trop sérieux.");
@@ -66,7 +66,7 @@ async function amineReveal(N){const f=F();
  else await say(N,"Alors c'est toi que Nour m'envoie ? {P}, c'est ça ? Bienvenue à Jourdanfritte !");
  await say('',"Tu te redresses et tu transmets le message, avec le plus grand respect : « Votre grand frère, Monsieur Nour, vous passe le bonjour, petit Amin. »");
  await say(N,"…Mon quoi ?");sfx(330,.2,'triangle',.12);await sleep(400);await say(N,"Mon GRAND frère ? NOUR ? « Petit » Amin ?");
- camShake(300,.08);await say(N,"HAHAHAHAHA ! Frère… C'est MOI le grand ! J'ai trois ans de plus que Nour ! C'est moi qui lui ai appris à faire du vélo, et c'est moi qui ai pris la raclée quand il a cassé la vitrine du voisin !");
+ camShake(300,.08);await say(N,"HAHAHAHAHA ! Frère… C'est MOI le grand ! J'ai HUIT ans de plus que Nour ! C'est moi qui lui ai appris à faire du vélo, et c'est moi qui ai pris la raclée quand il a cassé la vitrine du voisin !");
  await say(N,"Laisse-moi deviner… C'est Younes qui t'a dit ça ?");
  await say('',"Tu repenses au « Monsieur Nour ». Au regard bizarre de Nour. Et à Younes, ton vieux pote de la formation d'animateur, si sérieux derrière sa caisse d'Ixellette.");
  await say(N,"Il t'a eu. Il t'a eu en beauté. Attends, faut que je les appelle.");

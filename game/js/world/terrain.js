@@ -70,6 +70,6 @@ function item(m,x,z,id,n,flag){const s=new THREE.Group();s.position.set(m.ox+x,.
   const mg=new THREE.Group();mg.position.set(X+5.6,1.07,2.05);g.add(mg);box(mg,1.05,.1,.62,0,.05,0,'#2a2440',{ol:.02});box(mg,.95,.3,.08,0,.2,-.27,'#3a3456',{ol:.02});
   const glow=new THREE.Mesh(new THREE.PlaneGeometry(.9,.5),new THREE.MeshBasicMaterial({color:'#7fffd0',transparent:true,opacity:.15,depthWrite:false,blending:THREE.AdditiveBlending}));glow.rotation.x=-PI/2;glow.position.y=.11;mg.add(glow);
   const ring=tp(mg,TOR,'#3ef0ff',0,.36,-.22,.09,.09,.09,{ol:false,emi:'#3ef0ff'});const slots=[];for(let r=0;r<2;r++)for(let c=0;c<3;c++){const x=-.3+c*.3,z=-.1+r*.22;tp(mg,TOR,'#c9ccd4',x,.11,z,.075,.075,.075,{r:[PI/2,0,0],ol:false});slots.push([x,.17,z])}m.mach={g:mg,slots,glow,ring};
-  npc(m,'nurse',4,1,'down',nurseHeal);for(let x=2;x<=6;x++)m.signs[x+',2']=nurseHeal;return m};
+  npc(m,'nurse',4,1,'down',nurseHeal);for(let x=2;x<=6;x++)m.signs[x+',2']=nurseHeal;pcTerminal(g,X+7,1);setSolid(m,7,1);m.signs['7,1']=pcMenu;return m};
  const wildNight=base=>z=>{let t=base(z).map(e=>e.slice());if(ENV.night){t=t.filter(e=>e[0]!=='pigeolet');t.push(['scorion',t[0][1],t[0][2]+1,25])}else t=t.filter(e=>e[0]!=='scorion');return t};
  const treesRim=(T,W,H,open)=>{for(let z=0;z<H;z++)for(let x=0;x<W;x++)if((x===0||x===W-1||z===0||z===H-1)&&!open(x,z))T[z][x]='T'};

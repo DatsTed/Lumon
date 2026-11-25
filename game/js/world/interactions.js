@@ -21,6 +21,6 @@ function shinyfy(r){r.g.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissiv
 async function wildEncounter(){const tb=cur.wildAt(player.z),tot=tb.reduce((s,w)=>s+w[3],0);let r=rnd()*tot,w=tb[0];for(const e of tb){if((r-=e[3])<0){w=e;break}}
  const lv=w[1]+Math.floor(rnd()*(w[2]-w[1]+1)),wm=mkMon(w[0],lv);if(rnd()<1/400||window.__forceShiny)wm.shiny=1;await battle({wild:wm})}
 
-const TEMPS=new Set();async function tempChar(key,x,z,dir){const c=new Char(human(CH[key]),cur,x,z,dir);c.snap();TEMPS.add(c);return c}
+const TEMPS=new Set();async function tempChar(key,x,z,dir){const c=new Char(human(CH[key]),cur,x,z,dir);c.snap();TEMPS.add(c);addPet(c,key);return c}
 function killTemp(c){TEMPS.delete(c);c.map.group.remove(c.g);c.map.group.remove(c.sh)}
 function freeNear(r){const opts=[];for(let dz=-r;dz<=r;dz++)for(let dx=-r;dx<=r;dx++){if(Math.abs(dx)+Math.abs(dz)!==r)continue;const x=player.x+dx,z=player.z+dz;if(walkable(cur,x,z)&&cur.T&&cur.T[z]&&cur.T[z][x]!=='g'&&!(follower&&follower.x===x&&follower.z===z))opts.push([x,z])}return opts[(rnd()*opts.length)|0]}

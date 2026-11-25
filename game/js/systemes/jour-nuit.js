@@ -15,7 +15,7 @@ function updateEnv(){const G=gameT(),h=G.h;let{col,night}=skyAt(h);ENV.w=dayWeat
  scene.background.copy(col);scene.fog.color.copy(col);scene.fog.near=ENV.w==='brume'?8:28;scene.fog.far=ENV.w==='brume'?30:66;
  HEMIL.intensity=.3+.38*(1-night)*(ENV.w==='drache'?.8:1);HEMIL.color.set(night>.5?'#8a90ff':'#d8d0ff');sun.intensity=(.18+.72*(1-night))*(ENV.w==='clair'?1:.6);sun.color.set(night>.5?'#8090ff':(h<9||h>17?'#ffb890':'#fff0d8'));
  ENV.stars.material.opacity=ENV.w==='clair'?night:night*.3;ENV.moon.visible=night>.45&&ENV.w!=='brume';ENV.moon.material.opacity=night;ENV.rain.visible=ENV.w==='drache';
- for(const k in TM){const m=TM[k];if(m.emissive&&k.includes('#ffd24a')||k.includes('#fff2b0')||k.includes('#c8f0ff')||k.includes('#fff3a0'))m.emissiveIntensity=.5+night*1.3}
+ for(const k in TM){const m=TM[k];if(m.emissive&&k.includes('#ffd24a')||k.includes('#fff2b0')||k.includes('#c8f0ff')||k.includes('#fff3a0'))m.emissiveIntensity=.35+night*3.2}nightApply(night);
  const hh=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0');$('clock').innerHTML=`<b>${hh}</b><br>${{clair:night>.5?'☾ Nuit claire':'☀ Beau temps',drache:'☂ Il drache',brume:'≋ Brume',vent:'🌬 Ça souffle'}[ENV.w]}`}
 updateEnv();setInterval(updateEnv,4000);
 function envTick(dt){const c=camera.position;ENV.stars.position.set(c.x,0,c.z);ENV.moon.position.set(c.x-50,75,c.z-100);

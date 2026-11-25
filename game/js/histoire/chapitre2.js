@@ -1,6 +1,8 @@
 async function r2Scene(){const f=F();f.r2scene=1;const px=player.x,pz=player.z;
- const cand=[];for(let dz=-5;dz<=5;dz++)for(let dx=-5;dx<=5;dx++){const x=px+dx,z=pz+dz,d=Math.abs(dx)+Math.abs(dz);if(d>=2&&d<=6&&walkable(cur,x,z))cand.push([x,z,d+(dz>0?3:0)+Math.abs(dz+3)*.3])}cand.sort((a,b)=>a[2]-b[2]);const spots=[];for(const c of cand){if(spots.every(q=>Math.abs(q[0]-c[0])+Math.abs(q[1]-c[1])>=1))spots.push([c[0],c[1]]);if(spots.length===5)break}while(spots.length<5)spots.push([px,pz-2]);
- const k1=await tempChar('keto',...spots[0],'right'),k2=await tempChar('keto2',...spots[1],'right'),p1=await tempChar('pirate',...spots[2],'left'),p2=await tempChar('pirate2',...spots[3],'left');const all=[k1,k2,p1,p2];
+ // les deux bandes face à face au milieu de la route, qui bloquent le passage (Kétos à gauche, Pirates à droite)
+ const zz=Math.max(26,pz-5),free=(x,z)=>{for(const[dx,dz]of[[0,0],[0,-1],[0,1],[-1,0],[1,0]])if(walkable(cur,x+dx,z+dz))return[x+dx,z+dz];return[x,z]};
+ const spots=[free(px-2,zz),free(px-2,zz+2),free(px+2,zz),free(px+2,zz+2),free(px,zz-3)];
+const k1=await tempChar('keto',...spots[0],'right'),k2=await tempChar('keto2',...spots[1],'right'),p1=await tempChar('pirate',...spots[2],'left'),p2=await tempChar('pirate2',...spots[3],'left');const all=[k1,k2,p1,p2];
  player.face('up');player.yawOv=null;await say('',"Un peu plus loin, deux Kétosaures sont avachis au bord de la route, complètement à l'ouest. Ils se passent un petit sachet en ricanant.");
  await say('Sbire Kétosaure',"Hé hé… T'as vu le ciel, frère ? Il est tout… mauve…");
  await say('Pirate Bob',"Hé, les mauves ! Snow nous doit trois mille balles. Où est le fric ?!");await say('Sbire Kétosaure',"Quel fric ? On vous doit rien, bande de clochards ! Votre came, c'était de la farine !");
@@ -10,13 +12,14 @@ async function r2Scene(){const f=F();f.r2scene=1;const px=player.x,pz=player.z;
  setSong(null);for(let i=0;i<6;i++){sfx(i%2?740:960,.28,'square',.1);flashScr(i%2?'#2a5aff':'#ff2a3a',260,.35);await sleep(280)}
  await say('???',"POLICE ! Plus personne ne bouge !");const cop=await tempChar('agent',...spots[4],'up');cop.k=.01;cop.place();await tween(300,q=>{cop.k=q;cop.place()});
  await say('Sbire Kétosaure',"Les flics ! On se casse !");await say('Pirate Bob',"Sauve qui peut, man !");
- await Promise.all(all.map((c,i)=>tween(700,q=>{c.g.position.x+= (i<2?-1:1)*.12;c.g.position.z-=.05;c.k=1-q;c.place();c.g.position.x+=(i<2?-1:1)*q*3})));all.forEach(killTemp);
- await say('Agent Martens',"Évidemment… Ils filent toujours plus vite que nous. Toi, ça va ? Rentre pas dans leurs histoires, petit.");await tween(500,q=>{cop.k=1-q;cop.place()});killTemp(cop);setSong(cur.song);
+ all.forEach(c=>{c.face('up');c.walking=true;c.wspd=1.9});
+ await Promise.all(all.map((c,i)=>{const x0=c.g.position.x,z0=c.g.position.z,tx=cur.ox+px+(i<2?-.6:.6);return tween(1900,q=>{c.g.position.x=x0+(tx-x0)*Math.min(1,q*2.5);c.g.position.z=z0-q*9;c.sh.position.x=c.g.position.x;c.sh.position.z=c.g.position.z})}));all.forEach(c=>{c.walking=false;killTemp(c)});
+ await say('Agent Verhaegen',"Évidemment… Ils filent toujours plus vite que nous. Toi, ça va ? Agent Verhaegen. Oui, comme la Prof : c'est ma grande sœur. Elle m'a parlé de toi, et de ta chienne.");await say('Agent Verhaegen',"Rentre pas dans leurs histoires, petit. Et si tu vois ma sœur, dis-lui que je viens manger dimanche. Elle fait les meilleurs boulets d'Ardenval.");await tween(500,q=>{cop.k=1-q;cop.place()});killTemp(cop);setSong(cur.song);
  await say('',"Te voilà seul sur la route. Par terre, là où se battaient les Kétosaures… une enveloppe épaisse. Pleine de billets.");
  await say('',"De l'argent sale. Tu sais trop bien d'où il vient. Pas question de le dépenser : il faut le rapporter à la police, à Bruxellia.");give('enveloppe');setObj()}
 async function talkCop(){const N='Commissaire Lemaire',f=F();
  if(S.bag.enveloppe>0){await say(N,"Une enveloppe des Kétosaures ? Sur la Route 2 ? Montre… Mon Dieu, il y a au moins cinq mille euros là-dedans.");S.bag.enveloppe=0;delete S.bag.enveloppe;f.envDone=1;
-  await say(N,"Tu aurais pu la garder. Personne n'en aurait rien su. Tu es honnête, {P}. C'est rare, par ici.");await say(N,"Voici une récompense officielle de la ville de Bruxellia. Et si tu croises encore ces bandes, viens me trouver.");S.money+=800;toast('money','+800 €');unlock('honest');setObj();return}
+  await say(N,"Tu aurais pu la garder. Personne n'en aurait rien su. Tu es honnête, {P}. C'est rare, par ici.");await say(N,"Voici une récompense officielle de la ville de Bruxellia. Et si tu croises encore ces bandes, viens me trouver.");S.money+=50;toast('money','+50 €');unlock('honest');setObj();return}
  await say(N,f.envDone?"Grâce à toi, on suit la piste de l'argent des Kétosaures. Ça mène… très haut. Jusqu'à Snow, peut-être.":"Commissaire Lemaire, police de Bruxellia. Les Kétosaures et les Pirates se font la guerre en ce moment. Si tu vois quelque chose, viens me voir.")}
 async function aliasScene(){const f=F(),A='Alias';const a=NPC.alias;f.alias=1;a.face(dirTo(a,player.x,player.z));
  await say('???',"Excuse-moi… Tu es {P} ? Celui qui a battu MC Sambre à Charleroc ?");
@@ -30,7 +33,7 @@ async function aliasScene(){const f=F(),A='Alias';const a=NPC.alias;f.alias=1;a.
  await say(A,"Moi, il ne m'écoute plus. Mais toi… toi, il te respecte. Tu viens d'où il vient. Si un jour tu peux lui tendre la main, fais-le. Il a encore un bon fond, je le sais.");
  await say(A,"Tiens, prends ça. Et si tu as besoin d'un avocat, tu sais où me trouver.");give('speculoos',2);unlock('alias');setObj()}
 async function aliasTalk(){await say('Alias',F().alias?["Snow va mal, {P}. Plus mal qu'il ne le montre. Prends soin de toi, et de lui si tu peux.","Le droit, c'est comme les Lumons : il faut de la patience et du cœur.","Nour, du Night White ? Un type bien. Il m'a déjà fait crédit d'un café à trois heures du matin."][(rnd()*3)|0]:"…")}
-async function smileEat(){const N='Jalal';const ks=['durum','baklava'];
+async function smileEat(){const N='Jalal';const ks=['durum','frites','mitraillette','baklava'];
  if(!F().jalal){F().jalal=1;await say(N,"Bienvenue au Smile and Eat ! Moi c'est Jalal. Ici, on mange avec le sourire, sinon c'est pas la peine, hein !");await say(N,"Tu bosses chez Amin ? Alors t'es de la famille. Dürüm, baklava… Tout est fait maison, avec amour et un peu trop de sauce blanche.")}
  else await say(N,["Ah, mon client préféré ! Comme d'habitude ?","Mes cheveux ? Huile d'olive et confiance en soi, mon frère.","Un dürüm, ça répare tout. Même les cœurs brisés."][(rnd()*3)|0]);
  for(;;){const i=await pickList(`Smile and Eat · ${S.money} €`,ks.map(x=>({html:`${ico(x)}<span class="grow"><b>${ITEMS[x].n}</b> — ${ITEMS[x].price} €<br><small>${ITEMS[x].d} · Tu en as ${S.bag[x]||0}</small></span>`,dis:S.money<ITEMS[x].price})));if(i<0)break;S.money-=ITEMS[ks[i]].price;give(ks[i])}
@@ -38,7 +41,7 @@ async function smileEat(){const N='Jalal';const ks=['durum','baklava'];
 
 /* Cinématique de la bagarre Kétosaures / Pirates sur la Route 2 (~10 s) : les hommes ET leurs Lumons se battent */
 async function r2Fight(all){const[k1,k2,p1,p2]=all,G=cur.group,mons=[];
- const pop=async(sp,c,side)=>{const r=monModel(sp);ANIMS.delete(r);const s=.75*(MSCALE[sp]||1);r.g.position.set(c.g.position.x+side*.55,.1,c.g.position.z+.55);r.g.rotation.y=side>0?-PI/2:PI/2;r._s=s;G.add(r.g);
+ const pop=async(sp,c,side)=>{const r=monModel(sp);ANIMS.delete(r);const s=.95*(MSCALE[sp]||1);r.g.position.set(c.g.position.x+side*1.05,.1,c.g.position.z+.15);r.g.rotation.y=side>0?PI/2:-PI/2;r._s=s;G.add(r.g);
   await tween(260,q=>r.g.scale.setScalar(s*q));mons.push(r);return r};
  const mid=()=>{const v=new V();all.forEach(c=>v.add(c.g.position));return v.multiplyScalar(1/4)};
  cineOn();const M=mid();

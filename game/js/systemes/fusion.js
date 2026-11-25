@@ -84,10 +84,10 @@ function sanitizeSpecies(d){const okT=Object.keys(TC);d.n=(typeof d.n==='string'
  const G=d.G=Object.assign({},d.G||{});for(const k in GOPT)if(!GOPT[k].includes(G[k]))G[k]=k==='eyes'?'round':k==='body'?'round':'none';G.size=isFinite(+G.size)&&+G.size>0?Math.min(2.2,Math.max(.5,+G.size)):1;G.sq=isFinite(+G.sq)?Math.min(1.3,Math.max(.7,+G.sq)):1;
  const col=c=>{try{return '#'+new THREE.Color(c||'#cccccc').getHexString()}catch(e){return '#cccccc'}};G.c1=col(G.c1);G.c2=col(G.c2||G.c1);G.c3=col(G.c3||G.c2);if(d.evo&&!(Array.isArray(d.evo)&&isFinite(d.evo[0])&&typeof d.evo[1]==='string'))delete d.evo;d.cr=d.cr||45;if(typeof d.d!=='string')d.d='Un Lumon mystérieux.';return d}
 function registerSpecies(id,d){sanitizeSpecies(d);SP[id]=d;MODELS[id]=g=>genModel(g,d.G);MSCALE[id]=Math.min(1.1,1.05/Math.max(.9,d.G.size*.85));CRY[id]=d.n+' !'}
-function fuse(a,b){const A=SP[a.sp],Bs=SP[b.sp],GA=geneOf(a.sp),GB=geneOf(b.sp),G={};const mut=[];
+function fuse(a,b,q=1){const MQ=[2.1,1,.3][q];const A=SP[a.sp],Bs=SP[b.sp],GA=geneOf(a.sp),GB=geneOf(b.sp),G={};const mut=[];
  const sig=X=>['body','top','side','back','feet','eyes','ears','pattern'].map(k=>X[k]||'none').join('|')+'|'+new THREE.Color(X.c1).getHSL({}).h.toFixed(1);
  const taken=new Set(Object.values(SP).filter(x=>x.G).map(x=>sig(x.G)));let tries=0;
- do{mut.length=0;for(const k of['body','top','side','back','feet','eyes','ears','pattern']){const pa=GA[k]||'none',pb=GB[k]||'none';G[k]=rnd()<.5?pa:pb;if(rnd()<(k==='ears'||k==='pattern'?.45:.25)+tries*.04){G[k]=GOPT[k][(rnd()*GOPT[k].length)|0];mut.push(k)}}
+ do{mut.length=0;for(const k of['body','top','side','back','feet','eyes','ears','pattern']){const pa=GA[k]||'none',pb=GB[k]||'none';G[k]=rnd()<.5?pa:pb;if(rnd()<((k==='ears'||k==='pattern'?.45:.25)+tries*.04)*MQ){G[k]=GOPT[k][(rnd()*GOPT[k].length)|0];mut.push(k)}}
   G.size=+(((GA.size+GB.size)/2)*(.85+rnd()*.35)).toFixed(2);G.sq=+(.85+rnd()*.3).toFixed(2);
   const hc=new THREE.Color(hexMix(GA.c1,GB.c1,.2+rnd()*.6));if(rnd()<.35+tries*.05){hc.offsetHSL((rnd()-.5)*.35,.05,0);mut.push('couleur')}G.c1='#'+hc.getHexString();
   G.c2=rnd()<.5?GA.c2:GB.c2;G.c3=rnd()<.5?GA.c3:GB.c3;if(rnd()<.2)[G.c2,G.c3]=[G.c3,G.c2];tries++}while(taken.has(sig(G))&&tries<30);
@@ -101,7 +101,7 @@ function fuse(a,b){const A=SP[a.sp],Bs=SP[b.sp],GA=geneOf(a.sp),GB=geneOf(b.sp),
  registerSpecies(id,d);ensureLore(id);S.fusions[id]=d;
  const pool=[...a.moves,...b.moves].map(x=>x.id).filter((x,i,arr)=>arr.indexOf(x)===i);
  pool.sort((x,y)=>(MV[y].p*(t.includes(MV[y].t)?1.5:1)+rnd()*30)-(MV[x].p*(t.includes(MV[x].t)?1.5:1)+rnd()*30));
- ensureGenes(a);ensureGenes(b);const m={sp:id,lv,xp:lv**3,moves:pool.slice(0,4).map(x=>({id:x,pp:MV[x].pp})),iv:a.iv.map((v,i)=>rnd()<.6?Math.max(v,b.iv[i]):Math.floor(rnd()*32)),ev:[0,0,0,0],nat:rnd()<.5?a.nat:b.nat};
+ ensureGenes(a);ensureGenes(b);const m={sp:id,lv,xp:lv**3,moves:pool.slice(0,4).map(x=>({id:x,pp:MV[x].pp})),iv:a.iv.map((v,i)=>q===2?Math.min(31,Math.max(v,b.iv[i])+4):q===0?Math.floor(rnd()*32):rnd()<.6?Math.max(v,b.iv[i]):Math.floor(rnd()*32)),ev:[0,0,0,0],nat:rnd()<.5?a.nat:b.nat};
  // Stade : la fusion naît au stade le plus BAS de ses deux parents (0 = 1re forme, 1 = 2e forme, 2 = forme ultime)
  const st=Math.min(2,stageOf(a.sp),stageOf(b.sp));for(let k=0;k<st;k++){try{m.sp=evolveFusionSpecies(m.sp)}catch(e){console.error('stade fusion',e);break}}
  calc(m);m.hp=m.mhp;return m}
@@ -142,9 +142,9 @@ async function fusionMachine(){const P='Prof. Verhaegen';
   S.party=S.party.filter(x=>x!==gone);await say('',`${nm(keep)} est renforcé ! IV : ${old.map((v,k)=>STATN[k]+' '+v+'→'+keep.iv[k]).join(' · ')}${up?` · +${up} niveau${up>1?'x':''} (N.${keep.lv})`:''}.`);
   if(keep.iv.every(v=>v>=31)){unlock('perfect');await say(P,"Incroyable… Des IV parfaits partout ! Ce Lumon est au sommet de son potentiel.")}else await say(P,`Encore quelques renforcements et ses IV seront parfaits. Fusion n°${keep.fu} pour lui !`);closeView();refreshFollower();return}
  const c=await choose('',`Fusionner ${nm(a)} (N.${a.lv}) et ${nm(b)} (N.${b.lv}) ? C'est définitif !`,['Fusionner !','Annuler']);if(c)return;
- const m=fuse(a,b);S.party=S.party.filter(x=>x!==a&&x!==b);S.party.unshift(m);S.dex.seen[m.sp]=S.dex.caught[m.sp]=1;saveGame();
+ await say('Prof. Verhaegen',"Avant de lancer l'Éclat, il faut stabiliser l'ADN. Tape les bases complémentaires : A avec T, G avec C. Vite et sans erreur !");const q=await dnaGame();const m=fuse(a,b,q);m.adn=q;S.party=S.party.filter(x=>x!==a&&x!==b);S.party.unshift(m);S.dex.seen[m.sp]=S.dex.caught[m.sp]=1;saveGame();
  try{await fusionCine(a,b,m)}catch(e){console.error('fusionCine',e);viewSpecies(m.sp)}
- await say('',`Fusion réussie ! Voici ${nm(m)}, de type ${SP[m.sp].t.join(' / ')} !`);
+ await say('',`Fusion ${['instable… mais réussie','réussie','PARFAITE'][q]} ! Voici ${nm(m)}, de type ${SP[m.sp].t.join(' / ')} !`);
  await say('',`Stats de base : PV ${SP[m.sp].b[0]} · Att ${SP[m.sp].b[1]} · Déf ${SP[m.sp].b[2]} · Vit ${SP[m.sp].b[3]}. Attaques : ${m.moves.map(x=>MV[x.id].n).join(', ')}.`);
  if(SP[m.sp].d.includes('Mutation'))await say(P,"Oh ! Une mutation ! Ce Lumon a des traits que ses parents n'avaient pas. Fascinant !");
  await say(P,`Il évoluera au niveau ${SP[m.sp].evo[0]}, puis une dernière fois en une forme ultime… Prends-en bien soin !`);darkStage(false);closeView();refreshFollower();setSong(cur.song)}

@@ -13,8 +13,8 @@ const HUILE=[
  ['ines','Petite Inès',"Hihihi ! De l'huile de coude ? Jalal en met dans ses cheveux, je crois. Ou c'était de l'huile d'olive ? Hihihi !"],
  ['jalal','Jalal',"De l'huile de coude ? Mon frère… *se retient très fort de rire* Ici j'ai de l'huile de friture, d'olive, de tournesol. De coude, non. Demande à Danny, il vend de tout."],
  ['danny','Danny',"De l'huile de coude ?! Ouais j'en ai ! Deux euros le flacon ! … Bon, non, j'en ai pas. Mais t'aurais pas deux euros quand même ?"],
- ['frite','Madame Gilberte, friterie de la place',"De l'huile de coude ? Ici on a de la graisse de bœuf, mon chou. Pour le coude, essaie le Night White : Sofiane sait tout."],
- ['sofiane','Employé Sofiane',"De l'huile de… *éclate de rire et se cache derrière le rayon* Pardon, pardon. Non. Rupture de stock depuis… toujours. Va dire ça à Amin."]];
+ ['frite','Madame Gilberte, friterie de la place',"De l'huile de coude ? Ici on a de la graisse de bœuf, mon chou. Pour le coude, essaie le Night White : Adnan sait tout."],
+ ['sofiane','Employé Adnan',"De l'huile de… *éclate de rire et se cache derrière le rayon* Pardon, pardon. Non. Rupture de stock depuis… toujours. Va dire ça à Amin."]];
 const huileVus=()=>(F().huileVus||[]).length;
 // Réponse « huile de coude » d'un habitant (renvoie true si la quête a pris la main)
 async function huile(k){const f=F();if(f.huile!==1)return false;const h=HUILE.find(x=>x[0]===k);if(!h)return false;f.huileVus=f.huileVus||[];
@@ -31,7 +31,7 @@ async function huileStart(N){const f=F();f.huile=1;f.huileVus=[];
  await say(N,"Écoute, va à la pharmacie, juste à côté, et demande de l'huile de coude. Une bonne dose, et tu iras deux fois plus vite. Dis-leur que c'est pour moi.");
  await say('',"Amin a l'air très sérieux. Peut-être un peu trop sérieux… comme Younes, la dernière fois.");setObj()}
 async function huileFin(N){const f=F();
- await say(S.name||'Toi',"Amin… Il se fait tard. J'ai demandé à TOUT le monde. La pharmacie, Roger, Inès, Jalal, Danny, la friterie, Sofiane… Personne n'a d'huile de coude.");
+ await say(S.name||'Toi',"Amin… Il se fait tard. J'ai demandé à TOUT le monde. La pharmacie, Roger, Inès, Jalal, Danny, la friterie, Adnan… Personne n'a d'huile de coude.");
  await say(N,"…");camShake(300,.08);await say(N,"HAHAHAHAHAHA ! Frère… L'HUILE DE COUDE, ÇA N'EXISTE PAS ! C'est une expression ! Ça veut dire « se bouger » !");
  await say(N,"Nour me l'a faite quand j'avais seize ans. J'ai cherché pendant trois jours. TROIS JOURS. Ma mère a appelé la pharmacie pour moi.");
  await say(N,"Mais tu sais quoi ? T'as fait le tour de tout Jourdanfritte sans râler, avec le sourire. Ça, c'est de l'huile de coude. La vraie.");
@@ -65,13 +65,34 @@ async function smileEat2(){const f=F(),N='Jalal';
  await smileEat()}
 async function talkDannyJF(){if(await huile('danny'))return;
  await say('Danny',["T'aurais pas deux euros ? C'est pour un dürüm. Enfin, une moitié de dürüm.","Le Smile and Eat, c'est mon bureau. Je gère les restes. Business.","Jalal m'a interdit de demander de l'argent aux clients. Du coup je demande aux clients DEHORS. Malin, hein ?","Un jour, je serai riche. Ce jour-là, je rendrai tout. Enfin, une partie."][(rnd()*4)|0])}
-async function talkPharma(){if(await huile('pharma'))return;
- await say('Pharmacienne Mireille',["Bonjour ! Sirop, pansements, crème pour les coups de soleil… Tout pour soigner les dresseurs. Les Lumons, c'est à la Maison des Lumons, hein.","Encore un client qui demande du sirop pour Lumon… Ici c'est pour les humains, chéri."][(rnd()*2)|0])}
+async function talkPharma(){if(await huile('pharma'))return;const N='Pharmacienne Mireille',ks=['sirop','supersirop','spa'];
+ await say(N,["Bonjour ! Sirops, Eau de Spa… Tout pour remettre tes Lumons sur pattes. Les vrais soins gratuits, c'est à la Maison des Lumons, hein.","Encore un dresseur ! Sirop de Liège ? C'est le meilleur, on le met même sur les gaufres."][(rnd()*2)|0]);
+ for(;;){const i=await pickList(`Pharmacie · ${S.money} €`,ks.map(x=>({html:`${ico(x)}<span class="grow"><b>${ITEMS[x].n}</b> — ${ITEMS[x].price} €<br><small>${ITEMS[x].d} · Tu en as ${S.bag[x]||0}</small></span>`,dis:S.money<ITEMS[x].price})));if(i<0)break;S.money-=ITEMS[ks[i]].price;give(ks[i])}}
 async function friteJF(){if(await huile('frite'))return;await friteJosette()}
 
 /* ---- Danny crie dans Jourdanfritte (bulles qui ne bloquent pas le jeu) ---- */
 const DANNY_CRIS=["DEUX EUROS ! QUELQU'UN A DEUX EUROS ?!","JE VENDS UNE CHAUSSURE ! LA GAUCHE !","HÉ, MADAME ! VOUS AVEZ FAIT TOMBER… NON RIEN, DONNEZ-MOI DEUX EUROS !","QUI VEUT UN TICKET DE TOMBOLA ? IL A DÉJÀ PERDU, MAIS IL EST JOLI !","JALAAAL ! JE PAIE DEMAIN, PROMIS !","UNE FRITE ! JUSTE UNE FRITE ! C'EST PAS BEAUCOUP UNE FRITE !"];
-function dannyShout(){let el=$('shout');if(!el){el=document.createElement('div');el.id='shout';document.body.appendChild(el)}
- el.textContent='Danny (au loin) : « '+DANNY_CRIS[(voixRnd()*DANNY_CRIS.length)|0]+' »';el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),3200);
- if(AC&&OPT.sfx&&OPT.vx)for(let k=0;k<6;k++)setTimeout(()=>voiceBlip('Danny','DEUXEUROS',2+k*0),k*90)}
+function shoutBubble(txt,who){let el=$('shout');if(!el){el=document.createElement('div');el.id='shout';document.body.appendChild(el)}
+ el.textContent=txt;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),3400);
+ if(AC&&OPT.sfx&&OPT.vx&&who)for(let k=0;k<8;k++)setTimeout(()=>voiceBlip(who,'HAHAHAHA',2),k*85)}
+function dannyShout(){shoutBubble('Danny (au loin) : « '+DANNY_CRIS[(voixRnd()*DANNY_CRIS.length)|0]+' »','Danny')}
+async function dannyPiece(){const f=F();const c=await choose('Danny',["Attends ! Avant de partir… T'aurais pas une petite pièce ? Une seule. Pour le parcmètre. J'ai pas de voiture, mais bon.","Psst ! Une pièce, chef ? Je te la rends demain. Ou après-demain. Ou jamais.","Hé ! Toi qui sors le ventre plein… Une pièce pour un frère qui a faim ?"][(rnd()*3)|0],["Donner 1 €","Désolé, Danny"]);
+ if(c===0&&S.money>=1){S.money-=1;f.dannyDon=(f.dannyDon||0)+1;sfx(1318,.08);await say('Danny',f.dannyDon>=5?"T'es le seul qui m'aime, toi. Un jour je te rendrai tout. Avec les intérêts. Les intérêts de cœur.":"Merci, chef ! Que Saint-Nicolas te le rende !")}
+ else await say('Danny',"Pas grave… Je comprends… *s'effondre théâtralement sur une chaise*")}
 {let next=0;setInterval(()=>{if(!player||cur!==JF||document.hidden||B)return;const t=performance.now();if(!next){next=t+6000;return}if(t>next){next=t+12000+voixRnd()*14000;dannyShout()}},1000)}
+
+/* ---- Jour 25 : la « Nuit Mauve » ----
+   Le Jour 25, Snow organise une rave géante : Younes appelle pour prévenir. Ce jour-là, les Kétosaures embusqués reviennent dans les buissons,
+   et Younes offre 3 Lumisphères Nocturnes. Si on n'a pas encore atteint Bruxellia, le recrutement de Nour se durcit (seuil du test +2). */
+async function jour25Event(){const f=F();f.jour25=1;const Y='Younes (au téléphone)';phoneOn([['Younes','younesH']]);
+ await say(Y,"Allô ? Frère ! T'as vu la date ? Jour 25 ! Ce soir, c'est la « Nuit Mauve » : Snow organise une rave géante, sans autorisation, quelque part entre Charleroc et Bruxellia.");
+ await say(Y,"Tous les Kétosaures sont de sortie. Ils se planquent de nouveau dans les buissons des routes, ils guettent les dresseurs. Ouvre l'œil.");
+ if(!f.brux){f.nourHard=1;await say(Y,"Et… mauvaise nouvelle : Nour a clôturé les recrutements « officiels ». Il te prendra quand même, mais il sera plus exigeant au test. Faut pas traîner, frère !")}
+ await say(Y,"Tiens, je t'ai mis trois Lumisphères Nocturnes de côté. Elles marchent super bien la nuit. Fais-en bon usage !");phoneOff();give('nuitlumi',3);
+ for(const k in f)if(k.startsWith('amb_'))delete f[k];await banner('La Nuit Mauve','Jour 25 · les Kétosaures sont de sortie',2400);setObj()}
+setInterval(()=>{if(!S||!S.flags||!player||busy||B||!cur||cur.room)return;const f=F();if(f.introDone&&f.chapterDone&&!f.jour25&&dayNum()>=25)runScript(jour25Event)},5000);
+/* ---- Trame pour les chapitres 5-6 (à jouer plus tard) ----
+   Le colis de Cisoa était un TEST d'honnêteté des frères Amin et Nour.
+   f.cisoaAlex===1 (canette donnée à Alex) -> trame négative : Alex ne viendra pas en colocation et fera remarquer que c'était un test.
+   f.cisoaAlex===0 (refus) -> trame positive. Ancienne sauvegarde (undefined) -> positive par défaut. */
+const trameHistoire=()=>F().cisoaAlex===1?'negative':'positive';
