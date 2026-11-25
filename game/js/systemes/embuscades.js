@@ -9,6 +9,6 @@ function ambushDecor(m){const L=AMBUSH[m.id];if(!L)return;m.ambBush=[];L.forEach
   m.ambBush[i]=b;const ph=i*1.7;m.anim.push(t=>{if(!b.visible)return;const sh=(Math.sin(t*1.3+ph)>.9)?Math.sin(t*40)*.06:0;b.rotation.z=sh;b.visible=!F()['amb_'+m.id+i]})})}
 async function ambush(a){const f=F();f[a.flag]=1;const pir=a.k.startsWith('pir');const c=await ketoApproach(a.k);if(!c){f[a.flag]=0;return}c.keyName=a.k;
  const N=pir?'Pirate embusqué':'Kétosaure embusqué',L=pir?PIRATE_LINES:KETO_HIDE;
- await say(N,L[(rnd()*L.length)|0]);const res=await battle({trainer:{name:N,key:a.k,smart:.3,prize:pir?90:70,mons:a.mons.map((sp,i)=>mkMon(sp,a.lv+i)),win:pir?"Arrr… T'as gagné. Prends le butin et laisse-moi finir ma sieste.":"Pfff… Snow va pas être content. Garde ça, et oublie que tu m'as vu.",lose:"Hé hé ! On est partout, je te dis !"}});
+ await say(N,L[(rnd()*L.length)|0]);const res=await battle({music:pir?null:'keto',trainer:{name:N,key:a.k,smart:.3,prize:pir?90:70,mons:a.mons.map((sp,i)=>mkMon(sp,a.lv+i)),win:pir?"Arrr… T'as gagné. Prends le butin et laisse-moi finir ma sieste.":"Pfff… Snow va pas être content. Garde ça, et oublie que tu m'as vu.",lose:"Hé hé ! On est partout, je te dis !"}});
  if(res==='win'){if(!pir)f.ketoN=(f.ketoN||0)+1;if(a.rw)give(a.rw[0],a.rw[1])}else f[a.flag]=0;
  await tween(300,q=>{c.k=1-q;c.place()});killTemp(c)}

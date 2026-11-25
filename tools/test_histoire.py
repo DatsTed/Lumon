@@ -14,7 +14,7 @@ def verif(nom, cond, detail=''):
 BOT = r"""(k,err,bon)=>{window.__auto=false;window.__bot&&clearInterval(window.__bot);let last=0;
  window.__bot=setInterval(()=>{const now=performance.now(),d=document.getElementById('dlg');
   if(d.style.display==='block'){const ch=[...document.querySelectorAll('#dch button')];if(!ch.length){d.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));return}
-   if(now-last<1500)return;last=now;const good=ch.find(b=>NW_ITW.some(q=>q[1][0]===b.textContent));const c=(bon&&good)?good:ch[(Math.random()*ch.length)|0];c.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));return}
+   if(now-last<1500)return;last=now;const good=ch.find(b=>NW_ITW.some(q=>q[1][0]===b.textContent));const c=good?(bon?good:ch[(Math.random()*ch.length)|0]):ch[0];c.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}));return}
   if(!document.getElementById('job').classList.contains('show'))return;
   const t=document.getElementById('jobT').textContent,del=(t.includes('Monnaie')?3000:t.includes('Réassort')?600:900)*k;if(now-last<del)return;last=now;
   const sel=Math.random()<err?'#jobG .jb[data-good="0"]':'#jobG .jb[data-good="1"]';const b=document.querySelector(sel)||document.querySelector('#jobG .jb[data-good="1"]');if(b)b.click()},100)}"""

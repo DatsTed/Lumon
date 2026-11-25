@@ -60,19 +60,20 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 - Caméra cinéma (`cine`), plafond/murs pendant les cinématiques. Garde-fous anti-écran noir.
 
 ## Reste à faire
+Fait en novembre 2026 (lots 1 à 6, voir `docs/CHANGELOG.md` et `docs/PROMPT-LOT2.md`) : refonte en fichiers, manette, volumes séparés, concert de MC Sambre, Luciole sans combat, Route 2, test de Nour, défaites, ouverture, voix, Jourdanfritte et période d'essai, voitures, combats à plusieurs, stade des fusions.
+
 À valider avec Ted :
-- [ ] Stade des fusions : la fusion hérite du stade le plus bas des parents (deux bases → 3 formes ; deux évoluées → naît en 2e forme ; deux finales → naît en forme ultime). Aujourd'hui toute fusion repart à la 1re forme.
 - [ ] Caméra à boussole (N/S/E/O) : idée mise de côté.
 - [ ] Jour 200 : aucune conséquence si dépassé.
+- [ ] Équilibrage : seuil du test de Nour (18 points), difficulté du combat de Snow en 3 contre 3.
 
-À vérifier sur les captures :
-- [ ] Cinématique Night White refaite, textures, coiffures, tenues, accessoires, visages, Dolba, Colin, Younes rasé, décor sombre, forme ultime, brume, Pigeolet.
+À vérifier sur les captures et au toucher :
+- [ ] Rendu sur téléphone de tout le lot (voitures, Smile and Eat, téléphone visio, duo/3 contre 3, ouverture), sons (voix, techno, ascenseur), manette Bluetooth.
 
 Dettes connues :
-- [ ] Aperçu 2D du menu de personnalisation sans les nouvelles coiffures.
 - [ ] PDF de présentation dépassé ; feuille de suivi pas à jour.
 
 Suite du jeu :
-- [ ] Fin du chapitre 3 puis chapitre 4+ ; retour de Snow et Luciole (secret de Luciole chez les Pirates).
+- [ ] Chapitre 4+ : retour de Snow (combat 3 contre 3 avec `snowBattle`) et de Luciole (secret chez les Pirates), Lumons des boss en forme évoluée (`bossMon`).
 - [ ] Nouvelles villes (Liègenoir, Anversaille…), arènes, médailles, Ligue d'Ardenval, plus de Lumons sauvages.
 - [ ] APK Android via GitHub Actions ; autres cinématiques ; DA encore plus mature.

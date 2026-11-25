@@ -20,7 +20,7 @@ async function ketoApproach(key){const sp=freeNear(3)||freeNear(2);if(!sp)return
  while(Math.abs(c.x-player.x)+Math.abs(c.z-player.z)>1){const nx=c.x+Math.sign(player.x-c.x),nz=nx!==c.x?c.z:c.z+Math.sign(player.z-c.z);if(!walkable(cur,nx,nz)||(nx===player.x&&nz===player.z))break;c.face(dirTo(c,nx,nz));await c.step(nx,nz,5)}
  c.face(dirTo(c,player.x,player.z));player.face(dirTo(player,c.x,c.z));player.yawOv=null;return c}
 const KETO_LINES=["Yo, bouge pas ! T'as pas croisé un dresseur qui veut de la « poudre de lune » ? Non ? Alors tu vas goûter à mes Lumons !","Hé, toi ! Cette route, c'est le territoire des Kétosaures maintenant. Faut payer le passage, une fois !","Snow prépare son grand concert, et toi tu traînes dans nos pattes ? Allez, viens, on règle ça !"];
-async function ketoBattle(c,lines,mons,name){await say(name,lines);const res=await battle({trainer:{name,key:c?c.keyName:'keto',smart:.25,prize:60,mons,win:"Pfff… Tu vas voir quand Snow va apprendre ça…",lose:"Hé hé ! Les Kétosaures, on rigole pas avec !"}});return res}
+async function ketoBattle(c,lines,mons,name){await say(name,lines);const res=await battle({music:'keto',trainer:{name,key:c?c.keyName:'keto',smart:.25,prize:60,mons,win:"Pfff… Tu vas voir quand Snow va apprendre ça…",lose:"Hé hé ! Les Kétosaures, on rigole pas avec !"}});return res}
 async function ketoFirst(){const f=F();f.keto1=1;f.ketoCd=60;const c=await ketoApproach('keto');if(!c)return;c.keyName='keto';const N='Sbire Kétosaure';
  await say(N,"Ohé, le rockeur ! Ouais, toi, avec ta chienne. Tu sais à qui t'as affaire ? On est les Kétosaures, fieu. Le crew de Snow.");
  await say(N,"Snow, c'est le roi de la nuit d'Ardenval. Ses concerts, sa musique… et le reste, si tu vois ce que je veux dire.");
@@ -40,7 +40,7 @@ async function lucioleScene(){const f=F(),L='Luciole';player.face('up');
  lu.face(dirTo(lu,player.x,player.z));player.face(dirTo(player,lu.x,lu.z));player.yawOv=null;
  await say(L,"…Tu te mêles de ce qui ne te regarde pas, {P}. Oui, je connais ton nom. Snow connaît tout le monde.");
  await say(L,"Tu crois que tu vas sauver Ardenval avec ta chienne et ta veste en cuir ? Montre-moi d'abord ce que vaut ta lumière.");
- setSong(cur.song);const res=await battle({trainer:{name:'Luciole',key:'luciole',boss:1,smart:.5,prize:200,mons:[mkMon('noctiluce',12)],win:"…Ta lumière est plus forte que je pensais.",lose:"Retourne dormir, petit rockeur."}});S.dex.seen.noctiluce=1;
+ setSong(cur.song);const res=await battle({music:'ketoboss',trainer:{name:'Luciole',key:'luciole',boss:1,smart:.5,prize:200,mons:[mkMon('noctiluce',12)],win:"…Ta lumière est plus forte que je pensais.",lose:"Retourne dormir, petit rockeur."}});S.dex.seen.noctiluce=1;
  if(res!=='win'){killTemp(lu);return}
  await say(L,"Les Kétosaures m'ont recueillie quand je n'avais plus personne. Snow dit qu'il me protège… Je ne sais plus très bien de quoi.");
  await say(L,"Et il y a quelqu'un… quelqu'un de l'autre côté. Chez les Pirates. Si Snow l'apprenait…");await say(L,"Oublie ce que je viens de dire.");

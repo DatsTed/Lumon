@@ -1,5 +1,5 @@
 function pigeonModel(){const r=monModel('pigeolet');r.g.scale.setScalar(1.35*mscale('pigeolet'));tp(r.g,CONE,'#f6c80f',0,1.15,0,.12,.16,.12,{emi:'#a07a10'});const box=new THREE.Group();tp(box,BOXG,'#c9a06a',0,0,0,.34,.24,.26);tp(box,BOXG,'#7fd16a',0,.0,.135,.2,.1,.01,{ol:false});box.position.set(0,.05,.25);r.g.add(box);r.box=box;return r}
-function pigeonSync(){const f=F(),m=ROUTE3;if(f.nourBox===2){if(!m.pig){m.pig=pigeonModel();m.pig.g.position.set(m.ox+15.5,1.05,m.oz+11);m.pig.g.rotation.y=.4;m.group.add(m.pig.g);m.anim.push(t=>{if(m.pig){m.pig.g.position.y=1.05+Math.abs(Math.sin(t*3))*.06;m.pig.g.rotation.y=.4+Math.sin(t*.7)*.5}})}}else if(m.pig){disposeModel(m.pig);m.pig=null}}
+function pigeonSync(){const f=F(),m=ROUTE3;if(f.nourBox===2){if(!m.pig){m.pig=pigeonModel();m.pig.g.position.set(m.ox+15.5,.95,m.oz+11);m.pig.g.rotation.y=.4;m.group.add(m.pig.g);m.anim.push(t=>{if(m.pig){m.pig.g.position.y=.95+Math.abs(Math.sin(t*3))*.06;m.pig.g.rotation.y=.4+Math.sin(t*.7)*.5}})}}else if(m.pig){disposeModel(m.pig);m.pig=null}}
 async function pigeonHeist(){const f=F(),m=cur;player.face('right');sfx(1400,.05,'square',.06);
  await say('',"Un bruit d'ailes… Au-dessus de toi, un Pigeolet énorme, gonflé comme un ballon de foot, avec une capsule dorée sur la tête. Il te fixe. Il fixe le colis.");
  const pg=pigeonModel();pg.box.visible=false;const sx=m.ox+player.x-2,sz=m.oz+player.z-3;pg.g.position.set(sx,5,sz);m.group.add(pg.g);
@@ -31,6 +31,7 @@ async function captainScene(){const f=F(),C='Captain';f.captain=1;const sp=freeN
  await say(C,"Attends… cette tête… T'es le gamin de la cale ?! Le môme qui traînait avec nous au port ! HAHAHA ! Regarde-toi, avec ta veste de rockeur !");
  await say(C,"T'as cogné les Kétosaures de Snow, à ce qu'il paraît. Pfff. Snow me doit de l'argent. BEAUCOUP d'argent. Ses fumigènes, ses concerts… tout ça, c'est NOTRE marchandise.");
  await say(C,"Et la petite Luciole… T'APPROCHES PAS D'ELLE. C'EST CLAIR ?!");await say(C,"…Pardon. J'ai crié. Krakapitaine, viens dire bonjour au gamin.");S.dex.seen.krakapitaine=1;
- const res=await battle({trainer:{name:'Captain',key:'captain',boss:1,smart:.55,prize:300,mons:[mkMon('pigeolet',14),mkMon('krakapitaine',16)],win:"HAHAHA ! T'es fou, toi ! J'aime bien les fous !",lose:"Retourne à la cale, moussaillon ! HAHAHA !"}});
+ await say('Pirate Bob',"Capitaine ! J'arrive, Capitaine ! À deux contre lui !");await say(C,"À DEUX ! Comme au bon vieux temps ! Sors tes deux meilleurs Lumons, gamin !");
+ const res=await battle({duo:alive().length>=2?2:0,music:'boss',trainer:{name:'Captain et Pirate Bob',key:'captain',boss:1,smart:.55,prize:300,mons:[mkMon('pigeolet',14),mkMon('krakapitaine',16),mkMon('pigeolet',13)],win:"HAHAHA ! T'es fou, toi ! J'aime bien les fous !",lose:"Retourne à la cale, moussaillon ! HAHAHA !"}});
  if(res!=='win'){f.captain=0;killTemp(c);return}
  await say(C,"On se reverra, gamin. Et ce jour-là, j'serai peut-être de bonne humeur. Ou pas. Hé hé.");await tween(400,q=>{c.k=1-q;c.place()});killTemp(c);unlock('captain');setObj()}

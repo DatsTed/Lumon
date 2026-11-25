@@ -120,9 +120,8 @@ async function battle(cfg){setTimeout(()=>{tip('fight',"Choisis <b>Attaque</b>, 
  await fadeIn();if(bm){sfx(220,.6,'sine',.15);await tween(500,k=>bm.material.opacity=k*.16);}
  $('bhud').classList.add('on');$('bFoe').style.display=B.tr?'none':'block';hud();
  if(B.wild){if(OPT.anim){const p=camGo(B.camP,B.camLk,1400,B.voBase);tween(1400,k=>bm.material.opacity=.16*(1-k)).then(()=>ARENA.group.remove(bm));await say('',`Un ${nm(foeM())} sauvage apparaît !`);await p}else await say('',`Un ${nm(foeM())} sauvage apparaît !`)}
- else{await say('',`${B.tr.name} veut se battre !`);if(bm){tween(500,k=>bm.material.opacity=.16*(1-k)).then(()=>ARENA.group.remove(bm));await camGo(frontShot(ARENA.p2,ARENA.p1,3.4,1.05,.6),ARENA.p2.clone().setY(.6),500,0)}await tween(400,k=>B.tm.g.position.x=ARENA.p2.x+1.5+k*3);B.tm.g.visible=false;await msg(`${B.tr.name} envoie ${nm(foeM())} !`);fr.g.visible=true;fr.g.scale.setScalar(0);$('bFoe').style.display='block';hud();await popIn(fr);if(OPT.anim)await camHome(600)}
- await sendOut(alive()[0],true);
- let result=null;
+ else{await say('',`${B.tr.name} veut se battre !`);if(bm){tween(500,k=>bm.material.opacity=.16*(1-k)).then(()=>ARENA.group.remove(bm));await camGo(frontShot(ARENA.p2,ARENA.p1,3.4,1.05,.6),ARENA.p2.clone().setY(.6),500,0)}await tween(400,k=>B.tm.g.position.x=ARENA.p2.x+1.5+k*3);B.tm.g.visible=false;if(cfg.duo){disposeModel(fr);B.fm=null}else{await msg(`${B.tr.name} envoie ${nm(foeM())} !`);fr.g.visible=true;fr.g.scale.setScalar(0);$('bFoe').style.display='block';hud();await popIn(fr);if(OPT.anim)await camHome(600)}}
+ let result=null;if(cfg.duo&&B.tr)result=await duoLoop(cfg);else await sendOut(alive()[0],true);
  while(!result){const me=B.me,f=foeM();const a=await act();let acts=[];
   if(a.k==='run'){if(B.tr){await msg("On ne fuit pas un duel entre dresseurs, voyons !");continue}
    if(me.spd>=f.spd||rnd()<.55){sfx(600,.1);await msg("Tu prends la fuite… Allez, sans regrets !");result='run';break}await msg("Impossible de fuir !");acts=['f']}

@@ -101,7 +101,13 @@ function fuse(a,b){const A=SP[a.sp],Bs=SP[b.sp],GA=geneOf(a.sp),GB=geneOf(b.sp),
  registerSpecies(id,d);ensureLore(id);S.fusions[id]=d;
  const pool=[...a.moves,...b.moves].map(x=>x.id).filter((x,i,arr)=>arr.indexOf(x)===i);
  pool.sort((x,y)=>(MV[y].p*(t.includes(MV[y].t)?1.5:1)+rnd()*30)-(MV[x].p*(t.includes(MV[x].t)?1.5:1)+rnd()*30));
- ensureGenes(a);ensureGenes(b);const m={sp:id,lv,xp:lv**3,moves:pool.slice(0,4).map(x=>({id:x,pp:MV[x].pp})),iv:a.iv.map((v,i)=>rnd()<.6?Math.max(v,b.iv[i]):Math.floor(rnd()*32)),ev:[0,0,0,0],nat:rnd()<.5?a.nat:b.nat};calc(m);m.hp=m.mhp;return m}
+ ensureGenes(a);ensureGenes(b);const m={sp:id,lv,xp:lv**3,moves:pool.slice(0,4).map(x=>({id:x,pp:MV[x].pp})),iv:a.iv.map((v,i)=>rnd()<.6?Math.max(v,b.iv[i]):Math.floor(rnd()*32)),ev:[0,0,0,0],nat:rnd()<.5?a.nat:b.nat};
+ // Stade : la fusion naît au stade le plus BAS de ses deux parents (0 = 1re forme, 1 = 2e forme, 2 = forme ultime)
+ const st=Math.min(2,stageOf(a.sp),stageOf(b.sp));for(let k=0;k<st;k++){try{m.sp=evolveFusionSpecies(m.sp)}catch(e){console.error('stade fusion',e);break}}
+ calc(m);m.hp=m.mhp;return m}
+// stade d'une espèce : nombre de formes avant elle (fusions : champ stage)
+function stageOf(sp){const d=SP[sp];if(!d)return 0;if(d.fusion)return Math.min(2,d.stage||0);let n=0,cur=sp;for(let g=0;g<4;g++){const pre=d.pre&&g===0?d.pre:Object.keys(SP).find(k=>SP[k].evo&&SP[k].evo[1]===cur);if(!pre)break;n++;cur=pre}return Math.min(2,n)}
+const STAGE_N=['1re forme','2e forme','forme ultime'];
 const EVO_SUF=['ard','orax','ion','ador','elle','ius','ok','aure','ondor','ix'],EVO_PRE=['Grand','Méga','Haut','Roi'];
 function evoName(n,r){const names=new Set(Object.values(SP).map(x=>x.n)),base=(n.length>8?n.slice(0,8):n).replace(/[aeiouyéèê]+$/i,'');for(let k=0;k<40;k++){const cand=k<10?base+EVO_SUF[(r()*EVO_SUF.length)|0]:EVO_PRE[(r()*EVO_PRE.length)|0]+base.toLowerCase()+(k>25?EVO_SUF[k%EVO_SUF.length]:'');const c=cand[0].toUpperCase()+cand.slice(1);if(!names.has(c)&&c.length<=13)return c}return base+'ard'+((r()*99)|0)}
 const EPIC_PRE=['Archi','Ultra','Roi','Néo','Titan'];function epicName(n,r){const names=new Set(Object.values(SP).map(x=>x.n)),base=n.length>8?n.slice(0,8):n;for(let k=0;k<30;k++){const c=EPIC_PRE[(r()*EPIC_PRE.length)|0]+base.toLowerCase()+(k>10?['ix','or','us'][k%3]:'');if(!names.has(c)&&c.length<=14)return c}return 'Archi'+base.toLowerCase()+((r()*99)|0)}
@@ -168,4 +174,4 @@ async function fusionCine(a,b,m){
  const burst=[];for(let i=0;i<46;i++){const s0=mk(i%2?'star':'spark',.25+rnd()*.3);s0.position.set(500,.9,0);const an=rnd()*PI*2,el=rnd()*1.3;s0.userData={d:new V(Math.cos(an)*Math.cos(el),Math.sin(el)+.2,Math.sin(an)*Math.cos(el)).multiplyScalar(2+rnd()*2.2)};burst.push(s0)}
  const fs=1.25*mscale(m.sp);await tween(1000,q=>{const e=q<.7?q/.7*1.15:1.15-(q-.7)/.3*.15;galModel.g.scale.setScalar(fs*e);burst.forEach(b=>{b.position.set(500,.9,0).addScaledVector(b.userData.d,q);b.material.opacity=1-q});orb.forEach(o=>o.material.opacity=1-q);aura.material.opacity=.7*(1-q);ring.material.opacity=.8*(1-q)});
  fx.forEach(x=>{G.remove(x);x.material.dispose()});G.remove(ring);ring.geometry.dispose();ring.material.dispose();galModel.g.scale.setScalar(fs);
- await banner('Fusion réussie !',`${nm(a)} + ${nm(b)} = ${nm(m)}`,2000)}
+ await banner('Fusion réussie !',`${nm(a)} + ${nm(b)} = ${nm(m)} · ${STAGE_N[stageOf(m.sp)]}`,2200)}
