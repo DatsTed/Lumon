@@ -8,6 +8,7 @@
   ce que déclarent les fichiers *précédents* ; dans le corps d'une fonction, il peut utiliser n'importe quoi.
 - Nouveau fichier JS : l'ajouter dans `game/index.html`, puis `python tools/build.py` (met à jour `sw.js`), puis `python tools/structure.py`.
 - `tools/build.py` → `dist/index.html` (fichier unique, pour un artefact ou une comparaison).
+- `tools/test_confort.py` (manette, ordre des attaques, téléport) et `tools/test_histoire.py` (scènes du lot 2, défaites, test de Nour).
 - `tools/test.py` → test automatique (Playwright, faux Three.js). `--ancien git:<commit>` compare avec une ancienne version.
 - Sauvegarde : localStorage `lumons_save` (version 5), options `lumons_opt`. Ne pas casser la compatibilité.
 - Publication : push sur `main` → GitHub Actions publie `game/` sur GitHub Pages (cache du service worker renouvelé).
@@ -33,14 +34,14 @@ docs/            STRUCTURE.md (ce fichier), CHANGELOG.md, ETAT-DU-PROJET.md
 | `css/style.css` | 20.6 | Toute la mise en page (HUD, dialogues, menus, overlays, combat). |  |
 | `js/core/base.js` | 0.7 | Raccourcis globaux ($, sleep, V, PI, rnd), état de partie `S`, drapeaux `F()`, options `OPT` (clé lumons_opt). | `$`, `sleep`, `V`, `S`, `F`, `OPT`, `saveOpt` |
 | `js/data/musiques.js` | 2.5 | Partitions `SONGS` (une entrée par musique). | `SONGS` |
-| `js/core/audio.js` | 4.2 | Synthé WebAudio : musiques, ambiances, bruitages, volumes, fanfare, bouton muet. | `AC`, `song`, `mf`, `audioInit`, `applyVol`, `tone`, `NOISE`, `noiseBuf`, `drum`, `sched`, `AMB`, `ambInit`, `ambUpdate`, `fanfare`, `setSong`, `sfx`, `blip` |
+| `js/core/audio.js` | 4.3 | Synthé WebAudio : musiques, ambiances, bruitages, volumes, fanfare, bouton muet. | `AC`, `song`, `mf`, `audioInit`, `applyVol`, `tone`, `NOISE`, `noiseBuf`, `drum`, `sched`, `AMB`, `ambInit`, `ambUpdate`, `fanfare`, `setSong`, `sfx`, `blip` |
 | `js/data/personnages.js` | 4.4 | `CH` : apparences de tous les personnages (peau, cheveux, tenues…). | `CH` |
 | `js/models/portraits2d.js` | 9.0 | Portraits 2D en SVG (chibi) pour l'intro et les menus, `STARTER_SVG`. | `svgURI`, `chibi`, `STARTER_SVG` |
 | `js/data/types.js` | 1.1 | 12 types, table d'efficacité `CHART`, `effOf`. | `TC`, `CHART`, `effOf` |
 | `js/data/attaques.js` | 2.3 | `MV` : toutes les capacités. | `MV` |
 | `js/data/especes.js` | 12.0 | `SP` : espèces de Lumons (stats, évolutions, lore), `ETY` étymologies, `DEX`, `STARTERS`, `CRY`. | `L_LAIKA`, `L_CHIC`, `L_CHAR`, `L_MOUL`, `SP`, `DEX_UNIQ`, `DEX`, `ETY`, `STARTERS`, `CRY` |
 | `js/data/objets.js` | 3.7 | `ITEMS` (objets) + utilisation : `healAll`, `canUse`, `applyItem`. | `ITEMS`, `healAll`, `canUse`, `applyItem` |
-| `js/data/icones.js` | 11.1 | Icônes dessinées à la main (`ICON`, `ico`). | `ICON`, `gem`, `ico` |
+| `js/data/icones.js` | 12.3 | Icônes dessinées à la main (`ICON`, `ico`). | `ICON`, `gem`, `ico` |
 | `js/systemes/lumons.js` | 3.4 | Création et stats des Lumons : `mkMon`, `calc`, natures, sexe, gènes, soins (`healMachine`). | `critRate`, `NAT`, `STATN`, `genderOf`, `GSYM`, `ensureGenes`, `calc`, `calcOld`, `mkMon`, `nm`, `alive`, `healJingle`, `healFx`, `healMachine` |
 | `js/data/succes.js` | 1.7 | 20 succès `ACH`, `unlock`, `checkAch`. | `ACH`, `unlock`, `checkAch` |
 | `js/systemes/journal.js` | 2.4 | Astuces (`hintT`) et journal. | `hintT`, `tip`, `journal` |
@@ -51,7 +52,7 @@ docs/            STRUCTURE.md (ce fichier), CHANGELOG.md, ETAT-DU-PROJET.md
 | `js/world/terrain.js` | 12.5 | `makeMap`, grilles, textures de sol, `terrain`, panneaux/objets au sol, aides `centreRoom`, `wildNight`, `treesRim`. | `makeMap`, `MAPS`, `setSolid`, `solidRect`, `grid`, `rect`, `pathLine`, `ellipse`, `TILEG`, `TEXC`, `hsh`, `groundTex`, `GTEX`, `GCOL`, `terrain`, `sg`, `item`, `centreRoom`, `wildNight`, `treesRim` |
 | `js/models/decor.js` | 8.3 | Décor 3D : maisons, bâtiments, labo, beffroi, fontaine, friterie, terril, arche, pièces (`room`). | `house`, `bigBuilding`, `labExt`, `belfry`, `fountain`, `friterie`, `lamp`, `signPost`, `arch`, `arrows`, `terril`, `headframe`, `room` |
 | `js/systemes/cinema.js` | 1.9 | Caméra cinéma : `CINE`, `cineOn`/`cineOff`, `camShot`, `track`. | `CINE`, `cineShell`, `cineOn`, `cineOff`, `camShot`, `track` |
-| `js/systemes/nightwhite.js` | 18.0 | Night White : façade, boutique, personnel, salle (`nwRoom`), service/mini-jeux (`nwJob`). | `nwLogoTex`, `NWLOGO`, `nwLogo`, `nightWhiteExt`, `NWSHOP`, `YOUNES_POST`, `talkColinNW`, `talkFifi`, `NWSTAFF`, `nwShopMenu`, `nwRoom`, `nwJob` |
+| `js/systemes/nightwhite.js` | 20.2 | Night White : façade, boutique, personnel, salle (`nwRoom`), service/mini-jeux (`nwJob`), test d'embauche + entretien (`nwInterview`, `NW_ITW`). | `nwLogoTex`, `NWLOGO`, `nwLogo`, `nightWhiteExt`, `NWSHOP`, `YOUNES_POST`, `talkColinNW`, `talkFifi`, `NWSTAFF`, `nwShopMenu`, `nwRoom`, `nwJob`, `NW_ITW`, `nwInterview` |
 | `js/histoire/cinematiques.js` | 10.9 | Cinématiques Night White : Younes et Fifi (`nwIxCine`), Younes rasé, révélation d'Amin. | `nwIxCine`, `nwIxCineOld`, `younesBaldScene`, `amineReveal` |
 | `js/world/ixellette.js` | 6.7 | Carte d'Ixellette (`buildIxellette`) et ses PNJ (`placePNJIxellette`). | `buildIxellette`, `placePNJIxellette` |
 | `js/world/interieurs.js` | 6.8 | Intérieurs : labo (`buildLabo`), centres/boutique de Charleroc, Night White, boutique, arène de Ginette. | `buildLabo`, `buildInterieursCharleroc`, `buildInterieursFin` |
@@ -62,9 +63,9 @@ docs/            STRUCTURE.md (ce fichier), CHANGELOG.md, ETAT-DU-PROJET.md
 | `js/world/route3.js` | 4.8 | Carte de la Route 3 (+ garage d'Alex). | `buildRoute3` |
 | `js/world/jourdanfritte.js` | 1.8 | Carte de Jourdanfritte. | `buildJourdanfritte` |
 | `js/world/arene.js` | 4.0 | Arène de combat et galerie 3D (`ARENA`, `GAL`). | `buildArene` |
-| `js/world/monde.js` | 2.3 | Variables des cartes (TOWN, LAB…), `buildWorld` (appelle chaque carte dans l'ordre), `goMap`, `refreshNPCs`. | `TOWN`, `buildWorld`, `goMap`, `refreshNPCs` |
+| `js/world/monde.js` | 3.0 | Variables des cartes (TOWN, LAB…), `buildWorld` (appelle chaque carte dans l'ordre), `goMap`, `refreshNPCs`, centre de soin après défaite (`RESPAWN`, `respawnCentre`). | `TOWN`, `buildWorld`, `goMap`, `refreshNPCs`, `RESPAWN`, `respawnCentre` |
 | `js/core/ui.js` | 4.9 | Dialogues (`say`, `choose`, `msg`), overlays (`show`/`hide`), fondus, bannière, listes, icônes d'équipe, `toast`, `give`. | `dlgResolve`, `TSPD`, `fmt`, `say`, `msg`, `advance`, `choose`, `show`, `fadeOut`, `banner`, `setCtrl`, `dayNum`, `typH`, `hpCol`, `pickList`, `iconR`, `ICONC`, `monIcon`, `iconHTML`, `partyRow`, `toast`, `give` |
-| `js/histoire/objectifs.js` | 1.9 | `objText` : la chaîne d'objectifs affichée, `setObj`. | `objText`, `setObj` |
+| `js/histoire/objectifs.js` | 2.0 | `objText` : la chaîne d'objectifs affichée, `setObj`. | `objText`, `setObj` |
 | `js/core/save.js` | 3.2 | Sauvegarde `saveGame`/`loadGame` (lumons_save, version 5), `newGame`, `continueGame`. | `saveGame`, `loadGame`, `newGame`, `continueGame` |
 | `js/core/menus.js` | 16.9 | Menu du monde, sac par poches, options/volumes, soins, boutiques, fiche de Lumon (`statScreen`). | `FOOD`, `POCKETS`, `pocketOf`, `bagTab`, `bagScreen`, `openMenu`, `volumePanel`, `optionsMenu`, `nurseHeal`, `shopMenu`, `ivGrade`, `statScreen` |
 | `js/systemes/lumidex.js` | 3.8 | Galerie/visionneuse 3D, Lumidex et sa voix (synthèse vocale). | `galModel`, `galOpen`, `mscale`, `viewSpecies`, `closeView`, `galList`, `dexVoice`, `frVoices`, `voiceLabel`, `pickVoice`, `hushDex`, `speakDex`, `etyOf`, `gallery` |
@@ -79,9 +80,10 @@ docs/            STRUCTURE.md (ce fichier), CHANGELOG.md, ETAT-DU-PROJET.md
 | `js/systemes/fusion.js` | 27.2 | Génération procédurale (`GENES`, `genModel`), `fuse`, formes/Éclats, Fusionneur, cinématique de fusion. | `GENES`, `GOPT`, `BODY`, `genModel`, `hexMix`, `geneOf`, `seedRng`, `LORE`, `ensureLore`, `fuseName`, `sanitizeSpecies`, `registerSpecies`, `fuse`, `EVO_SUF`, `evoName`, `EPIC_PRE`, `epicName`, `evolveFusionSpecies`, `FORMS`, `typesOf`, `addAura`, `fusionMachine`, `darkStage`, `fusionCine` |
 | `js/systemes/apparence.js` | 6.7 | Personnalisation du héros : `LOOKS`, palettes, `pickLook`, `pickGender`, aperçu 3D `lookPreview`. | `LOOKS`, `PAL`, `lookDefaults`, `outfitOpts`, `heroLook`, `pickLook`, `rebuildHero`, `pickGender`, `lookR`, `lookPreview` |
 | `js/histoire/prologue.js` | 26.6 | Prologue : narration d'ouverture, nom, Prof (`talkProf`, `profIntro`), famille, Danny, labo, starter, duel Dolba. | `talkProf`, `NARR`, `narrIdx`, `RAIN`, `silh`, `dogS`, `narrLoop`, `narrType`, `narration`, `askName`, `profIntro`, `camFly`, `flyover`, `momScene`, `talkMom`, `talkDoudoune`, `talkCat`, `talkJack`, `petModel`, `DANNY`, `talkDanny`, `talkFernand`, `talkNilsTown`, `nilsDuel`, `enterLab`, `labScene`, `exitLab`, `starterCard` … (+1) |
-| `js/histoire/chapitre1.js` | 14.9 | Chapitre 1 : barrières, Kétosaures, Luciole, MC Sambre, friterie, Rudy, Gérard (Lumisphère), Ginette. | `gerardSphere`, `gateTalk`, `ketoApproach`, `KETO_LINES`, `ketoBattle`, `ketoFirst`, `ketoRandom`, `lucioleScene`, `rapEvent`, `friteJosette`, `talkRudy`, `ginetteTalk` |
-| `js/histoire/chapitre2.js` | 6.5 | Chapitre 2 : Route 2 (bagarre, enveloppe, Lemaire), Alias, Smile and Eat. | `r2Scene`, `talkCop`, `aliasScene`, `aliasTalk`, `smileEat` |
+| `js/histoire/chapitre1.js` | 19.2 | Chapitre 1 : barrières, Kétosaures, Luciole (combat du terril), concert de MC Sambre (`sambreConcert`, `SAMBRE_RIMES`) puis battle, friterie, Rudy, Gérard (Lumisphère), Ginette. | `gerardSphere`, `gateTalk`, `ketoApproach`, `KETO_LINES`, `ketoBattle`, `ketoFirst`, `ketoRandom`, `lucioleScene`, `rapEvent`, `friteJosette`, `talkRudy`, `ginetteTalk`, `SAMBRE_RIMES`, `sambreConcert` |
+| `js/histoire/chapitre2.js` | 8.6 | Chapitre 2 : Route 2 (cinématique de bagarre `r2Fight`, enveloppe, Lemaire), Alias, Smile and Eat. | `r2Scene`, `talkCop`, `aliasScene`, `aliasTalk`, `smileEat`, `r2Fight` |
 | `js/histoire/chapitre3.js` | 5.0 | Chapitre 3 : Pigeolet royal, Captain. | `pigeonModel`, `pigeonSync`, `pigeonHeist`, `pigeonFight`, `captainScene` |
+| `js/histoire/luciole.js` | 3.9 | Rencontres scénarisées de Luciole sans combat (`LUC_RDV` : Ixellette, Bruxellia), `placePNJLuciole`, `lucRefresh`. | `lucFree`, `LUC_RDV`, `placePNJLuciole`, `lucRefresh`, `lucLeave`, `lucFace`, `lucioleIxellette`, `lucioleBruxellia` |
 | `js/systemes/oeufs.js` | 6.4 | Œufs, Pension, compatibilité, éclosion au pas. | `baseOf`, `eggSteps`, `eggHint`, `mkEgg`, `giveEgg`, `eggStory`, `talkPension`, `compat`, `compatTxt`, `breedTick`, `eggTick`, `hatch` |
 | `js/systemes/embuscades.js` | 2.9 | Embuscades cachées Kétosaures / Pirates. | `AMBUSH`, `PIRATE_LINES`, `KETO_HIDE`, `ambushAt`, `ambushDecor`, `ambush` |
 | `js/systemes/mode-test.js` | 1.3 | Mode test (Options). | `testMode` |

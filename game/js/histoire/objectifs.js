@@ -3,7 +3,7 @@ function objText(){const f=F();if(!f.introDone)return'';if(f.ch3)return'Chapitre
  if(f.brux){return f.nourTry?"Retente le test d'embauche de Nour (Night White de Bruxellia)":"Passe le test d'embauche chez Nour, au Night White de Bruxellia"}
  if(f.north)return`Remonte à Charleroc et prends la Route 2, au nord de la ville : Bruxellia avant le Jour 200 (aujourd'hui : Jour ${dayNum()})`;
  if(f.rap1)return S.bag.sphereEclat?"Redescends la Route 1 jusqu'à Ixellette : rapporte la Lumisphère d'Éclat et montre ta médaille à la Prof":"Redescends la Route 1 jusqu'à Ixellette et montre ta médaille à la Prof Verhaegen";
- if(f.luciole)return"Va au concert de Snow, sur la scène à l'est de la grande place de Charleroc";
+ if(f.luciole)return f.rapMet?"Défie MC Sambre en battle, devant la scène de Charleroc":"Va au concert de Snow, sur la scène à l'est de la grande place de Charleroc";
  if(f.badge1){if(f.starter2==null)return"Récupère le colis de la Prof à la Maison des Lumons de Charleroc";return"Monte voir le vieux terril, à l'ouest de Charleroc (petit chemin entre l'arène et la Maison des Lumons)"}
  if(f.charl)return"Défie l'arène de Charleroc (type Roche), au nord de la grande place";
  if(f.nilsBattle&&!f.gate1)return'Trouve les 3 indices du code de la barrière de la mine';if(f.nilsBattle)return'Monte la Route 1 vers le nord jusqu\'à Charleroc';if(f.chapterDone)return'Va sous l\'arche « Route 1 », tout au nord du village';if(f.labIntro)return'Écoute la Prof';if(f.talkedNils)return'Entre dans le labo de la Prof';return'Rejoins Dolba sur la Grand-Place'}

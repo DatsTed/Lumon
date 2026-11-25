@@ -35,6 +35,16 @@ Tu reprends Lumons, dans le dépôt local `C:\Users\teddy\Claude\Lumon`, sur la 
    - cinématique épique de 9 à 15 secondes max sur le scénario des Kétosaures, dans le style de celle du Night White ;
    - on y voit les hommes ET les Lumons se battre entre eux.
 4. **Entretien d'embauche chez Nour** : nettement plus difficile qu'aujourd'hui.
+5. **Défaite** : on se réveille au centre (Maison des Lumons) le plus proche **déjà découvert**. Une défaite sur la Route 1 renvoie chez maman à Ixellette, une défaite sur la Route 2 renvoie à Bruxellia si on l'a déjà découverte, et ainsi de suite.
+6. **Icône du colis de Nour** : elle est cassée (image d'erreur). Il faut une vraie icône de caisse ou de colis.
+
+## Lot 2 bis – Ouverture du jeu et voix
+1. **Cinématique d'ouverture** (premier lancement) :
+   - musique dramatique et triste, nouvelle composition ;
+   - quand la lumière du Night White apparaît, elle bascule en musique céleste et épique ;
+   - scène : sous un pont, le héros (défoncé, à la rue) trouve Laïka en train de se faire frapper par des Kétosaures ;
+   - il se bat contre eux pour la sauver : c'est comme ça qu'il récupère Laïka.
+2. **Voix des personnages, façon Animal Crossing** : une petite vocalise synthétisée pendant que le texte défile, avec une hauteur et un timbre propres à chaque personnage (Fifi, Younes, Nour, Amin, Luciole, Snow…). Volume réglé par le curseur des bruitages, et une option pour la couper.
 
 ## Lot 3 – Jourdanfritte et la période d'essai chez Amin
 1. **Smile and Eat** :

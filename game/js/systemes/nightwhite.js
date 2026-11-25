@@ -27,16 +27,16 @@ function nwShopMenu(k){const c=NWSHOP[k];return async()=>{const N=c.boss?c.cash+
     await say(N,"…Ok. D'accord. Je vois. Oui. C'est bien moi, le GRAND frère. L'aîné. Le petit Amin va très bien, merci. Il sera ravi d'apprendre que tu t'inquiètes pour lui.");sfx(220,.15,'triangle',.1)}
    await say(N,"Bref. C'est toi, {P} ? Younes m'a parlé de toi. Il paraît que t'as du cran… et une chienne qui fait peur aux Kétosaures.");
    await say(N,"Moi c'est Nour. Le Night White, on l'a monté à deux, mon frère Amin et moi. Tu veux bosser chez nous ? Alors on fait comme tout le monde : un test d'embauche.");
-   await say(N,"Caisse, réassort, rendu de monnaie… Trois épreuves. Il me faut au moins 8 points. Prêt·e ?")}else await say(N,"Tu reviens pour le test ? J'aime ça, les gens qui insistent.");
+   await say(N,"Caisse, réassort, rendu de monnaie : trois épreuves chronométrées, et chaque erreur te coûte du temps. Ensuite, un petit entretien avec moi. Il me faut au moins 18 points. Prêt·e ?")}else await say(N,"Tu reviens pour le test ? J'aime ça, les gens qui insistent.");
   f.nourTry=(f.nourTry||0)+1;const r=await nwJob('test',N);
-  if(r.score>=8){f.nourMet=1;sfx(784,.15);sfx(1046,.3);await banner('Test réussi !',`${r.score} points`,2000);
+  if(r.score>=18){f.nourMet=1;sfx(784,.15);sfx(1046,.3);await banner('Test réussi !',`${r.score} points`,2000);
    await say(N,"Pas mal du tout ! T'es embauché·e… à l'essai. Ici à Bruxellia mon équipe est complète, mais mon frère Amin a besoin de quelqu'un à Jourdanfritte.");
    await say(N,"Première mission : tu lui apportes ce colis. Douze canettes de Cisoa Pomme-Poire, sa commande perso. Il en boit trois par jour, et il devient insupportable quand il en a plus.");
    f.nourBox=1;give('colisnw');sfx(784,.12);await banner('Tu as reçu le Colis de Nour !','À livrer à Amin, à Jourdanfritte',1800);
    await say(N,"Prends la Route 3, à l'est. Tu feras ta période d'essai chez lui : trois services. Si Amin est content, ta place t'attendra au Night White d'Ixellette, à côté de chez toi.");
    await say(N,"Ah, et… dis à mon PETIT frère que son GRAND frère, Monsieur Nour, lui passe le bonjour. Hé hé.");
    await say(N,"Et fais gaffe sur la route… Les Pirates de Captain traînent par là. Lui, il est pas net dans sa tête.")}
-  else await say(N,`${r.score} point${r.score>1?'s':''}… C'est pas encore ça. Va boire un café et reviens retenter quand tu veux.`);setObj();return}
+  else await say(N,`${r.score} point${r.score>1?'s':''} sur 18… C'est pas encore ça. Va boire un café et reviens retenter quand tu veux.`);setObj();return}
  if(k==='jf'&&!f.trialDone){if(!f.nourMet){await say(N,"Salut ! Moi c'est Amin. Tu cherches du boulot ? Faut d'abord passer le test de mon frère Nour, au Night White de Bruxellia.");return}
   if(!f.hired){if(f.nourBox===1||f.nourBox===2){await say(N,"C'est toi que Nour m'envoie ? Il m'a dit que tu m'apportais mes Cisoa Pomme-Poire… Ils sont où ?");if(f.nourBox===2)await say(N,"Un PIGEOLET ?! Il a volé mes Cisoa ?! Frère… Va me récupérer ça. Au Garage d'Alex ? Cours !");return}
    await amineReveal(N);f.hired=1}
@@ -75,25 +75,38 @@ function nwRoom(k,exitFn){const c=NWSHOP[k],X=c.ox,m=room('nw_'+k,11,8,X,'N','#0
  m.signs['3,0']=m.signs['2,0']="Des chips à tous les goûts : paprika, sel, pickles… et un paquet « andalouse » en édition limitée.";
  return m}
 async function nwJob(mode='shift',N){const f=F();const P=[['chips','Chips'],['zisoa','Cisoa'],['titzvel','Titvel'],['choco','Lait choco'],['speculoos','Spéculoos'],['croq','Croquettes']];
- const lvl=Math.min(3,Math.floor((f.shifts||0)/3)),T0=mode==='test'?16:15-lvl,kinds=['caisse','reassort','monnaie'].sort(()=>rnd()-.5);let score=0;
+ const TEST=mode==='test',lvl=TEST?2:Math.min(3,Math.floor((f.shifts||0)/3)),T0=TEST?12:15-lvl,kinds=['caisse','reassort','monnaie'].sort(()=>rnd()-.5);let score=0;
  for(const kind of kinds){const ttl={caisse:'Caisse : scanne ce que veut le client',reassort:'Réassort : remplis les trous du rayon',monnaie:'Monnaie : rends la bonne somme'}[kind];
   score+=await new Promise(r=>{let t=T0,pts=0,state={};const end=()=>{clearInterval(iv);r(pts)};
    const head=()=>{$('jobT').innerHTML=`<b>${ttl}</b><br>⏱ ${t}s · ${pts} pt${pts>1?'s':''} · total ${score+pts}`};
-   const bad=b=>{sfx(140,.15,'square',.15);t=Math.max(0,t-2);b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),250);head()};
+   const bad=b=>{sfx(140,.15,'square',.15);t=Math.max(0,t-(TEST?3:2));b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),250);head()};
    const good=()=>{sfx(1568,.05,'square',.1)};
    const newRound=()=>{if(kind==='caisse'){const n=1+((rnd()*Math.min(3,1+lvl+pts/2))|0);state.order=Array.from({length:n},()=>P[(rnd()*P.length)|0][0]);state.got=state.order.map(()=>0)}
     if(kind==='reassort'){const p=P[(rnd()*P.length)|0][0];state.p=p;state.slots=Array.from({length:9},()=>rnd()<.45?null:P[(rnd()*P.length)|0][0]);if(!state.slots.some(x=>x===null))state.slots[(rnd()*9)|0]=null}
-    if(kind==='monnaie'){const price=(5+((rnd()*90)|0)*5)/100*(lvl+2),paid=price<5?5:price<10?10:price<20?20:50,ch=Math.round((paid-price)*100)/100;const opts=[ch,Math.round((ch+.5)*100)/100,Math.max(.1,Math.round((ch-.3)*100)/100)].sort(()=>rnd()-.5);state={price:price.toFixed(2),paid,ch,opts}}draw()};
+    if(kind==='monnaie'){const price=(5+((rnd()*90)|0)*5)/100*(lvl+2),paid=price<5?5:price<10?10:price<20?20:50,ch=Math.round((paid-price)*100)/100;const opts=(TEST?[ch,Math.round((ch+.1)*100)/100,Math.max(.05,Math.round((ch-.1)*100)/100),Math.round((ch+1)*100)/100]:[ch,Math.round((ch+.5)*100)/100,Math.max(.1,Math.round((ch-.3)*100)/100)]).sort(()=>rnd()-.5);state={price:price.toFixed(2),paid,ch,opts}}draw()};
    const draw=()=>{head();
     if(kind==='caisse'){$('jobO').innerHTML=state.order.map((k,i)=>`<span class="jo${state.got[i]?' ok':''}">${ico(k,38)}</span>`).join('');
      $('jobG').innerHTML=P.map(([k,n])=>`<button class="btn alt jb" data-k="${k}" data-good="${state.order.some((x,j)=>x===k&&!state.got[j])?1:0}">${ico(k,34)}<br><small>${n}</small></button>`).join('');
      $('jobG').querySelectorAll('.jb').forEach(b=>b.onclick=()=>{const i=state.order.findIndex((x,j)=>x===b.dataset.k&&!state.got[j]);if(i<0)return bad(b);state.got[i]=1;good();if(state.got.every(Boolean)){pts+=1+Math.floor(state.order.length/2);sfx(988,.1);setTimeout(newRound,200)}draw()})}
     if(kind==='reassort'){$('jobO').innerHTML=`<span style="font-size:13px">Caisse de ${ITEMS[state.p]?ITEMS[state.p].n:'croquettes'} :</span> <span class="jo">${ico(state.p,38)}</span>`;
      $('jobG').innerHTML=state.slots.map((x,i)=>`<button class="btn alt jb${x?'':' emp'}" data-i="${i}" data-good="${x?0:1}">${x?ico(x,30):'<span style="font-size:22px;opacity:.5">＋</span>'}</button>`).join('');
-     $('jobG').querySelectorAll('.jb').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(state.slots[i])return bad(b);state.slots[i]=state.p;good();pts+=1;if(state.slots.every(Boolean)){sfx(988,.1);setTimeout(newRound,200)}draw()})}
+     $('jobG').querySelectorAll('.jb').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(state.slots[i])return bad(b);state.slots[i]=state.p;good();if(!TEST)pts+=1;if(state.slots.every(Boolean)){if(TEST)pts+=2;sfx(988,.1);setTimeout(newRound,200)}draw()})}
     if(kind==='monnaie'){$('jobO').innerHTML=`<span style="font-size:15px">Le client doit <b>${state.price} €</b> et te donne <b>${state.paid} €</b>.</span>`;
      $('jobG').innerHTML=state.opts.map(o=>`<button class="btn alt jb" data-v="${o}" data-good="${o===state.ch?1:0}" style="font-size:17px">${o.toFixed(2)} €</button>`).join('');
      $('jobG').querySelectorAll('.jb').forEach(b=>b.onclick=()=>{if(+b.dataset.v!==state.ch)return bad(b);good();pts+=2;sfx(988,.1);newRound()})}};
    show('job');newRound();const iv=setInterval(()=>{t--;head();if(t<=0){end()}},1000)});
   await sleep(300)}
- hide('job');const earn=mode==='test'?0:score*9+((rnd()*10)|0);S.money+=earn;if(mode!=='test'){f.shifts=(f.shifts||0)+1;if(f.shifts>=5)unlock('worker')}unlock('nw');return{score,earn}}
+ hide('job');if(TEST)score+=await nwInterview(N);const earn=mode==='test'?0:score*9+((rnd()*10)|0);S.money+=earn;if(mode!=='test'){f.shifts=(f.shifts||0)+1;if(f.shifts>=5)unlock('worker')}unlock('nw');return{score,earn}}
+
+// Entretien oral de Nour (test d'embauche) : +2 par bonne réponse, -1 par mauvaise. Ordre des réponses mélangé.
+const NW_ITW=[
+ ["Il est 3 h du matin. Un client chante à tue-tête au rayon chips et cherche les Spéculoos. Tu fais quoi ?",["Je l'accompagne au rayon, poliment, et je lui souhaite bonne nuit","Je chante avec lui, ça fait de l'ambiance","J'appelle la police direct","Je lui dis qu'on n'en a plus pour qu'il parte"]],
+ ["Un gars en training mauve veut payer un Cisoa avec un billet de 500 €. Il insiste : « Garde la monnaie, frère. »",["Je refuse poliment : pas de gros billets, et pas de « garde la monnaie »","J'accepte, c'est du chiffre pour le magasin","Je garde la monnaie, il a dit oui","Je lui demande s'il en a d'autres, des comme ça"]],
+ ["Une dame dit que son lait choco est périmé. La date est bonne.",["Je lui montre la date calmement et je propose quand même d'échanger","Je lui dis qu'elle ment","Je le bois devant elle pour prouver qu'il est bon","Je fais semblant de pas entendre"]],
+ ["Ton collègue Colin crie sur un client. Toi, tu…",["Je prends le client et je m'en occupe au calme, et j'en parle à Colin après","Je crie plus fort que Colin","Je filme pour les réseaux","Je pars en pause"]]];
+async function nwInterview(N){let pts=0;await say(N,"Bon. Les épreuves, c'est fait. Maintenant, l'entretien. Réponds franchement.");
+ const Q=NW_ITW.slice().sort(()=>rnd()-.5).slice(0,3);
+ for(const[q,opts]of Q){const ord=opts.map((o,i)=>i).sort(()=>rnd()-.5);const c=await choose(N,q,ord.map(i=>opts[i]));
+  if(ord[c]===0){pts+=2;sfx(1046,.08);await say(N,["Bonne réponse.","Exactement ce que je voulais entendre.","Ok. T'as les bons réflexes."][(rnd()*3)|0])}
+  else{pts-=1;sfx(160,.15,'square',.12);await say(N,["…Non. Vraiment non.","Tu rigoles, j'espère ?","Mauvaise idée. Très mauvaise idée."][(rnd()*3)|0])}}
+ return pts}

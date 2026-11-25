@@ -12,7 +12,7 @@ function buildRoute2(){
   m.trainers.push({c:theo,range:3,flag:'theo',name:'Scout Théo',key:'scout',smart:.3,mons:()=>[mkMon('pigeolet',12),mkMon('hannetonne',13)],intro:"Hé ! T'as une médaille de Charleroc ? Montre-moi ce que vaut le Pays Noir !",win:"Waw… Le Pays Noir, ça rigole pas !",reward:['sirop',2]});
   const marc=npc(m,'anouk',3,21,'right',async()=>say('Randonneuse Marie',F().marie?"La Route 2 était fermée par la brume des concerts de Snow. Des fumigènes, rien que ça !":"…"));
   m.trainers.push({c:marc,range:3,flag:'marie',name:'Randonneuse Marie',key:'anouk',smart:.35,mons:()=>[mkMon('terrilou',13),mkMon('gaufrelin',13),mkMon('pigeolet',14)],intro:"Enfin quelqu'un sur cette route ! Un duel pour se réchauffer ?",win:"Pfiou ! Tu marches vite et tu cognes fort.",reward:['supersirop',1]});
-  m.hook=(x,z)=>!F().r2scene&&z<=32&&z>=26?r2Scene:null;
+  m.hook=(x,z)=>!F().r2scene&&z<=37&&z>=26?r2Scene:null;
   const nl=npc(m,'nils',12,5,'down',async()=>say('Dolba',F().nils2?"La prochaine fois, je te battrai. À la Ligue de Bruxellia, s'il le faut !":"…"));
   m.trainers.push({c:nl,range:4,flag:'nils2',name:'Rival Dolba',key:'nils',smart:.4,prize:60,mons:()=>{const s0=STARTERS[F().nilsMon||0],e=SP[s0].evo?SP[s0].evo[1]:s0;return[mkMon('pigeolet',14),mkMon(e,16)]},intro:"{P} ! Je t'attendais ! T'as vu, mon Lumon a évolué. Cette fois, c'est moi qui gagne !",re:"Encore un duel ? Avec plaisir !",win:"Encore perdu ?! Bon… T'es vraiment devenu·e fort·e. On se reverra à Bruxellia !",reward:['speculoos',1]});}
 }

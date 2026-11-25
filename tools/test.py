@@ -53,7 +53,7 @@ setInterval(()=>{if(!window.__auto)return;try{
  if(shown('look')){clk(document.getElementById('lkOk'));return}
  if(shown('card')){clk(document.getElementById('cYes'));return}
  if(shown('endc')){clk(document.getElementById('endOk'));return}
- if(shown('pick')){const r=document.querySelector('#pList .prow');clk(r||document.getElementById('pBack'));return}
+ if(shown('pick')){const r=document.querySelector('#pList .prow:not(.dis)');clk(r||document.getElementById('pBack'));return}
  const d=document.getElementById('dlg');
  if(d&&d.style.display==='block'){const ch=document.querySelectorAll('#dch > *');
    if(ch.length){const k=__choix.length?__choix.shift():0;clk(ch[Math.min(k,ch.length-1)])}else clk(d);return}

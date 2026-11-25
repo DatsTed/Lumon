@@ -48,9 +48,10 @@ async function lucioleScene(){const f=F(),L='Luciole';player.face('up');
  sfx(180,.6,'sine',.15);await tween(600,q=>{lu.k=1-q;lu.place()});killTemp(lu);f.luciole=1;refreshNPCs();
  await banner('Nouvelle quête','Le concert de Snow à Charleroc',2200);unlock('luciole');setObj()}
 async function rapEvent(){const f=F(),M='MC Sambre';if(f.rap1){await say(M,"Le concert est fini, fieu. Mais Snow, lui, il t'a dans le viseur…");return}
- setSong('rap');await say('',"Des basses à faire trembler les terrils. Des lumières mauves. Une foule de Kétosaures en training qui hochent la tête…");
- await say(M,"Yo yo yo, Charleroc ! Ici MC Sambre, élite des Kétosaures, première partie du grand SNOW !");
- await say(M,"Et c'est qui, lui ? Le petit rockeur qui a fait pleurer nos sbires ? Monte sur scène, on va faire un battle. Lumons contre Lumons, rimes contre rimes !");
+ if(!f.rapMet){await sambreConcert();return}
+ setSong('rap');await say('',"Les basses repartent. La foule de Kétosaures en training se retourne vers toi en hochant la tête…");
+ await say(M,"Yo yo yo ! Le rockeur aux rimes belges est de retour ! Les mots, tu sais faire. Maintenant on va voir si tes Lumons ont autant de flow que toi.");
+ await say(M,"Monte sur scène. Battle ! Lumons contre Lumons, rimes contre rimes !");
  const res=await battle({music:'rap',trainer:{name:'MC Sambre',key:'mcsambre',boss:1,smart:.55,prize:400,mons:[mkMon('scorion',11),mkMon('pigeolet',12),mkMon('sambrax',13)],win:"Quoi ?! Le micro m'a lâché… et mes Lumons aussi.",lose:"Retourne dans ta chambre, le rockeur !"}});
  if(res!=='win'){setSong(cur.song);return}
  f.rap1=1;await say('',"La musique s'arrête net. Un homme monte sur scène, torse nu, jean délavé, le regard ailleurs. À sa ceinture, une petite poche reliée à un tube…");
@@ -92,3 +93,40 @@ async function ginetteTalk(){const G='Maître de Guilde Ginette';
  await say(G,"Autre chose… Depuis quelques nuits, une fille en noir monte sur le vieux terril, au nord-ouest de la ville. Elle reste là, à regarder Charleroc. Les gamins disent qu'elle brille dans le noir. Si tu y vas, sois prudent·e.");F().lucHint=1;
  $('endH').textContent='Chapitre 1 terminé !';$('endTxt').innerHTML=`${ico('badge',48)}<br>Tu as obtenu la <b>Médaille Terril</b> !<br><br>Mais en sortant de l'arène, quelque chose t'attend sur la grande place…`;
  show('endc');await new Promise(r=>$('endOk').onclick=()=>{hide('endc');r()})}
+
+/* ---- Concert de MC Sambre : 1re rencontre, sans combat (danseurs, rap, blanchiment, énigme de rimes) ---- */
+const SAMBRE_RIMES=[
+ ["Dans ma ville y a des terrils, pas besoin d'aller en Suisse ! / J'ai pas de chalet, mais j'ai un pain-…",["saucisse","frites","choco","mayo"]],
+ ["Au bord de la Meuse on mange des moules, sur la Grand-Place des gaufres en foule… / Quand MC Sambre prend le micro, tout Charleroi…",["perd la boule","applaudit","s'endort","prend le bus"]],
+ ["On parle trois langues ici : le flamand, le français, l'allemand… / Mais le seul truc qu'on comprend tous, c'est…",["le chocolat fondant","la bière d'abbaye","les embouteillages","la météo"]]];
+async function sambreConcert(){const f=F(),M='MC Sambre',C=CHARL,sx=C.ox+25.5,sz=C.oz+13.5,SY=.45;
+ if(NPC.mcs)NPC.mcs.show(false);player.face('up');player.yawOv=null;
+ const mc=await tempChar('mcsambre',25,13,'down'),ds=[await tempChar('keto',24,14,'down'),await tempChar('keto2',26,14,'down'),await tempChar('keto',27,13,'down')],all=[mc,...ds];
+ all.forEach(c=>{c.g.position.y=.1+SY;c.sh.visible=false});
+ cineOn();camShot([sx,2.3,sz+7],[sx,1.1,sz]);setSong('rap');
+ try{
+  await say('',"Des basses à faire trembler les terrils. Des lumières mauves. Sur scène, trois danseurs en training mauve… et MC Sambre, micro en main.");
+  let on=true;const t0=performance.now();
+  const dance=(async()=>{while(on){await sleep(16);const t=(performance.now()-t0)/1000;all.forEach((c,i)=>{const P=c.b.P,b=Math.abs(Math.sin(t*PI*2.2+i*.7));
+   c.g.position.y=.1+SY+b*(i?.16:.08);c.yawOv=YAW.down+Math.sin(t*2.2+i*1.3)*(i?.7:.25);
+   if(P){P.arms[0].rotation.x=-2.5+Math.sin(t*9+i)*.5;P.arms[1].rotation.x=(i%2?-2.5:-.7)+Math.cos(t*9+i)*.5;P.legs[0].rotation.x=Math.sin(t*8.8+i)*.4;P.legs[1].rotation.x=-Math.sin(t*8.8+i)*.4}})}})();
+  const shots=[[[sx,1.6,sz+3.2],[sx,1.3,sz-.4]],[[sx-3,1.2,sz+2.6],[sx,1.2,sz]],[[sx+2.8,2.6,sz+3],[sx-.5,1,sz]],[[sx,3.2,sz+6],[sx,1,sz]]];
+  const L=["Yo ! Charleroi, les terrils, la Sambre et la brume,","Dans le Pays Noir on brille, même quand ça fume !","MC Sambre au micro, les Kétos dans la place,","On danse sur le béton, on laisse aucune trace !"];
+  for(let k=0;k<L.length;k++){camShot(...shots[k],{move:true,sm:.06,silent:true});camShake(160,.05);sfx(70,.12,'sine',.25);await say(M,L[k],{auto:650,fast:true})}
+  on=false;await dance;all.forEach(c=>{c.yawOv=null;c.g.position.y=.1+SY});
+  for(let i=0;i<5;i++){sfx(600+rnd()*600,.06,'square',.06);await sleep(60)}
+  camShot([sx,1.7,sz+3.6],[sx,1.25,sz-.2]);
+  await say(M,"Merci Charleroc !!! … Hé, toi. Le rockeur avec le chien. Approche. T'as la tête d'un gars qui pose des questions.");
+  await say(M,"Tu te demandes pourquoi les Kétosaures offrent des concerts gratuits à Charleroc ? Hé hé. Gratuit pour le public… pas pour la caisse.");
+  await say(M,"Sur le papier, on vend trois mille tickets à quarante balles. En vrai, y a trois cents personnes. Le reste, c'est l'argent de Snow qui « rentre » par la billetterie.");
+  await say(M,"Le sale entre par la porte de devant, le propre ressort par celle de derrière. On appelle ça la lessive. Et Charleroc, c'est notre machine à laver.");
+  await say(S.name||'Toi',"…Et tu me racontes ça, à moi ? Comme ça ?");
+  await say(M,"Qui va croire un rockeur avec un chien ? Hé hé. Bon. Tu veux monter sur scène un jour ? Faut d'abord prouver que t'as du flow.");
+  await say(M,"Je commence la rime, tu la finis. Trois rimes sur la Belgique. Tu te plantes, la foule te hue et on recommence.");
+  for(const[q,opts]of SAMBRE_RIMES){for(;;){const ord=opts.map((o,i)=>i).sort(()=>rnd()-.5);const c=await choose(M,q,ord.map(i=>opts[i]));
+    if(ord[c]===0){sfx(988,.1);sfx(1318,.2);camShake(160,.04);await say('',"La foule hurle : « OUAIS !!! » MC Sambre te pointe du doigt en hochant la tête.");break}
+    sfx(150,.3,'sawtooth',.12);await say('',"« BOUUUH ! » Une canette vole au-dessus de ta tête.");await say(M,["Ça rime pas, fieu ! Recommence.","Aïe aïe aïe… Même mon Scorion rime mieux que ça.","Non non non. Écoute la fin du vers !"][(rnd()*3)|0])}}
+  await say(M,"Respect, le rockeur. T'as du flow belge, ça se voit.");
+  await say(M,"Reviens me voir quand t'es prêt : on fera un vrai battle sur scène. Lumons contre Lumons !");
+  f.rapMet=1}
+ finally{all.forEach(c=>{c.yawOv=null;killTemp(c)});if(NPC.mcs)NPC.mcs.show(!!f.luciole&&!f.rap1);cineOff();setSong(cur.song);setObj()}}

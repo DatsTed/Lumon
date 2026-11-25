@@ -5,8 +5,7 @@ async function r2Scene(){const f=F();f.r2scene=1;const px=player.x,pz=player.z;
  await say('Sbire Kétosaure',"Hé hé… T'as vu le ciel, frère ? Il est tout… mauve…");
  await say('Pirate Bob',"Hé, les mauves ! Snow nous doit trois mille balles. Où est le fric ?!");await say('Sbire Kétosaure',"Quel fric ? On vous doit rien, bande de clochards ! Votre came, c'était de la farine !");
  await say('Pirate Jerry',"De la FARINE ?! Répète un peu pour voir !");setSong('trainer');
- for(let r=0;r<5;r++){const a=all[r%2],b=all[2+(r+1)%2];const ax=a.g.position.x,az=a.g.position.z;await tween(160,q=>{a.g.position.x=ax+(b.g.position.x-ax)*.35*Math.sin(q*PI);a.g.position.z=az+(b.g.position.z-az)*.35*Math.sin(q*PI)});
-  sfx(120+r*20,.12,'square',.2);camShake(200,.12);await sparkAt((a.x+b.x)/2,(a.z+b.z)/2,r%2?'star':'dust',7);b.g.rotation.z=.25*(r%2?1:-1);await sleep(120);b.g.rotation.z=0}
+ await r2Fight(all);
  await say('','Les deux bandes se jettent les unes sur les autres. Coups de poing, sacoches qui volent, Lumons qui grognent…');
  setSong(null);for(let i=0;i<6;i++){sfx(i%2?740:960,.28,'square',.1);flashScr(i%2?'#2a5aff':'#ff2a3a',260,.35);await sleep(280)}
  await say('???',"POLICE ! Plus personne ne bouge !");const cop=await tempChar('agent',...spots[4],'up');cop.k=.01;cop.place();await tween(300,q=>{cop.k=q;cop.place()});
@@ -36,3 +35,29 @@ async function smileEat(){const N='Jalal';const ks=['durum','baklava'];
  else await say(N,["Ah, mon client préféré ! Comme d'habitude ?","Mes cheveux ? Huile d'olive et confiance en soi, mon frère.","Un dürüm, ça répare tout. Même les cœurs brisés."][(rnd()*3)|0]);
  for(;;){const i=await pickList(`Smile and Eat · ${S.money} €`,ks.map(x=>({html:`${ico(x)}<span class="grow"><b>${ITEMS[x].n}</b> — ${ITEMS[x].price} €<br><small>${ITEMS[x].d} · Tu en as ${S.bag[x]||0}</small></span>`,dis:S.money<ITEMS[x].price})));if(i<0)break;S.money-=ITEMS[ks[i]].price;give(ks[i])}
  await say(N,"Merci, et souris, hein ! Ça coûte rien.")}
+
+/* Cinématique de la bagarre Kétosaures / Pirates sur la Route 2 (~10 s) : les hommes ET leurs Lumons se battent */
+async function r2Fight(all){const[k1,k2,p1,p2]=all,G=cur.group,mons=[];
+ const pop=async(sp,c,side)=>{const r=monModel(sp);ANIMS.delete(r);const s=.75*(MSCALE[sp]||1);r.g.position.set(c.g.position.x+side*.55,.1,c.g.position.z+.55);r.g.rotation.y=side>0?-PI/2:PI/2;r._s=s;G.add(r.g);
+  await tween(260,q=>r.g.scale.setScalar(s*q));mons.push(r);return r};
+ const mid=()=>{const v=new V();all.forEach(c=>v.add(c.g.position));return v.multiplyScalar(1/4)};
+ cineOn();const M=mid();
+ try{
+  camShot([M.x,1.5,M.z+4.2],[M.x,.8,M.z]);sfx(90,.4,'sawtooth',.18);
+  const sc=await pop(SP.scorion?'scorion':'pigeolet',k1,1),sb=await pop(SP.sambrax?'sambrax':'pigeolet',k2,1),kr=await pop(SP.krakapitaine?'krakapitaine':'pigeolet',p1,-1),pg=await pop('pigeolet',p2,-1);
+  await say('Pirate Bob',"Krakapitaine, Pigeolet… À L'ABORDAGE !",{auto:500,fast:true});
+  const duel=[[sc,kr],[kr,sb],[sb,pg],[pg,sc],[sc,kr],[sb,pg]],fx=['star','dust','star','dust','star','star'];
+  const shots=[[[M.x-3.2,1,M.z+1.5],[M.x,.6,M.z]],[[M.x+3.2,1.4,M.z+2.2],[M.x,.6,M.z]],[[M.x,3.6,M.z+3],[M.x,.4,M.z]],[[M.x-1,.7,M.z+2.4],[M.x,.7,M.z]]];
+  for(let r=0;r<duel.length;r++){const[a,b]=duel[r];if(r%2===0)camShot(...shots[(r/2)%shots.length],{move:true,sm:.08,silent:true});
+   const ax=a.g.position.x,az=a.g.position.z,bx=b.g.position.x,bz=b.g.position.z;
+   await tween(220,q=>{const k=Math.sin(q*PI)*.7;a.g.position.x=ax+(bx-ax)*k;a.g.position.z=az+(bz-az)*k;a.g.position.y=.1+Math.sin(q*PI)*.35});
+   sfx(140+r*40,.15,'square',.2);sfx(60,.25,'sawtooth',.15);camShake(220,.12);flashScr(r%2?'#a04ae8':'#ff8a2c',180,.25);
+   sparkAt(b.g.position.x-cur.ox,b.g.position.z-cur.oz,fx[r],8);
+   b.g.rotation.z=.35*(r%2?1:-1);await sleep(140);b.g.rotation.z=0;
+   // les humains se cognent aussi
+   const h=all[r%2],o=all[2+(r+1)%2],hx=h.g.position.x,hz=h.g.position.z;
+   await tween(160,q=>{const k=Math.sin(q*PI)*.35;h.g.position.x=hx+(o.g.position.x-hx)*k;h.g.position.z=hz+(o.g.position.z-hz)*k});
+   sfx(110,.1,'square',.18);o.g.rotation.z=.25*(r%2?-1:1);await sleep(220);o.g.rotation.z=0}
+  camShot([M.x,1.2,M.z+2.8],[M.x,.7,M.z]);for(let i=0;i<3;i++){flashScr('#ffffff',120,.5);camShake(300,.18);sfx(50+i*20,.4,'sawtooth',.2);await sleep(200)}
+  await Promise.all(mons.map(r=>tween(300,q=>r.g.scale.setScalar((1-q)*r._s))))}
+ finally{mons.forEach(r=>{G.remove(r.g);disposeModel(r)});cineOff()}}
