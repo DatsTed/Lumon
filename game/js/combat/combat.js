@@ -55,8 +55,9 @@ async function useMove(side,mi){const a=side==='p'?B.me:foeM(),d=side==='p'?foeM
  await msg(`${label(side)} utilise ${v.n} !`);
  const accM=as.acc>=0?(3+as.acc)/3:3/(3-as.acc);if(rnd()*100>v.a*accM){await msg("Mais ça rate !");return}
  const tside=side==='p'?'f':'p';
+ if(!v.p&&OPT.anim&&typeof MOVEFX!=='undefined'&&MOVEFX[mid])await MOVEFX[mid](ar,dr,1);
  if(!v.p&&v.st){if(d.status){await msg("Mais ça échoue !");return}await applyStatus(d,dr,v.st[0],tside);return}
- if(v.p){if(OPT.anim)await cineAttack(side,ar,dr,()=>vfxAttack(v.t,ar,dr,effOf(v.t,typesOf(d))));else await tween(160,k=>ar.g.position.y=ar.base.y+Math.sin(k*PI)*.2);
+ if(v.p){if(OPT.anim)await cineAttack(side,ar,dr,()=>vfxAttack(v.t,ar,dr,effOf(v.t,typesOf(d)),mid));else await tween(160,k=>ar.g.position.y=ar.base.y+Math.sin(k*PI)*.2);
   const e=effOf(v.t,typesOf(d));if(e===0){await msg(`Ça n'affecte pas ${label(side==='p'?'f':'p')}…`);return}
   const A=a.atk*stg(as.atk)*(a.status==='brn'?.5:1),D=d.def*stg(ds.def),crit=rnd()<critRate(a,v);let dmg=Math.floor(Math.floor(Math.floor(2*a.lv/5+2)*v.p*A/D)/50)+2;
   dmg=Math.max(1,Math.floor(dmg*(typesOf(a).includes(v.t)?1.5:1)*e*(crit?1.5:1)*(.85+rnd()*.15)));

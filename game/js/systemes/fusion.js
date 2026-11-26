@@ -85,9 +85,9 @@ function sanitizeSpecies(d){const okT=Object.keys(TC);d.n=(typeof d.n==='string'
  const col=c=>{try{return '#'+new THREE.Color(c||'#cccccc').getHexString()}catch(e){return '#cccccc'}};G.c1=col(G.c1);G.c2=col(G.c2||G.c1);G.c3=col(G.c3||G.c2);if(d.evo&&!(Array.isArray(d.evo)&&isFinite(d.evo[0])&&typeof d.evo[1]==='string'))delete d.evo;d.cr=d.cr||45;if(typeof d.d!=='string')d.d='Un Lumon mystérieux.';return d}
 function registerSpecies(id,d){sanitizeSpecies(d);SP[id]=d;MODELS[id]=g=>genModel(g,d.G);MSCALE[id]=Math.min(1.1,1.05/Math.max(.9,d.G.size*.85));CRY[id]=d.n+' !'}
 function fuse(a,b,q=1){const MQ=[2.1,1,.3][q];const A=SP[a.sp],Bs=SP[b.sp],GA=geneOf(a.sp),GB=geneOf(b.sp),G={};const mut=[];
- const sig=X=>['body','top','side','back','feet','eyes','ears','pattern'].map(k=>X[k]||'none').join('|')+'|'+new THREE.Color(X.c1).getHSL({}).h.toFixed(1);
+ const sig=X=>planOf(X)+'|'+['body','top','side','back','feet','eyes','ears','pattern'].map(k=>X[k]||'none').join('|')+'|'+new THREE.Color(X.c1).getHSL({}).h.toFixed(1);
  const taken=new Set(Object.values(SP).filter(x=>x.G).map(x=>sig(x.G)));let tries=0;
- do{mut.length=0;for(const k of['body','top','side','back','feet','eyes','ears','pattern']){const pa=GA[k]||'none',pb=GB[k]||'none';G[k]=rnd()<.5?pa:pb;if(rnd()<((k==='ears'||k==='pattern'?.45:.25)+tries*.04)*MQ){G[k]=GOPT[k][(rnd()*GOPT[k].length)|0];mut.push(k)}}
+ do{mut.length=0;for(const k of['plan','body','top','side','back','feet','eyes','ears','pattern']){const pa=k==='plan'?planOf(GA):GA[k]||'none',pb=k==='plan'?planOf(GB):GB[k]||'none';G[k]=rnd()<.5?pa:pb;if(rnd()<((k==='ears'||k==='pattern'?.45:k==='plan'?.3:.25)+tries*.04)*MQ){G[k]=GOPT[k][(rnd()*GOPT[k].length)|0];mut.push(k==='plan'?'silhouette':k)}}
   G.size=+(((GA.size+GB.size)/2)*(.85+rnd()*.35)).toFixed(2);G.sq=+(.85+rnd()*.3).toFixed(2);
   const hc=new THREE.Color(hexMix(GA.c1,GB.c1,.2+rnd()*.6));if(rnd()<.35+tries*.05){hc.offsetHSL((rnd()-.5)*.35,.05,0);mut.push('couleur')}G.c1='#'+hc.getHexString();
   G.c2=rnd()<.5?GA.c2:GB.c2;G.c3=rnd()<.5?GA.c3:GB.c3;if(rnd()<.2)[G.c2,G.c3]=[G.c3,G.c2];tries++}while(taken.has(sig(G))&&tries<30);

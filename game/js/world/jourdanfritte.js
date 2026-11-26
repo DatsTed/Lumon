@@ -1,6 +1,6 @@
 function buildJourdanfritte(){
  /* ---- Jourdanfritte ---- */
- {const W=26,H=22,m=JF=makeMap('jf',W,H,880,0,'town'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>x===0&&z===11);
+ {const W=26,H=22,m=JF=makeMap('jf',W,H,880,0,'town'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>(x===0&&z===11)||(x===W-1&&z>=12&&z<=14));rect(T,20,13,25,13,'#');rect(T,22,12,25,14,'#');
   rect(T,6,6,19,15,'c');rect(T,0,11,6,11,'#');rect(T,9,5,9,5,'c');rect(T,15,5,17,5,'c');rect(T,20,12,21,12,'c');rect(T,12,17,13,17,'c');rect(T,14,16,14,19,'c');rect(T,14,19,18,19,'c');
   [[1,1],[24,1],[24,20],[1,20],[22,15],[5,18]].forEach(([x,z])=>T[z][x]='T');terrain(m,T);
   nightWhiteExt(g,m,8,2,4,3,9);m.doors['9,4']=()=>goMap(NWJ,5,6,'up');
@@ -16,7 +16,10 @@ function buildJourdanfritte(){
    box(g,3.9,.12,.5,b.cx,2.55,b.fz+.2,'#d8b45a',{emi:'#7a5a10',ol:.02});for(let k=0;k<5;k++)box(g,.7,.06,.45,b.cx-1.5+k*.75,2.38,b.fz+.35,k%2?'#1c1a22':'#d8b45a',{cast:false}).rotation.x=.45;
    m.doors['16,18']=()=>goMap(SMILE,5,6,'up')}
   sg(m,4,12,"Jourdanfritte — « La place où les frites sont reines. » Night White · Smile and Eat · Friterie de la Place",true);
-  for(let z=10;z<=12;z++)m.steps['0,'+z]=()=>goMap(ROUTE3,30,9,'left');arrows(m,[[0,10],[0,11],[0,12]],'left');
+  for(let z=10;z<=12;z++)m.steps['0,'+z]=()=>goMap(ROUTE3,30,9,'left');
+  for(let z=12;z<=14;z++)m.steps[(W-1)+','+z]=()=>goMap(ROUTE5,1,8,'right');arrows(m,[[W-1,12],[W-1,13],[W-1,14]],'right');
+  {const gate=box(g,.16,.16,3.2,m.ox+23.5,.8,m.oz+13,'#d8232a',{ol:.02});m.anim.push(()=>{const c=!F().ch4done;gate.visible=c;for(let z=12;z<=14;z++)setSolid(m,23,z,c?1:0)});
+   sg(m,22,11,"Route 5 → Liègenoir. (Barrière : « Route fermée — travaux », signé « la Commune ». Quelqu'un a ajouté : « travaux de quoi ? »)",false)}arrows(m,[[0,10],[0,11],[0,12]],'left');
   wand(npc(m,'miner',11,12,'down',async()=>{if(await huile('roger'))return;await say('Monsieur Roger',"Ça fait quarante ans que je mange mes frites sur cette place. Le secret ? Toujours manger debout. Les frites, ça se mange debout.")}));
   wand(npc(m,'kid',16,13,'left',async()=>{if(await huile('ines'))return;await say('Petite Inès',"Jalal, du Smile and Eat, il a les plus beaux cheveux du monde. Il dit que c'est grâce à l'huile d'olive.")}));
   m.signs['12,17']=m.signs['13,17']=friteJF}

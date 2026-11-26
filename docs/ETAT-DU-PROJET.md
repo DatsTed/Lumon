@@ -62,13 +62,13 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 ## Reste à faire
 Fait (novembre 2026) : lots 1 à 6 (`docs/PROMPT-LOT2.md`) et lot 3 + chapitre 4 (`docs/PROMPT-LOT3.md`). Voir `docs/CHANGELOG.md`.
 
-**Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille (faites) · Liègenoir, Namuroc, Bastognac, Gandoux, Côte du Nord (à faire).
+**Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille, Liègenoir (faites) · Namuroc, Bastognac, Gandoux, Côte du Nord (à faire).
 Entre chaque route et chaque ville : petit scénario, énigmes, quêtes, mini-jeux.
 
-À vérifier avec de vraies mains : équilibrage (test de Nour 18 pts, Snow en duo, économie), son, manette Bluetooth, lisibilité du duo sur téléphone.
+À vérifier avec de vraies mains : équilibrage (test de Nour 18 pts, Snow en duo, économie, Smogule de Lambert immunisé aux attaques Normal de Laïka), son, manette Bluetooth, lisibilité du duo sur téléphone (bouton « Combat 2 contre 2 aléatoire » du mode test), mini-jeux de l'escalier et du rap au doigt.
 
 À préparer / à jouer plus tard :
-- [ ] Chapitre 5 : Liègenoir (Snow y a filé), avec Luciole.
+- [x] Chapitre 5 : Liègenoir (lot 4). Fin : Snow, libéré du Baron, donne rendez-vous à Namuroc (chapitre 6).
 - [ ] Chapitres 5-6 : trame positive / négative selon le Cisoa donné à Alex (`trameHistoire()`, `f.cisoaAlex`) : colocation avec Alex (positive) ou non, test d'honnêteté des frères (négative).
-- [ ] Arènes et médailles restantes (2/8 : Terril, Diamant), Ligue d'Ardenval, plus de Lumons sauvages.
+- [ ] Arènes et médailles restantes (3/8 : Terril, Diamant, Perron), Ligue d'Ardenval, plus de Lumons sauvages.
 - [ ] APK Android, PDF de présentation et feuille de suivi.

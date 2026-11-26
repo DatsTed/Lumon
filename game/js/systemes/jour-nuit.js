@@ -16,7 +16,7 @@ function updateEnv(){const G=gameT(),h=G.h;let{col,night}=skyAt(h);ENV.w=dayWeat
  HEMIL.intensity=.3+.38*(1-night)*(ENV.w==='drache'?.8:1);HEMIL.color.set(night>.5?'#8a90ff':'#d8d0ff');sun.intensity=(.18+.72*(1-night))*(ENV.w==='clair'?1:.6);sun.color.set(night>.5?'#8090ff':(h<9||h>17?'#ffb890':'#fff0d8'));
  ENV.stars.material.opacity=ENV.w==='clair'?night:night*.3;ENV.moon.visible=night>.45&&ENV.w!=='brume';ENV.moon.material.opacity=night;ENV.rain.visible=ENV.w==='drache';
  for(const k in TM){const m=TM[k];if(m.emissive&&k.includes('#ffd24a')||k.includes('#fff2b0')||k.includes('#c8f0ff')||k.includes('#fff3a0'))m.emissiveIntensity=.35+night*3.2}nightApply(night);
- const hh=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0');$('clock').innerHTML=`<b>${hh}</b><br>${{clair:night>.5?'☾ Nuit claire':'☀ Beau temps',drache:'☂ Il drache',brume:'≋ Brume',vent:'🌬 Ça souffle'}[ENV.w]}`}
+ const hh=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor((h%1)*60)).padStart(2,'0');$('clock').innerHTML=`<b>${hh}</b><br>${(ENV.smog?'☁ Smog des cokeries':{clair:night>.5?'☾ Nuit claire':'☀ Beau temps',drache:'☂ Il drache',brume:'≋ Brume',vent:'🌬 Ça souffle'}[ENV.w])}`}
 updateEnv();setInterval(updateEnv,4000);
 function envTick(dt){const c=camera.position;ENV.stars.position.set(c.x,0,c.z);ENV.moon.position.set(c.x-50,75,c.z-100);
  if(ENV.rain.visible){const A=ENV.rainA;ENV.rainP.forEach((p,i)=>{p[1]-=dt*22;if(p[1]<0){p[1]=12;p[0]=rnd()*30-15;p[2]=rnd()*30-15}const x=camTarget.x+p[0],z=camTarget.z+p[2];A[i*6]=x;A[i*6+1]=p[1];A[i*6+2]=z;A[i*6+3]=x+.05;A[i*6+4]=p[1]+.5;A[i*6+5]=z});ENV.rain.geometry.attributes.position.needsUpdate=true}

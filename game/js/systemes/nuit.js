@@ -28,3 +28,16 @@ const PETS={luciole:'noctiluce',mcsambre:'sambrax',snow:'givrale',captain:'kraka
 function addPet(c,key){let sp=PETS[key];if(typeof sp==='function')sp=sp();if(!sp||!SP[sp]||!c||!c.g)return;try{const r=monModel(sp);r.g.scale.setScalar(.72*(MSCALE[sp]||1));r.g.position.set(.62,0,-.5);r.g.rotation.y=-.3;c.g.add(r.g);c.pet=r}catch(e){}}
 function nightSetup(){for(const id in MAPS){const m=MAPS[id];if(m.room||id==='arena'||id==='gal')continue;roadLanterns(m)}
  [['route',4,11],['route2',3,23],['route3',3,37]].forEach(([id,n,seed])=>MAPS[id]&&itemBushes(MAPS[id],n,seed))}
+// ---- Intérieurs éclairés : les pièces ne suivent plus la nuit du dehors (lampes allumées, lumière chaude) ----
+const INDOOR_IDS=new Set(['lab']),isIndoor=m=>!!m&&(m.room||INDOOR_IDS.has(m.id));
+const INLIGHT=new THREE.PointLight('#ffd9a0',0,16,1.6);INLIGHT.castShadow=false;scene.add(INLIGHT);
+// applique (ou retire) l'éclairage intérieur ; appelé par nightApply (toutes les 4 s) et à chaque changement de carte
+function indoorLight(){const m=cur,on=isIndoor(m)&&!B;if(on){INLIGHT.position.set(m.ox+(m.W-1)/2,3.4,m.oz+(m.H-1)/2);INLIGHT.intensity=1.15;HEMIL.intensity=Math.max(HEMIL.intensity,.78);HEMIL.color.set('#fff0dc');sun.intensity=Math.max(sun.intensity,.5);sun.color.set('#ffe6c8')}else INLIGHT.intensity=0}
+{const na=nightApply;nightApply=function(n){na(n);indoorLight()}}
+{const gm=gotoMap;gotoMap=function(...a){const r=gm.apply(this,a);try{updateEnv()}catch(e){}return r}}
+// appliques murales (toujours allumées) le long du mur du fond, avec un halo
+function wallLamps(m){const g=m.group,lab=m.id==='lab',n=Math.max(2,Math.round(m.W/4)),z=lab?m.oz-.4:m.oz+.47,y=lab?2.6:2.05;
+ const xs=lab?[m.ox+2.9,m.ox+5.1]:Array.from({length:n},(_,k)=>m.ox+(m.W-1)*(k+.5)/n);
+ for(const x of xs){box(g,.1,.32,.12,x,y-.23,z,'#3a2c22',{ol:false,cast:false});box(g,.26,.2,.18,x,y,z+.08,'#fff2c8',{emi:'#ffcf7a',ol:false,cast:false});
+  const sm=new THREE.SpriteMaterial({map:glowTex(),color:'#ffcf80',transparent:true,opacity:.75,depthWrite:false,blending:THREE.AdditiveBlending}),sp=new THREE.Sprite(sm);sp.position.set(x,y,z+.25);sp.scale.set(1.3,1.3,1);g.add(sp)}}
+{const ns=nightSetup;nightSetup=function(){ns();for(const id in MAPS){const m=MAPS[id];if(isIndoor(m))wallLamps(m)}}}

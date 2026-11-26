@@ -14,6 +14,8 @@ async function buildWorld(){
  placePNJIxellette();
  buildRoute4();
  buildAnversaille();
+ buildRoute5();
+ buildLiegenoir();
  placePNJLuciole();
  nightSetup();
 }
@@ -36,6 +38,6 @@ function refreshNPCs(){const f=F();
 
 /* Défaite : Maison des Lumons la plus proche DÉJÀ DÉCOUVERTE (null = chez maman à Ixellette) */
 const RESPAWN={town:[],lab:[],nw_town:[],route:[],charl:['charl'],centre:['charl'],shop:['charl'],gym:['charl'],
- route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],smile:['jf'],route4:['anv','brux'],anv:['anv'],centre_a:['anv'],gym_a:['anv'],centre_j:['jf'],nw_jf:['jf']};
-function respawnCentre(m){const f=F(),known={charl:!!f.charl,brux:!!f.brux,jf:!!(f.jfSeen||f.hired||f.ch3),anv:!!f.anv},C={charl:CENTRE,brux:CENTREB,jf:CENTREJ,anv:CENTREA};
+ route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],smile:['jf'],route4:['anv','brux'],anv:['anv'],centre_a:['anv'],gym_a:['anv'],centre_j:['jf'],nw_jf:['jf'],route5:['lie','jf'],lie:['lie'],centre_l:['lie'],gym_l:['lie'],cokerie:['lie'],club:['lie'],bueren:['lie']};
+function respawnCentre(m){const f=F(),known={charl:!!f.charl,brux:!!f.brux,jf:!!(f.jfSeen||f.hired||f.ch3),anv:!!f.anv,lie:!!f.lie},C={charl:CENTRE,brux:CENTREB,jf:CENTREJ,anv:CENTREA,lie:CENTREL};
  const L=m&&RESPAWN[m.id];if(!L)return C[f.healAt]||null;for(const k of L)if(known[k])return C[k];return null}

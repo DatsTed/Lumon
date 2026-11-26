@@ -1,4 +1,4 @@
-function objText(){const f=F();if(!f.introDone)return'';if(f.ch4done)return'Chapitre 4 terminé · Snow a filé à Liègenoir · La suite bientôt';
+function objText(){const f=F();if(!f.introDone)return'';if(f.ch4done)return ch5Obj();
  if(f.ch3){if(!f.pcWagner)return"Retourne à Bruxellia : quelqu'un t'attend à la Maison des Lumons";if(!f.ch4)return"Va voir Nour au Night White de Bruxellia";
   if(!f.pont4)return"Prends la Route 4 (sortie nord de Bruxellia) et passe le pont de l'éclusier";if(!f.anv)return"Continue la Route 4 jusqu'à Anversaille, la ville portuaire";
   if(!f.badge2)return"Défie l'arène d'Anversaille (type Eau) : la Médaille Diamant ouvre le port";if(!f.grue)return"Au port d'Anversaille, prends la grue pour trouver le container de Snow";return"Arrête Snow sur les quais du port d'Anversaille"}if(f.hired){if(f.food===1)return"Va chercher à manger pour Amin au Smile and Eat (collé à la friterie de la place)";if(f.food===2)return"Rapporte le repas du Smile and Eat à Amin, au Night White";
