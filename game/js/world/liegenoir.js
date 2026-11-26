@@ -28,8 +28,8 @@ function buildLiegenoir(){
   m.doors['28,19']=m.doors['28,23']=async()=>say('',"Derrière la vitrine aux néons rouges, un rideau se ferme. Une affichette : « Propriété du Baron. »");
   sg(m,24,16,"Rue des Vitrines. Les néons ne s'éteignent jamais. Les sourires, si.",false);
   // Maison des Lumons, arène, friterie
-  bigBuilding(g,m,3,20,5,4,'#fdf6f0','#8a2a2a',5,'MAISON DES LUMONS','#d8232a','#ffffff');m.doors['5,23']=()=>goMap(CENTREL,4,5,'up');
-  bigBuilding(g,m,12,22,6,4,'#1a1420','#3a1a2a',15,'ARÈNE DE LIÈGENOIR','#ff3b5c','#1a1420');m.doors['15,25']=()=>goMap(GYML,5,13,'up');
+  bigBuilding(g,m,3,21,5,3,'#fdf6f0','#8a2a2a',5,'MAISON DES LUMONS','#d8232a','#ffffff');m.doors['5,23']=()=>goMap(CENTREL,4,5,'up');
+  bigBuilding(g,m,12,23,6,3,'#1a1420','#3a1a2a',15,'ARÈNE DE LIÈGENOIR','#ff3b5c','#1a1420');m.doors['15,25']=()=>goMap(GYML,5,13,'up');
   house(g,m,19,20,4,3,'#c9b08a','#3a2a22',20);m.doors['20,22']=async()=>say('Friterie « Chez Tchantchès »',"Fermé. « Réouverture quand le Baron arrêtera de racketter les friteries. » Écrit à la main, souligné trois fois.");
   [[9,9],[23,9],[9,19],[23,19],[3,13],[20,14],[25,13]].forEach(([x,z])=>lamp(g,m,x,z));
   sg(m,2,12,"Liègenoir — « La Cité Ardente ». Place du Marché · Arène · Maison des Lumons · Cokerie",true);
