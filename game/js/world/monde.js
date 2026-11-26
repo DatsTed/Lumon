@@ -17,6 +17,7 @@ async function buildWorld(){
  buildRoute5();
  buildLiegenoir();
  buildRanch();
+ buildFlipper();
  placePNJLuciole();
  nightSetup();
 }

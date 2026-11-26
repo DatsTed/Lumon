@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve)."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat)."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -124,6 +124,32 @@ def ranch(g, out):
                                 ('ferme', 'FERME', 5, 6, 'up'), ('coloc', 'COLOC', 4, 4, 'up'), ('route5_sud', 'ROUTE5', 24, 12, 'down')):
         g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1800); g.js('()=>updateEnv()'); snap(g, out + '/ranch_%s.png' % nom, 900)
     g.js('()=>{S.clock=22*60;runScript(async()=>{await goMap(RANCH,14,11,"down")})}'); g.p.clock.run_for(1500); g.js('()=>updateEnv()'); snap(g, out + '/ranch_nuit.png', 800)
+
+def flipper(g, out):
+    """Flipper du Smile and Eat : la borne dans le snack, puis le flipper (iframe) : accueil, partie, Lumon, œuf, tour, Légendaire."""
+    g.js('()=>{Object.assign(F(),{brux:1,ch3:1,jalal:1});S.clock=13*60;S.bag.lumisphere=9;S.party.length=0;S.party.push(mkMon("charbonnet",24));refreshFollower();runScript(async()=>{await goMap(SMILE,8,3,"up")})}')
+    g.p.clock.run_for(1800); g.js('()=>updateEnv()'); snap(g, out + '/flip_borne.png', 900)
+    g.js('()=>{runScript(async()=>{await flipBorne()})}')
+    fr = None
+    for _ in range(400):
+        g.p.clock.run_for(150)
+        g.js("()=>{const d=document.getElementById('dlg');if(d&&d.style.display==='block')d.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true}))}")
+        fr = next((f for f in g.p.frames if '/flipper/' in f.url), None)
+        if fr and fr.evaluate('()=>typeof PINBALL!=="undefined"&&typeof THREE!=="undefined"&&!!document.querySelector("#arcov [data-a=arcstart]")'): break
+    snap(g, out + '/flip_accueil.png', 600)
+    fr.evaluate('()=>{PINBALL.setLevel(18);document.querySelector("#arcov [data-a=arcstart]").click()}')
+    snap(g, out + '/flip_partie.png', 2500)
+    fr.evaluate('()=>{const P=window.__pin;let k=0;do{P.startChasse();k++}while(P.part.lum.egg&&k<60)}')
+    snap(g, out + '/flip_lumon.png', 1500)
+    fr.evaluate('()=>{const P=window.__pin;let k=0;do{P.startChasse();k++}while(!P.part.lum.egg&&k<80)}')
+    snap(g, out + '/flip_oeuf.png', 1500)
+    fr.evaluate('()=>{const P=window.__pin;P.part.on=false;P.loadTable(8)}')
+    snap(g, out + '/flip_tour.png', 1500)
+    fr.evaluate('()=>{const P=window.__pin;P.towerEnter();P.towerEnter();P.towerEnter()}')
+    snap(g, out + '/flip_legendaire.png', 1800)
+    fr.evaluate('()=>{const P=window.__pin,b=P.balls[0];b.st="play";b.x=180;b.y=330;b.vx=60;b.vy=-40}')
+    snap(g, out + '/flip_bille.png', 120)
+    print('erreurs du flipper :', fr.evaluate('()=>window.__ferr||[]'))
 
 if __name__ == '__main__':
     sc = sys.argv[1]; out = sys.argv[2] if len(sys.argv) > 2 else os.environ.get('TEMP', '.')

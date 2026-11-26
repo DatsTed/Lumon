@@ -55,18 +55,19 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 - Fusions : Fusionneur verrouillé jusqu'à médaille + Lumisphère, cinématique, musique, décor sombre, fusions uniques, 3 formes dont une forme ultime avec aura ; deux identiques = amélioration des IV.
 - Œufs, sexes, Pension de Mamie Rose ; Ranch du Pays de Herve (Route 5, sud : 2 enclos, couveuse, nid du jour, boutique, éclosion ×2) ; œufs donnés dans le chapitre 5 (Samira, Cokerie).
 - Liens (`systemes/liens.js`) : Luciole (tendre / complice / froide) et Alex (réglo / combines). Cadeaux différents selon la voie à ♥3, ♥6, ♥10 ; menu « Liens ». Luciole peut finir en couple ou meilleure amie, ou partir si on est trop froid. Sources : choix des chapitres 2 à 5, discussion du jour au garage, balades au Ranch.
+- Flipper Lumons au Smile and Eat (`systemes/flipper.js` + dossier `game/flipper/`, voir `game/flipper/LISEZMOI.md`) : le flipper de High & Rouillé, billes Lumisphères, captures de Lumons et d'œufs, Tour du Légendaire.
 - Monde : jour/nuit (40 min), météo, ciel nuageux, textures, monture, carte du monde, embuscades cachées.
 - Night White (test, essai, 3 mini-jeux), friteries, boutiques, quêtes Danny, Rudy, enveloppe.
 - Sac par poches, relâcher un Lumon, volumes musique/bruitages (bruitages 15 % par défaut), journal, 20 succès, mode test.
 - Caméra cinéma (`cine`), plafond/murs pendant les cinématiques. Garde-fous anti-écran noir.
 
 ## Reste à faire
-Fait (novembre 2026) : lots 1 à 6 (`docs/PROMPT-LOT2.md`) et lot 3 + chapitre 4 (`docs/PROMPT-LOT3.md`). Voir `docs/CHANGELOG.md` Lot 4 (chapitre 5) et lot 5 (liens, Ranch) le 26 novembre.
+Fait (novembre 2026) : lots 1 à 6 (`docs/PROMPT-LOT2.md`) et lot 3 + chapitre 4 (`docs/PROMPT-LOT3.md`). Voir `docs/CHANGELOG.md` Lot 4 (chapitre 5), lot 5 (liens, Ranch) et lot 6 (flipper) le 26 novembre.
 
 **Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille, Liègenoir (faites) · Namuroc, Bastognac, Gandoux, Côte du Nord (à faire).
 Entre chaque route et chaque ville : petit scénario, énigmes, quêtes, mini-jeux.
 
-À vérifier avec de vraies mains : équilibrage (test de Nour 18 pts, Snow en duo, économie, Smogule de Lambert immunisé aux attaques Normal de Laïka), son, manette Bluetooth, lisibilité du duo sur téléphone (bouton « Combat 2 contre 2 aléatoire » du mode test), mini-jeux de l'escalier et du rap au doigt. Lot 5 : rythme des cœurs (assez de choix pour atteindre ♥10 ?), lisibilité du Ranch et des Lumons des enclos, puissance des cadeaux (Ruber, Fromage, Pendentif).
+À vérifier avec de vraies mains : flipper au doigt (vitesse sur téléphone, 3 Lumisphères la partie, fréquence des captures), équilibrage (test de Nour 18 pts, Snow en duo, économie, Smogule de Lambert immunisé aux attaques Normal de Laïka), son, manette Bluetooth, lisibilité du duo sur téléphone (bouton « Combat 2 contre 2 aléatoire » du mode test), mini-jeux de l'escalier et du rap au doigt. Lot 5 : rythme des cœurs (assez de choix pour atteindre ♥10 ?), lisibilité du Ranch et des Lumons des enclos, puissance des cadeaux (Ruber, Fromage, Pendentif).
 
 À préparer / à jouer plus tard :
 - [x] Chapitre 5 : Liègenoir (lot 4). Fin : Snow, libéré du Baron, donne rendez-vous à Namuroc (chapitre 6).

@@ -76,6 +76,7 @@ ROLE = {
  'js/systemes/embuscades.js': "Embuscades cachées Kétosaures / Pirates.",
  'js/systemes/mode-test.js': "Mode test (Options), combat 2 contre 2 aléatoire (`testDuo`).",
  'js/systemes/liens.js': "Liens avec Luciole et Alex (`lienChoix`, `lienCheck`, voies et cadeaux `LIEN_REW`), écran `liensScreen`, discussion du jour au garage (`alexTalk`, `ALEX_SUJETS`), Marché gris, Alex en panne sur la Route 5 (`alexR5`), balades de Luciole au Ranch (`lucBalade`).",
+ 'js/systemes/flipper.js': "Flipper Lumons du Smile and Eat : borne (`buildFlipper`, `flipBorne`), iframe `game/flipper/` (`flipperOpen`), passerelle `LUMPIN` (Lumisphères, captures `flipEspece`, œufs `flipOeuf`, paliers, tickets), pause du jeu.",
  'js/world/ranch.js': "Ranch du Pays de Herve (`RANCH`) : enclos A/B avec Lumons en 3D, couveuse, nid du jour, boutique, Grand Livre ; ferme (`FERME`) ; appart d'Alex (`COLOC`) ; éclosion ×2 au Ranch, Couverture, Fromage de Herve.",
  'js/world/route5.js': "Route 5 (Jourdanfritte ↔ Liègenoir) : cheminées, dresseurs Kétosaures, chemin du sud vers le Ranch.",
  'js/world/liegenoir.js': "Liègenoir (smog) : Perron, club du Baron, Cokerie, Montagne de Bueren, rue des Vitrines, Maison des Lumons, arène de Lambert.",

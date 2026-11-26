@@ -49,11 +49,20 @@ def assembler():
     return '\n'.join(out), js, css
 
 
+def flipper():
+    """Le flipper du Smile and Eat (game/flipper/, ouvert dans une iframe) : aussi mis en cache pour jouer hors ligne."""
+    d = os.path.join(GAME, 'flipper')
+    if not os.path.isdir(d): return []
+    out = ['./flipper/index.html', './flipper/pinball.css']
+    out += ['./flipper/js/' + f for f in sorted(os.listdir(os.path.join(d, 'js'))) if f.endswith('.js')]
+    return out
+
+
 def maj_sw(js, css):
     p = os.path.join(GAME, 'sw.js')
     sw = lire(p)
     core = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'] + \
-           ['./' + f for f in css + js] + ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js']
+           ['./' + f for f in css + js] + flipper() + ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js']
     ligne = 'const CORE=[' + ','.join("'%s'" % u for u in core) + '];'
     neuf, n = re.subn(r'^const CORE=\[.*\];$', lambda m: ligne, sw, flags=re.M)
     assert n == 1, 'ligne CORE introuvable dans sw.js'
