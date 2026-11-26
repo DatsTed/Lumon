@@ -22,6 +22,7 @@ const COKE_T=[1100,800,1250,950];
 function ch5Obj(){const f=F();if(f.ch5done)return'Chapitre 5 terminé · Snow t\'attend à Namuroc · La suite bientôt';
  if(!f.r5)return"Prends la Route 5 (sortie est de Jourdanfritte), direction Liègenoir";if(!f.lie)return"Traverse la Route 5 jusqu'à Liègenoir";
  if(!f.samira)return"Liègenoir est plongée dans le smog : parle aux habitants de la place du Marché";
+ if(!f.ranch&&!f.badge3)return f.oeufSamira?"Emmène l'œuf de Samira au Ranch du Pays de Herve (Route 5, chemin du sud)":"Visite le Ranch du Pays de Herve (Route 5, chemin du sud) : on y élève des Lumons";
  if(!f.badge3)return"Défie l'arène de Liègenoir (type Ténèbres) : l'inspecteur Lambert peut t'ouvrir la Cokerie";
  if(!f.cokerie)return"Entre dans la Cokerie (nord-ouest de la place) et arrête les fours de la Poudre d'Éclat";
  if(!f.rap)return"Monte les 374 marches de la Montagne de Bueren (nord-est) : Lil Perron connaît le mot de passe du club";
@@ -31,6 +32,8 @@ async function r5Entree(){const f=F();f.r5=1;setObj();const[x,z]=lucFree(cur,pla
  await say('Luciole',"Te voilà. J'ai pris le premier bus pour Jourdanfritte… et j'ai marché. Liègenoir, c'est au bout de cette route. Tu vois les cheminées, là-bas ?");
  await say('Luciole',"Mon père dit que Liègenoir, c'était la Cité Ardente. Les forges, les fêtes, le 15 août en Outremeuse… Maintenant, il paraît qu'il n'y fait plus jamais jour.");
  await say('Luciole',"Snow est là-bas. Et derrière Snow, il y a quelqu'un d'autre. Un type qu'on appelle « le Baron ». Reste sur tes gardes.");
+ await lienChoix('luciole','Luciole',"…Tu m'écoutes, au moins ?",[["Je veillerai sur toi.",'coeur',1,"Je sais me défendre, idiot. …Mais merci."],["T'inquiète, j'ai Laïka. Elle mord les barons.",'ami',1,"Elle mord surtout les fricadelles. Mais ok."],["Tu me ralentis, là.",'froid',-2,"…Charmant."]]);
+ await say('Luciole',"Ah, et au sud de la route, il y a le Ranch du Pays de Herve. Si tu trouves des œufs, c'est là qu'il faut aller.");await lienCheck('luciole');
  await tween(500,q=>{lu.k=1-q;lu.place()});killTemp(lu)}
 async function poudreScene(){const f=F();f.poudre=1;sfx(90,.4,'sawtooth',.15);camShake(300,.1);
  await say('',"Un Pigeolet tombe du ciel juste devant toi. Ses yeux brillent d'un violet malsain, ses plumes fument. Il est couvert d'une poudre mauve.");
@@ -40,6 +43,7 @@ async function poudreScene(){const f=F();f.poudre=1;sfx(90,.4,'sawtooth',.15);ca
  await say('Luciole',res==='caught'?"Tu l'as attrapé… Bien. Dans une Lumisphère, au moins, il est à l'abri. Regarde la poudre sur ses plumes.":"Il s'est enfui… Regarde ce qu'il a laissé par terre. Cette poudre mauve.");
  await say('Luciole',"C'est de la Poudre d'Éclat. De l'Éclat raffiné, comme celui du Fusionneur de la Prof. Les Lumons qui en avalent deviennent plus forts, plus rapides… puis ils s'éteignent. Pour de bon.");
  await say('Luciole',"Les Kétosaures la vendent aux dresseurs qui veulent gagner à tout prix. Et ça vient de Liègenoir. Allez, on y va.");
+ await lienChoix('luciole','Luciole',"…Ça va, toi ?",[["Ça me retourne. Ce pauvre Lumon…",'coeur',1,"T'as un cœur gros comme un terril. C'est pour ça que je te suis."],["On va leur faire bouffer leur poudre.",'ami',1,"Ça, c'est un programme."],["Bah. Chacun prend ce qu'il veut.",'froid',-2,"…Tu dirais pas ça si t'avais vu ce que j'ai vu."]]);await lienCheck('luciole');
  await tween(500,q=>{lu.k=1-q;lu.place()});killTemp(lu);setObj()}
 // ---- 2. Liègenoir
 async function lieArrivee(){const f=F();f.lie=1;await banner('Liègenoir','La Cité Ardente… éteinte',2600);
@@ -47,13 +51,17 @@ async function lieArrivee(){const f=F();f.lie=1;await banner('Liègenoir','La Ci
  await say('',"Les volets sont fermés. Seuls brillent les néons du club, au nord de la place, et les vitrines rouges, à l'est.");setObj()}
 async function samiraTalk(){const f=F(),N='Samira, éducatrice de rue';
  if(f.ch5done){await say(N,"Les petits ont arrêté de chanter les chansons du Baron. Ils chantent celle de Lil Perron, la nouvelle. Celle sur le soleil. C'est pas du Brel, mais c'est mieux.");return}
- if(f.samira){await say(N,["Le Baron a trois piliers : la Cokerie, le club, et ses chansons. Fais tomber les trois.","Si tu passes rue des Vitrines, parle à Jade. Elle sait des choses sur le Baron. Elle a peur, sois doux.","L'inspecteur Lambert, à l'arène, est le seul flic qui n'a pas été acheté. Il est fatigué, mais il est honnête."][(rnd()*3)|0]);return}
+ if(f.samira){if(f.alexDon&&!f.alexDonVu){f.alexDonVu=1;await say(N,"Tu sais quoi ? Un chauffeur en costume est passé ce matin. Il m'a donné une enveloppe : deux mille euros, « pour les gamins ». Il a dit qu'il s'appelait Alex. Tu le connais ?");return}await say(N,["Le Baron a trois piliers : la Cokerie, le club, et ses chansons. Fais tomber les trois.","Si tu passes rue des Vitrines, parle à Jade. Elle sait des choses sur le Baron. Elle a peur, sois doux.","L'inspecteur Lambert, à l'arène, est le seul flic qui n'a pas été acheté. Il est fatigué, mais il est honnête."][(rnd()*3)|0]);return}
  await say(N,"Toi, t'es pas d'ici. Ça se voit : tu regardes encore les gens dans les yeux. Moi, c'est Samira. Je m'occupe des jeunes du quartier… de ceux qui restent.");
  await say(N,"Liègenoir appartient au Baron. Sa Cokerie fabrique la Poudre d'Éclat : c'est elle qui crache ce smog. Il rackette les friteries, il « protège » les filles de la rue des Vitrines… en gardant leurs papiers.");
  await say(N,"Et il paie un rappeur, Lil Perron, pour faire des clips où les dealers roulent en Rolls et où la police est ridicule. Les gamins de dix ans connaissent les paroles par cœur. Ils veulent tous devenir « comme le Baron ».");
  const c=await choose(N,"Tu veux vraiment l'aider, cette ville ?",["Oui. On commence par où ?","Le Baron, je vais le défoncer."]);
  await say(N,c?"Doucement, cow-boy. La colère, c'est son carburant à lui. Commence par l'arène : l'inspecteur Lambert peut t'ouvrir la Cokerie.":"Par l'arène. L'inspecteur Lambert est le seul à pouvoir te faire entrer à la Cokerie. Et après… il faudra faire taire les fours.");
- f.samira=1;setObj()}
+ f.samira=1;
+ await say(N,"Attends. Une dernière chose. Les petits ont trouvé ça dans une caisse des Kétosaures, à la gare. Un œuf. Le Baron fait couver des Lumons pour les droguer dès la naissance.");
+ await say(N,"Prends-le. Au sud de la Route 5, il y a le Ranch du Pays de Herve. Mariette saura s'en occuper. Ici, il ne verrait jamais le soleil.");
+ {const e=mkEgg('tchantchou',null,rnd()<1/100);e.left=e.total=600;const r=ranchGiveEgg(e);f.oeufSamira=1;sfx(784,.15);sfx(1046,.25);await banner('Tu as reçu un Œuf !',r==='couveuse'?'Déposé dans la couveuse du Ranch':'Marche pour le faire éclore',2000)}
+ setObj()}
 async function gaminsRap(){const f=F();if(f.ch5done){await say('Gamin',"♪ Le soleil s'est levé sur le Perron, on a éteint la nuit, on a gardé le son ! ♪ …C'est la nouvelle de Lil Perron. Elle est trop bien.");return}
  await say('Gamin',"♪ Le Baron c'est l'patron, on fait des ronds au Perron, la police on s'en fout, nous on veut des sous-sous-sous ! ♪");
  await say('Gamin',"Plus tard, je serai guetteur pour les Kétosaures. Ils gagnent cinquante euros par jour juste pour crier « ARAH » quand la police arrive. C'est mieux que l'école.")}
@@ -93,6 +101,9 @@ async function vanne(k){const f=F(),m=COKERIE;if(f.cokerie){await say('',"Le fou
  const[x,z]=lucFree(cur,player.x+1,player.z+1);const lu=await tempChar('luciole',x,z,'up');lu.face(dirTo(lu,player.x,player.z));
  await say('Luciole',"T'as réussi ! J'étais dans la ruelle derrière, j'ai suivi un camion de Poudre. Il allait au Perron Noir, le club du Baron. Snow y est entré aussi.");
  await say('Luciole',"Mais le videur ne laisse entrer qu'avec le mot de passe. Il paraît que ce rappeur, Lil Perron, le connaît. Il tourne son clip en haut de la Montagne de Bueren.");
+ await lienChoix('luciole','Luciole',"Quoi ? Pourquoi tu me regardes comme ça ?",[["T'as suivi un camion du Baron toute seule ? Fais attention à toi.",'coeur',1,"…Personne m'a jamais dit de faire attention à moi. C'est bizarre. C'est pas désagréable."],["Bien joué, l'espionne.",'ami',1,"Observatrice. Nuance. Mais merci."],["T'aurais pu m'aider avec les fours.",'froid',-1,"J'étais occupée à te trouver le club. De rien."]]);await lienCheck('luciole');
+ await say('',"En repartant, tu jettes un œil dans le four le plus froid. Entre deux briques encore tièdes, quelque chose brille… Un œuf ! Un vieil ouvrier l'avait caché là, au chaud, comme on faisait avant.");
+ {const r=ranchGiveEgg(mkEgg('cokelin',null,rnd()<1/100));sfx(784,.15);sfx(1046,.25);await banner('Tu as trouvé un Œuf de Cokelin !',r==='couveuse'?'Déposé dans la couveuse du Ranch':r?'Marche pour le faire éclore':'Plus de place pour lui… Il reste au chaud dans le four.',2000)}
  await tween(500,q=>{lu.k=1-q;lu.place()});killTemp(lu);setObj()}
 // ---- 5. Montagne de Bueren : 374 marches (pied gauche, pied droit, en alternance, avant la fin du chrono)
 function escalierJeu(){return new Promise(res=>{let ov=$('stairs');if(!ov){ov=document.createElement('div');ov.id='stairs';ov.className='ov';document.body.appendChild(ov)}
@@ -157,4 +168,5 @@ async function baronScene(){const f=F(),Bn='Le Baron',SN='Snow';setSong('ketobos
  const[x2,z2]=lucFree(cur,player.x+1,player.z+1);const lu=await tempChar('luciole',x2,z2,'up');lu.face(dirTo(lu,player.x,player.z));
  await say('Luciole',"Regarde-moi ça. La Cité Ardente. …Snow va à Namuroc. Il n'a plus de patron, plus rien. Un type comme ça, c'est encore plus dangereux.");
  await say('Luciole',"Mais d'abord, va dormir. T'as une tête de zombie. Moi je vais appeler mon père : il faut qu'il sache, pour la Poudre. Les marins en trouvent dans les ports depuis des semaines.");
+ if(!f.lucFroid){await lienChoix('luciole','Luciole',"…Et toi, tu vas faire quoi ?",[["Viens au Ranch avec moi. On se repose, tous les deux.",'coeur',2,"…Au Ranch. Avec toi. Ok. Je viendrai. Après avoir appelé mon père."],["Appelle ton père. Et dis-lui bonjour de ma part. Fort.",'ami',2,"Il va hurler. Il hurle toujours. Mais je lui dirai."],["Dormir. Seul. Bonne nuit.",'froid',-1,"…Ok. Bonne nuit, alors."]]);await lienCheck('luciole',true)}
  await tween(500,q=>{lu.k=1-q;lu.place()});killTemp(lu);setObj();if(typeof saveGame==='function')saveGame()}

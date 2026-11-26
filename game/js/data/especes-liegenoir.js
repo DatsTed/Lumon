@@ -13,6 +13,9 @@ const LIE_SP={
  smogule:{n:'Smogule',t:['Spectre','Ténèbres'],b:[56,70,52,80],xp:120,cr:110,L:[[1,'feufollet'],[1,'fumee'],[1,'regard'],[30,'hantise']],
   G:{plan:'flottant',body:'blob',size:.95,c1:'#5a5060',c2:'#8a8090',c3:'#c8ff4a',eyes:'sleepy',top:'none',ears:'none',side:'none',back:'none',feet:'tentacles',pattern:'glow'},
   d:"Né de la fumée des cokeries. Plus la ville est sale, plus il grossit. Le jour où le ciel de Liègenoir redeviendra bleu, il disparaîtra… ou il deviendra autre chose.",cry:'Fffhhhh…'},
+ lucinelle:{n:'Lucinelle',t:['Insecte','Spectre'],b:[58,64,56,82],xp:110,cr:0,L:[[1,'piqure'],[1,'feufollet'],[12,'vrombi'],[26,'hantise']],
+  G:{plan:'volant',body:'round',size:.7,c1:'#2a1a3a',c2:'#7fffd0',c3:'#2fbf4f',eyes:'round',top:'antennae',ears:'none',side:'wings',back:'none',feet:'none',pattern:'glow'},
+  d:"La petite de Noctiluce. Elle ne naît que d'un œuf confié par quelqu'un qui te fait vraiment confiance. Sa lueur verte s'allume quand tu dis la vérité.",cry:'Frrr… pip !'},
  cokelin:{n:'Cokelin',t:['Feu','Ténèbres'],b:[62,80,58,74],xp:130,cr:100,L:[[1,'braise'],[1,'morsure'],[1,'grisou'],[32,'haufo']],
   G:{plan:'serpent',body:'round',size:1,c1:'#2b2b30',c2:'#5a5a62',c3:'#ff6a1a',eyes:'fierce',top:'spikes',ears:'none',side:'none',back:'ember',feet:'none',pattern:'stripes'},
   d:"Ce serpent de charbon se glisse dans les fours des cokeries. Les vieux ouvriers le nourrissaient en cachette, pour qu'il garde les fours au chaud la nuit.",cry:'Tssssss !'}

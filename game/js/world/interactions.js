@@ -19,7 +19,7 @@ async function trainerSpot(tr,dist){const c=tr.c;const ex=new THREE.Group();tp(e
  if(res==='win'&&!re){F()[tr.flag]=1;if(tr.reward){await say(tr.name,`Tiens, prends ça, ça te servira !`);give(tr.reward[0],tr.reward[1])}}}
 function shinyfy(r){r.g.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissive!==undefined&&!o.userData.ol){o.material=o.material.clone();o.material.emissive=new THREE.Color('#3ef0ff');o.material.emissiveIntensity=.35;o.material.color&&o.material.color.offsetHSL(.45,.1,.05)}});return r}
 async function wildEncounter(){const tb=cur.wildAt(player.z),tot=tb.reduce((s,w)=>s+w[3],0);let r=rnd()*tot,w=tb[0];for(const e of tb){if((r-=e[3])<0){w=e;break}}
- const lv=w[1]+Math.floor(rnd()*(w[2]-w[1]+1)),wm=mkMon(w[0],lv);if(rnd()<1/400||window.__forceShiny)wm.shiny=1;await battle({wild:wm})}
+ const lv=w[1]+Math.floor(rnd()*(w[2]-w[1]+1)),wm=mkMon(w[0],lv);if(rnd()<(S.bag&&S.bag.pendentif?2:1)/400||window.__forceShiny)wm.shiny=1;await battle({wild:wm})}
 
 const TEMPS=new Set();async function tempChar(key,x,z,dir){const c=new Char(human(CH[key]),cur,x,z,dir);c.snap();TEMPS.add(c);addPet(c,key);return c}
 function killTemp(c){TEMPS.delete(c);c.map.group.remove(c.g);c.map.group.remove(c.sh)}

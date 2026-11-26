@@ -7,9 +7,9 @@ function chimney(g,X,Z,h=7,r=.7){add(g,new THREE.CylinderGeometry(r*.75,r,h,12),
  const sm=[];for(let k=0;k<5;k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:vfxTex('fumee'),transparent:true,opacity:.55,depthWrite:false}));s.scale.set(2.2,2.2,1);g.add(s);sm.push(s)}
  return t=>sm.forEach((s,k)=>{const q=(t*.12+k/5)%1;s.position.set(X+q*3,h+.6+q*5,Z-q*1.5);s.scale.setScalar(1.6+q*3.4);s.material.opacity=.6*(1-q)})}
 function buildRoute5(){
- {const W=36,H=16,m=ROUTE5=makeMap('route5',W,H,1460,0,'route'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>(x===0&&z>=7&&z<=9)||(x===W-1&&z>=10&&z<=12));
+ {const W=36,H=16,m=ROUTE5=makeMap('route5',W,H,1460,0,'route'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>(x===0&&z>=7&&z<=9)||(x===W-1&&z>=10&&z<=12)||(z===H-1&&x>=23&&x<=25));
   rect(T,2,11,7,14,'g');rect(T,12,7,20,12,'g');rect(T,27,2,33,7,'g');rect(T,28,14,33,14,'g');
-  pathLine(T,[[0,8],[9,8],[9,4],[24,4],[24,11],[35,11]],3);
+  pathLine(T,[[0,8],[9,8],[9,4],[24,4],[24,11],[35,11]],3);pathLine(T,[[24,11],[24,15]],3);
   [[3,3],[6,2],[14,14],[20,14],[30,9],[33,9],[17,2],[28,13]].forEach(([x,z])=>{if(T[z]&&T[z][x]==='.')T[z][x]='T'});[[4,6],[12,2],[19,9],[31,13]].forEach(([x,z])=>{if(T[z][x]==='.')T[z][x]='f'});
   terrain(m,T);
   // à l'horizon : les cheminées des cokeries de Liègenoir (hors de la carte, derrière les arbres)
@@ -20,6 +20,7 @@ function buildRoute5(){
   item(m,4,13,'nuitlumi',2,'r5i1');item(m,31,3,'supersirop',2,'r5i2');item(m,30,14,'ombrelumi',2,'r5i3');
   for(let z=7;z<=9;z++)m.steps['0,'+z]=()=>goMap(JF,24,13,'left');arrows(m,[[0,7],[0,8],[0,9]],'left');
   for(let z=10;z<=12;z++)m.steps[(W-1)+','+z]=()=>goMap(LIE,1,14,'right');arrows(m,[[W-1,10],[W-1,11],[W-1,12]],'right');
+  for(let x=23;x<=25;x++)m.steps[x+','+(H-1)]=()=>goMap(RANCH,14,1,'down');arrows(m,[[23,H-1],[24,H-1],[25,H-1]],'down');sg(m,22,13,"↓ Ranch du Pays de Herve — élevage de Lumons, enclos, couveuse. « Les œufs éclosent deux fois plus vite au grand air ! »",false);
   m.grassRate=.14;m.wildAt=z=>{const n=ENV.night;return[['ratoir',24,27,n?35:25],['terrillon',24,26,15],['hannetonne',24,26,n?5:20],['smogule',25,27,n?25:5],['cokelin',25,27,15],['pigeolet',24,26,n?0:15],['tchantchou',25,27,5]].filter(e=>e[3]>0)};
   const t1=npc(m,'keto',16,3,'down',async()=>F().kev?say('Dealer Kev',"Garde ta morale, gamin. À Liègenoir, tout le monde en prend. Même les Lumons."):trainerSpot(m.trainers[0],1));
   m.trainers.push({c:t1,range:3,flag:'kev',name:'Dealer Kev',key:'keto',smart:.45,mons:()=>[mkMon('ratoir',25),mkMon('cokelin',26)],

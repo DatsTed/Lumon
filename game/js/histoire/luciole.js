@@ -28,5 +28,5 @@ async function lucioleBruxellia(r){const L='Luciole',f=F();await lucFace(r);setS
  await say(L,"Je suis venue voir le Manneken-Lumon. Il fait pipi depuis quatre cents ans et personne ne lui demande de rendre des comptes. J'envie sa liberté.");
  await say(L,"…Tu sais garder un secret ? Non, laisse tomber. Le jour où je te le dirai, c'est que je n'aurai plus rien à perdre.");
  await say(L,"Les Pirates traînent sur la Route 3. Si tu croises leur chef… ne lui parle pas de moi. Jamais. Promis ?");
- await choose(L,"Promis ?",["Promis.","Ça dépend de ce que tu caches…"]);
+ await lienChoix('luciole',L,"Promis ?",[["Promis.",'coeur',1],["Ça dépend de ce que tu caches…",'ami',1,"Ha. T'es moins naïf que t'en as l'air. J'aime bien."]]);
  setSong(cur.song);await lucLeave(r,"À la prochaine, {P}. Et essaie de ne pas te faire voler ton colis, hein. Bruxellia, c'est plein de pigeons.")}

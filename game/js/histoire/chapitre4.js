@@ -12,6 +12,7 @@ async function alexPCScene(){const f=F(),A='Alex';f.pcWagner=1;const[x,z]=lucFre
  await say(A,"Après l'histoire du Pigeolet, je me suis dit : les dresseurs perdent leurs Lumons comme moi je perds mes clés. Alors j'ai codé un système de stockage. Moi. Tout seul. Une nuit blanche et trois Cisoa.");
  await say(A,"Tous les PC des Maisons des Lumons sont maintenant reliés à MON serveur. Tu ranges tes Lumons, tu les retires, tu les échanges. Et ceux que tu as capturés avec une équipe pleine ? Ils sont déjà dedans, en sécurité.");
  if(f.cisoaAlex===1)await say(A,"Et merci encore pour le Cisoa, hein. Hé hé. … Quoi ? Rien. Rien du tout.");else if(f.cisoaAlex===0)await say(A,"Toi, t'es honnête. T'as même pas voulu me donner un Cisoa. Ça m'a vexé… et ça m'a plu.");
+ await lienChoix('alex',A,"Génial, non ?",[["Et les données des dresseurs, elles sont protégées ?",'honnete',1,"Protégées ? Mon ami, c'est plus sécurisé que le coffre de la Ghost. Mot de passe : « Rolls ». …Je vais le changer."],["Tu pourrais revendre les infos des dresseurs…",'combine',1,"Chut ! …Ce serait illégal. Et lucratif. Mais surtout illégal. Hé hé."]]);
  await say(A,"Le PC est juste là, à droite du comptoir. Allez, je file : j'ai un mariage à Waterloo dans une heure, et la Phantom n'aime pas être en retard.");
  await tween(500,q=>{a.k=1-q;a.place()});killTemp(a);await banner('PC de stockage débloqué !',"Wagner Storage · dans toutes les Maisons des Lumons",2400);setObj()}
 // 2. Nour lance le chapitre 4
@@ -38,8 +39,8 @@ async function lucioleSecret(){const f=F(),L='Luciole';f.lucR4=1;const[x,z]=lucF
  await say(L,"Captain. Le chef des Pirates. Le fou qui crie sur les routes. C'est… mon père.");sfx(180,.6,'sine',.15);
  await say(L,"Je suis partie de chez lui à quinze ans. Snow m'a recueillie. Et maintenant, mon père et Snow se font la guerre, et je suis au milieu. Comme une idiote.");
  if(f.captain)await say(L,"Il t'a parlé de moi, hein ? « T'APPROCHES PAS D'ELLE ! » Il fait ça avec tout le monde. Même avec le facteur.");
- await choose(L,"Tu ne diras rien à Snow, hein ?",["Promis, ton secret est en sécurité.","Tu devrais parler à ton père."]);
- await say(L,"…Merci. T'es bizarre, toi. Un rockeur avec un chien et un cœur. Ça court pas les rues. Va à Anversaille. Je te retrouverai là-bas. Peut-être.");
+ const k=await lienChoix('luciole',L,"Tu ne diras rien à Snow, hein ?",[["Promis, ton secret est en sécurité.",'coeur',2],["Tu devrais parler à ton père.",'ami',2,"…Peut-être. Un jour. T'es le premier à me dire ça sans me juger."],["C'est pas mes oignons.",'froid',-2]]);
+ await say(L,k===2?"…Ok. Pas tes oignons. J'ai compris. Va à Anversaille.":"…Merci. T'es bizarre, toi. Un rockeur avec un chien et un cœur. Ça court pas les rues. Va à Anversaille. Je te retrouverai là-bas. Peut-être.");
  setSong(cur.song);await tween(600,q=>{lu.k=1-q;lu.place()});killTemp(lu);setObj()}
 // 4. L'arène de Marieke (type Eau)
 async function mariekeTalk(){const f=F(),M='Marieke, maîtresse d\'arène';
@@ -76,6 +77,7 @@ async function snowPort(){const f=F(),SN='Snow',M='MC Sambre';const[x1,z1]=lucFr
  await Promise.all([sn,mc].map(c=>tween(700,q=>{c.k=1-q;c.place()})));killTemp(sn);killTemp(mc);
  const[x,z]=lucFree(cur,player.x+2,player.z);const lu=await tempChar('luciole',x,z,'left');lu.face(dirTo(lu,player.x,player.z));
  await say('Luciole',"Je t'avais dit que je te retrouverais. Il est parti à Liègenoir, hein ? … Alors on y va. Tous les deux. Enfin, tous les trois, avec ta chienne.");
+ await lienChoix('luciole','Luciole',"…Ça te va ?",[["Tous les trois. J'aime bien cette idée.",'coeur',1,"…Moi aussi. Ne le répète pas."],["Ok, mais c'est toi qui payes les frites.",'ami',1,"Marché conclu. Grand cornet, sauce andalouse. Je te ruinerai."],["Je bosse mieux seul.",'froid',-2,"…Comme tu veux. Je viendrai quand même. Pour Snow. Pas pour toi."]]);await lienCheck('luciole');
  await tween(500,q=>{lu.k=1-q;lu.place()});killTemp(lu);
  phoneOn([['Prof','prof']]);await say('Prof. Verhaegen (au téléphone)',"{P} ! L'agent Verhaegen, mon frère, m'a tout raconté. Le port, Snow… Je suis fière de toi. Vraiment.");
  await say('Prof. Verhaegen (au téléphone)',"Je t'envoie quelque chose par la Maison des Lumons. Une Master Lumisphère. Il n'en existe que trois au monde. Garde-la pour le jour où tu en auras VRAIMENT besoin.");phoneOff();

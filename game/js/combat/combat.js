@@ -74,7 +74,7 @@ async function applyStatus(d,dr,st,tside){const imm=(st==='brn'&&typesOf(d).incl
 async function endTurn(){for(const side of['p','f']){const m=side==='p'?B.me:foeM(),r=side==='p'?B.pm:B.fm;if(!m||m.hp<=0)continue;
  if(m.status==='brn'||m.status==='psn'){const dmg=Math.max(1,Math.floor(m.mhp/(m.status==='brn'?16:8)));m.hp=Math.max(0,m.hp-dmg);await statusFx(r,m.status);hitNum(r,'-'+dmg,m.status==='brn'?'#ff9a3c':'#c77dff');hud();await msg(m.status==='brn'?`${label(side)} souffre de sa brûlure !`:`${label(side)} souffre du poison !`)}}}
 async function gainXP(f){const team=[...B.part].filter(m=>m.hp>0&&S.party.includes(m));if(!team.length&&B.me.hp>0)team.push(B.me);if(!team.length)return;
- const g=Math.max(1,Math.floor(SP[f.sp].xp*f.lv/7*1.25*(B.wild?1:1.5))),share=Math.max(1,Math.ceil(g/team.length));
+ const g=Math.max(1,Math.floor(SP[f.sp].xp*f.lv/7*1.25*(B.wild?1:1.5)*(S.bag&&S.bag.mixtape?1.1:1))),share=Math.max(1,Math.ceil(g/team.length));
  for(const m of team){ensureGenes(m);{const bs=SP[f.sp].b,i=bs.indexOf(Math.max(...bs)),tot=m.ev.reduce((a,b)=>a+b,0);if(tot<252&&m.ev[i]<128){m.ev[i]=Math.min(128,m.ev[i]+(f.lv>=20?2:1));calc(m)}}
   m.xp+=share;await msg(`${nm(m)} gagne ${share} points d'expérience !`);hud();
   while(m.xp>=(m.lv+1)**3&&m.lv<100){m.lv++;const dh=calc(m);m.hp+=dh;hud();sfx(784,.12);sfx(988,.12);sfx(1175,.25);await say('',`${nm(m)} monte au niveau ${m.lv} !`);
@@ -132,7 +132,7 @@ async function battle(cfg){setTimeout(()=>{tip('fight',"Choisis <b>Attaque</b>, 
   else{const ff=f.spd>me.spd||(f.spd===me.spd&&rnd()<.5);acts=ff?['f','p']:['p','f']}
   let brk=false;for(const side of acts){await useMove(side,side==='p'?a.i:foeChoice());const c=await afterHit();if(c&&c.res){result=c.res;break}if(c){brk=true;break}}
   if(!result&&!brk){await endTurn();const c=await afterHit();if(c&&c.res)result=c.res}}
- if(B.tr){if(result==='win'){const stop=await trainerOutro(true);sfx(784,.15);sfx(988,.15);sfx(1318,.4);await say('',`Tu as battu ${B.tr.name} !`);if(B.tr.win)await say(B.tr.name,B.tr.win);stop();const pz=B.tr.rematch?0:Math.round(Math.max(...B.foes.map(f=>f.lv))*(B.tr.prize||40)/25);if(pz){S.money+=pz;toast('money',`+${pz} €`)}await (pz?say('',`Tu gagnes ${pz} € !`):say('',"C'était une revanche : pas d'argent cette fois, mais tes Lumons ont gagné de l'expérience !"))}else if(result==='lose'&&B.tr.lose){const stop=await trainerOutro(false);await say(B.tr.name,B.tr.lose);stop()}}
+ if(B.tr){if(result==='win'){const stop=await trainerOutro(true);sfx(784,.15);sfx(988,.15);sfx(1318,.4);await say('',`Tu as battu ${B.tr.name} !`);if(B.tr.win)await say(B.tr.name,B.tr.win);stop();const pz=B.tr.rematch?0:Math.round(Math.max(...B.foes.map(f=>f.lv))*(B.tr.prize||40)/25*(S.bag&&S.bag.veste?1.25:1));if(pz){S.money+=pz;toast('money',`+${pz} €`)}await (pz?say('',`Tu gagnes ${pz} € !`):say('',"C'était une revanche : pas d'argent cette fois, mais tes Lumons ont gagné de l'expérience !"))}else if(result==='lose'&&B.tr.lose){const stop=await trainerOutro(false);await say(B.tr.name,B.tr.lose);stop()}}
  const HC=result==='lose'?respawnCentre(prevMap):null;if(result==='lose'&&!B.tr?.noWhiteout)await say('',HC?"Tu n'as plus de Lumon en état de se battre… Tu repars en courant vers la Maison des Lumons la plus proche !":"Tu n'as plus de Lumon en état de se battre… Tu repars en courant vers Ixellette, chez maman !");
  await fadeOut();$('bhud').classList.remove('on','cine');bMenu();disposeModel(B.pm);disposeModel(B.fm);if(B.tm)ARENA.group.remove(B.tm.g);ARENA.group.visible=false;
  const tr=B.tr;B=null;

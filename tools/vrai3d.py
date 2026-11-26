@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir)."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve)."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -116,6 +116,14 @@ def liege(g, out):
                                 ('cokerie', 'COKERIE', 6, 6, 'up'), ('club', 'CLUB', 6, 8, 'up'), ('bueren', 'BUEREN', 5, 6, 'up'), ('arene', 'GYML', 5, 8, 'up')):
         g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1500); g.js('()=>updateEnv()'); snap(g, out + '/lie_%s.png' % nom, 600)
     g.js('()=>{F().ch5done=1;runScript(async()=>{await goMap(LIE,16,19,"up")})}'); g.p.clock.run_for(1500); g.js('()=>updateEnv()'); snap(g, out + '/lie_place_apres.png', 600)
+
+def ranch(g, out):
+    """Ranch du Pays de Herve (enclos peuplés, Luciole), ferme, coloc d'Alex."""
+    g.js('()=>{Object.assign(F(),{brux:1,ch3:1,ch4done:1,r5:1,ranch:1,lie:1,alex:1});S.clock=11*60;const R=ranchS();R.pens[0].mons=[mkMon("ratoir",20),mkMon("tchantchou",20)];R.pens[1].mons=[mkMon("moulinet",20),mkMon("chicorin",20)];R.couv=[mkEgg("pigeolet"),mkEgg("cokelin")];refreshNPCs()}')
+    for nom, carte, x, z, d in (('entree', 'RANCH', 14, 3, 'down'), ('enclos', 'RANCH', 14, 11, 'down'), ('grange', 'RANCH', 21, 8, 'up'), ('mare', 'RANCH', 12, 20, 'up'),
+                                ('ferme', 'FERME', 5, 6, 'up'), ('coloc', 'COLOC', 4, 4, 'up'), ('route5_sud', 'ROUTE5', 24, 12, 'down')):
+        g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1800); g.js('()=>updateEnv()'); snap(g, out + '/ranch_%s.png' % nom, 900)
+    g.js('()=>{S.clock=22*60;runScript(async()=>{await goMap(RANCH,14,11,"down")})}'); g.p.clock.run_for(1500); g.js('()=>updateEnv()'); snap(g, out + '/ranch_nuit.png', 800)
 
 if __name__ == '__main__':
     sc = sys.argv[1]; out = sys.argv[2] if len(sys.argv) > 2 else os.environ.get('TEMP', '.')
