@@ -59,6 +59,15 @@ def main():
           for(let k=0;k<160&&P.part.on;k++){const pp=P.part;b.x=pp.x-pp.r-4;b.y=pp.y;b.vx=520;b.vy=0;pp.cool=0;for(let j=0;j<2;j++)P.sim(1/60)}}''')
         verif('tour : le Légendaire (starter chromatique, 4 stats parfaites)', g.js('''()=>{const L=S.party.concat(boxOf());const m=L[L.length-1];return L.length===%d&&m.shiny===1&&["chicorin","charbonnet","moulinet"].includes(m.sp)&&m.iv.filter(v=>v===31).length===4}''' % (n1 + 1)),
               g.js('()=>{const L=S.party.concat(boxOf());const m=L[L.length-1];return m.sp+" "+m.shiny+" "+m.iv}'))
+        # équilibrage : 3 vraies captures par jour, puis les Lumons sont relâchés ; le Légendaire dort 5 jours
+        n2 = g.js('()=>S.party.length+boxOf().length')
+        f.evaluate('''()=>{const P=window.__pin;let k=0;do{P.startChasse();k++}while(P.part.lum.egg&&k<50);const b=P.balls[0];b.st='play';
+          for(let k=0;k<120&&P.part.on;k++){const pp=P.part;b.x=pp.x-pp.r-4;b.y=pp.y;b.vx=520;b.vy=0;pp.cool=0;for(let j=0;j<2;j++)P.sim(1/60)}}''')
+        verif('quota : 4ᵉ capture du jour relâchée', g.js('()=>S.party.length+boxOf().length') == n2 and g.js('()=>flipReste()===0&&FLIP.sess.rel===1'),
+              f.evaluate('()=>document.getElementById("arctk").textContent'))
+        verif('quota affiché dans le flipper', '0/3' in f.evaluate('()=>document.getElementById("arctk").textContent'))
+        verif('le Légendaire dort après sa sortie, revient 5 jours plus tard', g.js('()=>{const a=flipLegOK();S.day=(S.day||0)+5;const b=flipLegOK()&&flipReste()===3;S.day-=5;return !a&&b}'))
+        verif('plus de Lucinelle ni de chromatique facile au flipper', g.js('()=>{for(let i=0;i<400;i++){for(let r=0;r<=5;r++){const o=flipEspece(r,i%2,false);if(o.sp==="lucinelle"||o.shiny)return false}}return flipEspece(6,0,false).shiny===1}'))
         verif('noms dans le flipper : plus de Rolls ni de garage', f.evaluate('()=>window.__pin.TBL.every(t=>!/ROLLS|GARAGE|CASSE|DRAG/.test(t.n))&&window.__pin.TBL[8].n==="TOUR DU LÉGENDAIRE"'))
         # fin de partie : score haut -> paliers (œufs) et tickets -> euros
         m0 = g.js('()=>{S.eggs=[];return S.money}')

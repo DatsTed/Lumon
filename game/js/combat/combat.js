@@ -109,7 +109,7 @@ async function afterHit(){
   if(B.tr&&B.fi<B.foes.length-1){B.fi++;B.st.f={atk:0,def:0,acc:0};S.dex.seen[foeM().sp]=1;await msg(`${B.tr.name} envoie ${nm(foeM())} !`);await camHome(300);const r=placeMon('f',foeM());r.g.scale.setScalar(0);hud();await popIn(r);return{f:1}}
   return{res:'win'}}
  if(B.me.hp<=0){await faintFx(B.pm);await msg(`${nm(B.me)} est K.O. !`);if(!alive().length)return{res:'lose'};
-  const i=await pickList('Choisis ton prochain Lumon',S.party.map(m=>({html:partyRow(m),dis:m.hp<=0})),false);await sendOut(S.party[i]);return{p:1}}
+  let i=-1;while(!(S.party[i]&&S.party[i].hp>0))i=await pickList('Choisis ton prochain Lumon',S.party.map(m=>({html:partyRow(m),dis:m.hp<=0})),false);await sendOut(S.party[i]);return{p:1}}
  return null}
 async function battle(cfg){setTimeout(()=>{tip('fight',"Choisis <b>Attaque</b>, puis une capacité. Les badges « Super efficace » t'aident à viser juste !");if(cfg.wild&&S.bag.lumisphere)tip('catch',"Affaiblis le Lumon sauvage, puis lance une <b>Lumisphère</b> depuis le Sac pour le capturer.")},2500);setSong(cfg.music||(cfg.trainer?(cfg.trainer.boss?'boss':cfg.trainer.key==='ginette'?'gymb':'trainer'):'battle'));await flashTrans();
  B={wild:!!cfg.wild,tr:cfg.trainer,foes:cfg.wild?[cfg.wild]:cfg.trainer.mons,fi:0,me:null,st:{p:{atk:0,def:0,acc:0},f:{atk:0,def:0,acc:0}},part:new Set(),pm:null,fm:null,tm:null};

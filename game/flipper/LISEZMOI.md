@@ -22,14 +22,16 @@ C'est le flipper de *High & Rouillé* (9 tables, ponts, rampes, radar, chasses, 
   | 1 | Terrilou, Scorion, Ratoir |
   | 2 | Smogule, Cokelin, Tchantchou |
   | 3 | Chicorin, Charbonnet, Moulinet |
-  | 4 | un rare ou un starter, chromatique |
-  | 5 | Lucinelle |
-  | 6 | Lucinelle chromatique |
+  | 4 | un starter |
+  | 5 | un starter, 1 stat parfaite |
+  | 6 | un rare ou un starter, chromatique, 1 stat parfaite |
 
-  - Une chasse « d'arcade » donne 3 IV parfaits.
-  - Le niveau est celui du meilleur Lumon de l'équipe, moins 1 à 4.
-- **Tour du Légendaire** (table 9, l'ancienne Rolls-Royce) : un grand œuf trône sur la tour. Avec 3 billes dans la tour, le Légendaire sort : un starter chromatique avec 4 IV parfaits.
-- **Paliers de score** : 12 000 points donnent un œuf rare, 40 000 un œuf épique, 100 000 un œuf mythique (Lucinelle chromatique). Chaque palier ne se gagne qu'une fois.
+  - Une chasse « d'arcade » donne 2 stats parfaites.
+  - Le niveau est celui du meilleur Lumon de l'équipe, moins 5 à 8.
+  - Jamais de Lucinelle : elle ne naît que de l'œuf de Luciole.
+- **Équilibrage (v1.0)** : 3 vraies captures par jour de jeu (`FLIP_JOUR`). Ensuite, le Lumon est relâché et on garde les points. Le compteur est affiché en haut du flipper (`HOST.quota`).
+- **Tour du Légendaire** (table 9, l'ancienne Rolls-Royce) : un grand œuf trône sur la tour. Avec 3 billes dans la tour, le Légendaire sort : un starter chromatique avec 4 stats parfaites. Il dort ensuite 5 jours de jeu (`FLIP_LEG_J`) ; pendant ce temps, la tour libère un starter normal.
+- **Paliers de score** : 12 000 points donnent un œuf rare, 40 000 un œuf épique, 100 000 un œuf mythique (starter chromatique, 3 stats parfaites). Chaque palier ne se gagne qu'une fois.
 - **Tickets** : Jalal les rachète, 1 € les 5.
 - **Noms** :
   - tables : Smile and Eat, Night White, Sources de Spa, Terrils, Métro Bruxellia, Cosmos, Route 5, Anneau Néon, Tour du Légendaire ;

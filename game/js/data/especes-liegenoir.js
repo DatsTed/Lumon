@@ -21,3 +21,12 @@ const LIE_SP={
   d:"Ce serpent de charbon se glisse dans les fours des cokeries. Les vieux ouvriers le nourrissaient en cachette, pour qu'il garde les fours au chaud la nuit.",cry:'Tssssss !'}
 };
 for(const id in LIE_SP){const d=Object.assign({},LIE_SP[id]),cry=d.cry;delete d.cry;registerSpecies(id,d);CRY[id]=cry;if(!DEX.includes(id))DEX.push(id)}
+
+// « D'où vient son nom ? » dans le Lumidex
+Object.assign(ETY,{
+ ratoir:"De <b>rat</b> et de <b>trottoir</b>. À Liègenoir, on dit qu'un Ratoir connaît chaque pavé du Carré, chaque cave et chaque soupirail. Il ne vole pas : il « récupère ».",
+ perronrat:"Du <b>Perron</b>, la colonne de bronze qui trône place du Marché, symbole des libertés liégeoises, et de <b>rat</b>. Un roi des égouts qui s'est couronné tout seul, sur le monument de la liberté. Les Liégeois trouvent ça très logique.",
+ tchantchou:"De <b>Tchantchès</b>, la marionnette d'Outremeuse : un gamin au nez de travers, né entre deux pavés, qui n'a peur de rien et qui parle wallon. « Tchantchou », c'est le petit nom affectueux qu'on lui donne quand il a fait une bêtise.",
+ smogule:"De <b>smog</b>, le brouillard de fumée des villes industrielles, et de <b>goule</b>, l'esprit qui se nourrit de ce qui pourrit. Plus le ciel est noir, plus il a faim.",
+ lucinelle:"De <b>Luciole</b>, évidemment, et du suffixe tendre <b>-nelle</b>, « la petite ». Son nom, c'est Luciole qui l'a choisi. Elle ne l'a dit à personne… sauf à toi.",
+ cokelin:"De <b>coke</b>, le charbon cuit des hauts-fourneaux, et de <b>-lin</b>, comme un petit animal qu'on garde au chaud. Rien à voir avec l'autre coke : les vieux ouvriers de la Cokerie insistent beaucoup là-dessus."});

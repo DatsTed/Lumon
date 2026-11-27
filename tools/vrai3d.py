@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat)."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes)."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -150,6 +150,15 @@ def flipper(g, out):
     fr.evaluate('()=>{const P=window.__pin,b=P.balls[0];b.st="play";b.x=180;b.y=330;b.vx=60;b.vy=-40}')
     snap(g, out + '/flip_bille.png', 120)
     print('erreurs du flipper :', fr.evaluate('()=>window.__ferr||[]'))
+
+def tour(g, out):
+    """Tour de toutes les cartes de la carte du monde (WMTP) en vrai 3D, de jour : une capture par lieu, erreurs relevées."""
+    g.js('()=>{Object.assign(F(),{chapterDone:1,nilsBattle:1,gate1:1,charl:1,badge1:1,luciole:1,rap1:1,profBadge:1,north:1,brux:1,ch3:1,anv:1,ch4done:1,r5:1,lie:1,samira:1,ranch:1,ch5done:1});S.clock=12*60;refreshNPCs()}')
+    for k in g.js('()=>Object.keys(WMTP)'):
+        g.js('(k)=>{const [id,x,z]=WMTP[k];runScript(async()=>{await goMap(MAPS[id],x,z,"up")})}', k); g.p.clock.run_for(1600); g.js('()=>updateEnv()')
+        snap(g, out + '/tour_%s.png' % k, 700)
+    print('cartes vues :', g.js('()=>Object.keys(WMTP).length'))
+
 
 if __name__ == '__main__':
     sc = sys.argv[1]; out = sys.argv[2] if len(sys.argv) > 2 else os.environ.get('TEMP', '.')

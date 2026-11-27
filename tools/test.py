@@ -12,6 +12,7 @@ Prérequis : pip install playwright ; python -m playwright install chromium
 import argparse, io, json, os, subprocess, sys, tempfile, threading, zipfile
 import http.server, functools, socketserver
 from playwright.sync_api import sync_playwright
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 THREE_URL = 'three.min.js'
@@ -114,8 +115,8 @@ class Partie:
             return r.abort()
         return r.continue_()
 
-    def js(self, code):
-        return self.p.evaluate(code)
+    def js(self, code, arg=None):
+        return self.p.evaluate(code) if arg is None else self.p.evaluate(code, arg)
 
     def action(self, code, graine):
         """Lance une action du scénario avec un hasard réinitialisé (comparaisons reproductibles)."""

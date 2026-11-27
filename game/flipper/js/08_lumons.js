@@ -6,7 +6,7 @@
    Appelés depuis 02_pinball.js et 05_flipper3d.js (voir LISEZMOI.md). */
 const lumEur = tk => Math.floor(Math.max(0, tk) / 5);   /* Jalal rachète les tickets : 1 € les 5 (une Lumisphère vaut 8 €) */
 const LUMF = {};                         /* clé de médaille → { name, egg, col, shiny, img } */
-function lumHud(){ return '🔴 Lumisphères : ' + fmt(HOST.balls()); }
+function lumHud(){ let q = ''; try { const o = HOST.quota && HOST.quota(); if (o) q = ' · 🎯 Captures du jour : ' + o.reste + '/' + o.max; } catch (e) {} return '🔴 Lumisphères : ' + fmt(HOST.balls()) + q; }
 function lumPick(r, arc, tower){
   let p = null; try { p = HOST.pick(r, !!arc, !!tower); } catch (e) { console.error(e); }
   if (!p) p = { key: 'x', name: 'Lumon', egg: false, col: '#9aa3ad', r };

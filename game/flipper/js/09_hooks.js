@@ -27,6 +27,7 @@ pbGrant = function(r, arc, lum){
   let res = null;
   try { res = lum ? HOST.capture(lum) : HOST.palier(r); } catch (e) { console.error(e); }
   const name = (res && res.name) || (lum && lum.name) || 'Lumon';
+  try { const e = document.getElementById('arctk'); if (e) e.textContent = lumHud(); } catch (e) {}
   const rr = res && res.r != null ? res.r : r;
   return { m: null, name, r: rr, arc: arc ? 1 : 0 };
 };

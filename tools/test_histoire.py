@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 
 OK = []
 def verif(nom, cond, detail=''):
-    OK.append(bool(cond)); print('  %s %-46s %s' % ('OK ' if cond else 'KO ', nom, detail))
+    OK.append(bool(cond)); print(('  %s %-46s %s' % ('OK ' if cond else 'KO ', nom, detail)).encode('utf-8', 'replace').decode('utf-8'))
 
 # bot pour les mini-jeux du Night White : clique une bonne case toutes les `pas` ms
 BOT = r"""(k,err,bon)=>{window.__auto=false;window.__bot&&clearInterval(window.__bot);let last=0;

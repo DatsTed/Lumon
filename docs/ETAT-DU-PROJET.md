@@ -24,7 +24,7 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 2. Duel contre Dolba sous l'arche « Route 1 » au nord du village ; la barrière de chantier s'ouvre.
 3. Route 1 : premiers Kétosaures, code de la mine Sainte-Barbe (3 indices), barrière juste avant Charleroc.
 4. Charleroc : Gérard confie la Lumisphère d'Éclat (objet de quête) dès l'arrivée ; arène de Ginette (Roche, Médaille Terril) ; colis de la Prof ; Luciole au vieux terril ; concert de Snow et battle contre MC Sambre.
-5. Retour à Ixellette : la Prof reçoit médaille + Lumisphère et débloque le Fusionneur ; la brume se lève, Route 2 ouverte. Objectif : Bruxellia avant le Jour 200.
+5. Retour à Ixellette : la Prof reçoit médaille + Lumisphère et débloque le Fusionneur ; la brume se lève, Route 2 ouverte. Objectif : Bruxellia avant le Jour 25 (le soir du Jour 25, « Nuit Mauve » : les embuscades reviennent).
 6. Night White d'Ixellette (1re entrée) : cinématique Younes et Fifi ; blague « Nour est le grand frère, appelle-le Monsieur Nour ».
 7. Route 2 : bagarre Kétosaures contre Pirates ; enveloppe d'argent sale pour le Commissaire Lemaire.
 8. Bruxellia : Alias l'avocat ; test d'embauche chez Nour (« Monsieur Nour ») ; colis de Cisoa pour Amin.

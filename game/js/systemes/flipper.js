@@ -5,18 +5,25 @@
      les œufs vont dans le sac, puis la couveuse du Ranch, sinon Jalal les garde au frais.
    - Tour du Légendaire (table 9) : un Lumon de départ chromatique aux stats parfaites. Paliers de score : des œufs rares.
    - Les tickets de fin de partie sont rachetés par Jalal : 1 € les 5 tickets.
+   Équilibrage (v1.0) : le flipper reste un à-côté. FLIP_JOUR vraies captures par jour de jeu (ensuite le Lumon est relâché,
+   on garde les points), le Légendaire ne revient que tous les FLIP_LEG_J jours, les Lumons attrapés ont 5 à 8 niveaux de moins
+   que ton meilleur Lumon, et les chromatiques sont réservés à l'Ultra rare et au Légendaire. Pas de Lucinelle : elle ne naît
+   que d'un œuf confié par Luciole.
    LUMPIN = tout ce que le flipper (00_shim.js, HOST) peut demander au jeu. S.flipper = progression du flipper + œufs en attente. */
-const FLIP_COST=3;
+const FLIP_COST=3,FLIP_JOUR=3,FLIP_LEG_J=5;
 const FLIP_T=[['gaufrelin','pigeolet','hannetonne'],['terrilou','scorion','ratoir'],['smogule','cokelin','tchantchou'],['chicorin','charbonnet','moulinet']];
 const FLIP={on:false,el:null,res:null,sess:null,wrapped:false};
 function flipS(){return S.flipper||(S.flipper={arc:null,free:1,parties:0,caps:0,best:0,attente:[]})}
-function flipLv(){const L=(S.party||[]).map(m=>m.lv),top=L.length?Math.max(...L):5;return Math.max(3,Math.min(60,top-4+((rnd()*4)|0)))}
+function flipLv(){const L=(S.party||[]).map(m=>m.lv),top=L.length?Math.max(...L):5;return Math.max(3,Math.min(60,top-5-((rnd()*4)|0)))}
+/* captures restantes aujourd'hui (jour de jeu) ; le Légendaire est-il réveillé ? */
+function flipReste(){const f=flipS(),d=dayNum();if(f.qd!==d){f.qd=d;f.qn=0}return Math.max(0,FLIP_JOUR-f.qn)}
+function flipLegOK(){const f=flipS();return f.legDay==null||dayNum()-f.legDay>=FLIP_LEG_J}
 function flipTire(a){const L=a.filter(k=>SP[k]);return L[(rnd()*L.length)|0]||'gaufrelin'}
 /* rareté du flipper (0 Commun … 6 Ultra rare) → espèce ; arc = « pièce d'arcade » (stats parfaites) ; tower = le Légendaire de la tour */
 function flipEspece(r,arc,tower){
- if(tower)return{sp:flipTire(FLIP_T[3]),shiny:1,iv:4};
- const o=r<=3?{sp:flipTire(FLIP_T[Math.max(0,r)])}:r===4?{sp:flipTire(FLIP_T[2].concat(FLIP_T[3])),shiny:1}:r===5?{sp:SP.lucinelle?'lucinelle':flipTire(FLIP_T[3])}:{sp:SP.lucinelle?'lucinelle':flipTire(FLIP_T[3]),shiny:1};
- if(arc)o.iv=3;return o}
+ if(tower)return flipLegOK()?{sp:flipTire(FLIP_T[3]),shiny:1,iv:4,leg:1}:{sp:flipTire(FLIP_T[3]),iv:1,dort:1};
+ const o=r<=3?{sp:flipTire(FLIP_T[Math.max(0,r)])}:r===4?{sp:flipTire(FLIP_T[3])}:r===5?{sp:flipTire(FLIP_T[3]),iv:1}:{sp:flipTire(FLIP_T[2].concat(FLIP_T[3])),shiny:1,iv:1};
+ if(arc)o.iv=Math.max(o.iv||0,2);return o}
 function flipIV(n){const iv=[0,0,0,0].map(()=>Math.floor(rnd()*32)),ix=[0,1,2,3].sort(()=>rnd()-.5);for(let i=0;i<n;i++)iv[ix[i]]=31;return iv}
 function flipOeuf(sp,iv,shiny){const e=mkEgg(baseOf(sp),iv?flipIV(iv):null,shiny);const w=typeof ranchGiveEgg==='function'?ranchGiveEgg(e):(giveEgg(e)?'sac':null);
  if(w)return w;flipS().attente.push(e);return'jalal'}
@@ -28,14 +35,17 @@ const LUMPIN={
  costTxt(){return flipS().free?'1ʳᵉ partie offerte':FLIP_COST+' Lumisphères'},
  pay(){const f=flipS();if(f.free){f.free=0;f.parties++;return true}if((S.bag.lumisphere||0)<FLIP_COST)return false;S.bag.lumisphere-=FLIP_COST;if(!S.bag.lumisphere)delete S.bag.lumisphere;f.parties++;return true},
  pick(r,arc,tower){const o=flipEspece(r,arc,tower),d=SP[o.sp],egg=!tower&&rnd()<.25,ic=egg?null:monIcon(o.sp);
-  return{key:o.sp+(o.shiny?'s':''),sp:o.sp,name:egg?'Œuf mystère':d.n+(o.shiny?' ✨':''),egg,shiny:!!o.shiny,iv:o.iv||0,col:TC[d.t[0]]||'#9aa3ad',img:ic?ic[0]:null,r}},
- capture(p){const ss=FLIP.sess,f=flipS();f.caps++;
+  return{key:o.sp+(o.shiny?'s':'')+(o.dort?'d':''),sp:o.sp,name:egg?'Œuf mystère':d.n+(o.shiny?' ✨':'')+(o.dort?' (le Légendaire dort)':''),egg,shiny:!!o.shiny,iv:o.iv||0,leg:!!o.leg,dort:!!o.dort,col:TC[d.t[0]]||'#9aa3ad',img:ic?ic[0]:null,r}},
+ quota(){return{reste:flipReste(),max:FLIP_JOUR,leg:flipLegOK()}},
+ capture(p){const ss=FLIP.sess,f=flipS();
+  if(flipReste()<=0){ss&&ss.rel++;return{name:(p.egg?'Œuf':SP[p.sp].n)+' relâché · '+FLIP_JOUR+' captures par jour'}}
+  f.qn++;f.caps++;if(p.leg)f.legDay=dayNum();
   if(p.egg){const w=flipOeuf(p.sp,p.iv,p.shiny);ss&&ss.caps.push('un œuf ('+FLIP_OU[w]+')');return{name:'Œuf mystère → '+(w==='sac'?'sac':w==='couveuse'?'couveuse':'Jalal')}}
   const m=mkMon(p.sp,flipLv());if(p.shiny)m.shiny=1;if(p.iv){ensureGenes(m);m.iv=flipIV(p.iv)}calc(m);m.hp=m.mhp;
   S.dex.seen[m.sp]=1;S.dex.caught[m.sp]=1;if(m.shiny)unlock('shiny');const w=receiveMon(m);
   ss&&ss.caps.push(`${nm(m)}${m.shiny?' ✨':''} N.${m.lv}${w==='box'?' (au PC)':''}`);
   return{name:`${nm(m)}${m.shiny?' ✨':''} N.${m.lv}${w==='box'?' · PC':''}`}},
- palier(r){const sp=r>=5?(SP.lucinelle?'lucinelle':flipTire(FLIP_T[3])):flipTire(FLIP_T[Math.min(3,Math.max(2,r))]);
+ palier(r){const sp=flipTire(FLIP_T[r>=3?3:2]);
   const w=flipOeuf(sp,r>=5?3:r>=3?2:1,r>=5);const n=r>=5?'Œuf mythique':r>=3?'Œuf épique':'Œuf rare';FLIP.sess&&FLIP.sess.caps.push(n.toLowerCase()+' ('+FLIP_OU[w]+')');
   return{name:n+' → '+(w==='sac'?'sac':w==='couveuse'?'couveuse':'Jalal')}},
  money(n){n=Math.round(n);if(n>0){S.money+=n;if(FLIP.sess)FLIP.sess.money+=n}},
@@ -47,7 +57,7 @@ const LUMPIN={
 window.LUMPIN=LUMPIN;   /* lu par l'iframe du flipper (window.parent.LUMPIN) : une const n'est pas une propriété de window */
 /* pause du jeu pendant la partie (la boucle de rendu ne dessine plus la ville derrière l'iframe) */
 function flipWrapLoop(){if(FLIP.wrapped||typeof loop!=='function')return;FLIP.wrapped=true;const L0=loop;loop=function(t){if(FLIP.on){last=t;requestAnimationFrame(loop);return}return L0(t)}}
-function flipperOpen(){return new Promise(res=>{flipWrapLoop();FLIP.res=res;FLIP.sess={caps:[],money:0,parties:0};FLIP.mus=musicOn;musicOn=false;
+function flipperOpen(){return new Promise(res=>{flipWrapLoop();FLIP.res=res;FLIP.sess={caps:[],money:0,parties:0,rel:0};FLIP.mus=musicOn;musicOn=false;
  const o=document.createElement('div');o.id='flipov';o.style.cssText='position:fixed;inset:0;z-index:9000;background:#06071A';
  const fr=document.createElement('iframe');fr.src='flipper/index.html';fr.title='Flipper Lumons';fr.setAttribute('allow','autoplay');fr.style.cssText='border:0;width:100%;height:100%;display:block';
  o.appendChild(fr);document.body.appendChild(o);FLIP.el=o;FLIP.on=true;fr.addEventListener('load',()=>{try{fr.contentWindow.focus()}catch(e){}})})}
@@ -69,6 +79,7 @@ function flipBorne3d(g,x,z){
 async function flipBorne(){const f=flipS(),N='Jalal';
  if(!f.vu){f.vu=1;await say(N,"Ah, tu regardes ma bécane ? Un flipper d'époque, je l'ai racheté à un forain. Mais je l'ai un peu trafiqué, hein !");
   await say(N,"Les billes, c'est des Lumisphères. Et sur la table, des Lumons sauvages se baladent. Tape-les assez fort et assez souvent : ils sont à toi. Pour de vrai !");
+  await say(N,`Mais attention : la machine ne lâche que ${FLIP_JOUR} Lumons par jour. Après, ceux que tu tapes retournent dans la machine. Et le Légendaire de la tour, il dort ${FLIP_LEG_J} jours après chaque sortie.`);
   await say(N,`Une partie, c'est ${FLIP_COST} Lumisphères. La première, c'est cadeau de la maison. Et je te rachète tes tickets : un euro les cinq. Allez, avec le sourire !`)}
  if(f.attente&&f.attente.length){let n=0;while(f.attente.length){const e=f.attente[0];const w=typeof ranchGiveEgg==='function'?ranchGiveEgg(e):(giveEgg(e)?'sac':null);if(!w)break;f.attente.shift();n++}
   if(n)await say(N,n>1?`Tiens, tes ${n} œufs du flipper. Je les gardais au frais à côté des baklavas.`:"Tiens, ton œuf du flipper. Je le gardais au frais à côté des baklavas.");
@@ -77,5 +88,6 @@ async function flipBorne(){const f=flipS(),N='Jalal';
  const ss=await flipperOpen();
  if(ss&&(ss.parties||ss.caps.length)){const L=ss.caps;
   if(L.length)await say(N,`${L.length>1?'Ouah, '+L.length+' captures':'Une capture'} ! ${L.join(', ')}.${ss.money?` Et ${ss.money} € pour tes tickets.`:''} Ça, c'est un sourire !`);
+  else if(ss.rel)await say(N,`La machine a fait son quota pour aujourd'hui, mon frère : ${FLIP_JOUR} Lumons par jour, pas un de plus. Reviens demain !${ss.money?` Tiens, ${ss.money} € pour tes tickets.`:''}`);
   else await say(N,`Pas de capture cette fois… ${ss.money?`Tiens, ${ss.money} € pour tes tickets. `:''}Faut taper les Lumons plusieurs fois, hein, pas juste les caresser !`)}}
 function buildFlipper(){const m=SMILE;if(!m)return;flipBorne3d(m.group,m.ox+9,1);setSolid(m,9,1);m.signs['9,1']=flipBorne}
