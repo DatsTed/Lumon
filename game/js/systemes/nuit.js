@@ -27,7 +27,7 @@ function itemBushes(m,n,seed){const T=m.T;if(!T)return;let s=seed;const R=()=>(s
 const PETS={luciole:'noctiluce',mcsambre:'sambrax',snow:'givrale',captain:'krakapitaine',ginette:'terrilou',nils:()=>F().nilsMon!=null?STARTERS[F().nilsMon]:null};
 function addPet(c,key){let sp=PETS[key];if(typeof sp==='function')sp=sp();if(!sp||!SP[sp]||!c||!c.g)return;try{const r=monModel(sp);r.g.scale.setScalar(.72*(MSCALE[sp]||1));r.g.position.set(.62,0,-.5);r.g.rotation.y=-.3;c.g.add(r.g);c.pet=r}catch(e){}}
 function nightSetup(){for(const id in MAPS){const m=MAPS[id];if(m.room||id==='arena'||id==='gal')continue;roadLanterns(m)}
- [['route',4,11],['route2',3,23],['route3',3,37],['route6',3,61],['route7',3,73]].forEach(([id,n,seed])=>MAPS[id]&&itemBushes(MAPS[id],n,seed))}
+ [['route',4,11],['route2',3,23],['route3',3,37],['route6',3,61],['route7',3,73],['route8',3,83],['route9',3,97]].forEach(([id,n,seed])=>MAPS[id]&&itemBushes(MAPS[id],n,seed))}
 // ---- Intérieurs éclairés : les pièces ne suivent plus la nuit du dehors (lampes allumées, lumière chaude) ----
 const INDOOR_IDS=new Set(['lab']),isIndoor=m=>!!m&&(m.room||INDOOR_IDS.has(m.id));
 const INLIGHT=new THREE.PointLight('#ffd9a0',0,16,1.6);INLIGHT.castShadow=false;scene.add(INLIGHT);

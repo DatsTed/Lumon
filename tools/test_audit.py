@@ -95,7 +95,7 @@ def main():
         # dresseurs : chacun se bat sans planter (équipes valides)
         # objectifs du début à la fin du chapitre 5 : on rejoue la chaîne des drapeaux
         ob = g.js(r"""()=>{const out=[];const f=F();const save=JSON.stringify(S.flags);
-          const keys=['introDone','labIntro','nilsBattle','keto1','charl','badge1','luciole','rap1','profBadge','north','r2scene','brux','nourMet','pigeon','captain','jourd','amin','essai3','ch3done','ch4','badge2','ch4done','r5','lie','badge3','cokerie','rap','ch5done','r6','givrale','namu','joute','badge4','cita','herseOK','ch6done','r7','piege','bast','badge5','fondCode','ch7done'];
+          const keys=['introDone','labIntro','nilsBattle','keto1','charl','badge1','luciole','rap1','profBadge','north','r2scene','brux','nourMet','pigeon','captain','jourd','amin','essai3','ch3done','ch4','badge2','ch4done','r5','lie','badge3','cokerie','rap','ch5done','r6','givrale','namu','joute','badge4','cita','herseOK','ch6done','r7','piege','bast','badge5','fondCode','ch7done','r8','gand','badge6','galaVu','ch8done','r9','cote','badge7','capCote','ch9done','badge8','ligue','champion'];
           for(const k of keys){f[k]=1;let t;try{t=objText()}catch(e){t='PLANTE '+e.message}out.push(k+' -> '+t)}
           S.flags=JSON.parse(save);return out}""")
         bad = [o for o in ob if 'PLANTE' in o or 'undefined' in o]

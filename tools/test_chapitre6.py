@@ -91,7 +91,7 @@ def main():
             g.attendre(g.libre(), 120); g.js(heal)
             g.js('()=>{window.__choix=[0];runScript(async()=>{await goMap(FOND,7,7,"up");const h=FOND.hook(7,6);if(h)await h()})}')
             ok = g.attendre('F().ch7done&&' + g.libre(), 900)
-        verif('la Directrice tombe -> fin du chapitre 7', ok and g.js('()=>objText().includes("Chapitre 7 terminé")'), g.js('()=>objText()'))
+        verif('la Directrice tombe -> fin du chapitre 7 (objectif : la Route 8)', ok and g.js('()=>objText().includes("Route 8")'), g.js('()=>objText()'))
         verif('Prismalis rejoint l’équipe', g.js('()=>S.party.concat(boxOf()).some(m=>m.sp==="prismalis")'))
         verif('défaite près de Bastognac -> Maison des Lumons de Bastognac', g.js('()=>respawnCentre(ROUTE7)===CENTREBA&&respawnCentre(FOND)===CENTREBA'))
         verif('carte du monde : Namuroc, Bastognac, Routes 6 et 7', g.js('()=>["r6","na","r7","ba"].every(k=>{const n=WMN.find(n=>n.k===k);return n&&!n.wip&&WMTP[k]})&&ruberOK("na")===!!S.bag.ruber'))

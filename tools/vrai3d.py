@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes), ch67 (chapitres 6 et 7), couveuses."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes), ch67 (chapitres 6 et 7), couveuses, fin (chapitres 8 à 10)."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -176,6 +176,17 @@ def couveuses(g, out):
     g.js('()=>{Object.assign(F(),{charl:1,ranch:1,bast:1});ranchS().couv=[mkEgg("ratoir"),mkEgg("pigeolet"),mkEgg("cokelin")];ranchRefresh();S.clock=12*60}')
     for nom, carte, x, z, d in (('charleroc', 'CENTRE', 6, 4, 'right'), ('bastognac', 'CENTREBA', 6, 4, 'right'), ('labo', 'LAB', 4, 5, 'up'), ('ferme', 'FERME', 7, 5, 'right')):
         g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/couv_%s.png' % nom, 700)
+
+
+def fin(g, out):
+    """Chapitres 8 à 10 : Route 8, Gandoux, Gala, Route 9, Côte du Nord, cargo, Ligue, générique."""
+    g.js('()=>{Object.assign(F(),{chapterDone:1,brux:1,ch3:1,ch4done:1,ch5done:1,ch6done:1,ch7done:1,r8:1,gand:1,badge6:1,galaVu:1,r9:1,cote:1,badge7:1,capCote:1,ligue:1,conseil:4});S.clock=12*60;refreshNPCs()}')
+    for nom, carte, x, z, d in (('route8', 'ROUTE8', 20, 9, 'left'), ('gand_chateau', 'GAND', 7, 10, 'up'), ('gand_canal', 'GAND', 17, 13, 'left'), ('gand_cathedrale', 'GAND', 21, 9, 'up'),
+                                ('gand_sud', 'GAND', 10, 24, 'up'), ('gym_g', 'GYMG', 5, 9, 'up'), ('gala', 'GALA', 6, 8, 'up'), ('route9', 'ROUTE9', 20, 6, 'left'),
+                                ('cote_digue', 'COTE', 16, 12, 'up'), ('cote_estacade', 'COTE', 26, 9, 'up'), ('gym_c', 'GYMC', 5, 9, 'up'), ('navire', 'NAVIRE', 6, 12, 'up'),
+                                ('ligue', 'LIGUE', 5, 24, 'up'), ('champion', 'LIGUE', 5, 5, 'up'), ('brux_ouest', 'BRUX', 3, 13, 'left')):
+        g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/fin_%s.png' % nom, 700)
+    g.js('()=>{credits()}'); g.p.clock.run_for(3000); snap(g, out + '/fin_generique.png', 500)
 
 
 if __name__ == '__main__':

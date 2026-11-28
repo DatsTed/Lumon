@@ -1,4 +1,4 @@
-# Journal de vérification — versions 1.0 et 1.1 (nuit du 28 novembre 2026)
+# Journal de vérification — versions 1.0, 1.1 et 2.0 (nuit du 28 novembre 2026)
 
 Tout ce qui a été trouvé pendant le check-up complet du jeu (chapitres 1 à 5, flipper), et ce qui en a été fait.
 Légende : **corrigé** · **réglé** (choix d'équilibrage) · **noté** (pas un bug, ou à voir avec de vraies mains).
@@ -80,3 +80,19 @@ Le but : que le flipper reste **un plaisir à côté de l'aventure**, pas la mei
 
 **Nouveau : une couveuse partout.** Il y en a une dans chacune des 7 Maisons des Lumons et dans le labo de la Prof. Elles sont toutes **reliées à la couveuse du Ranch**, comme le PC : on dépose un œuf à Charleroc, on le reprend (ou on le fait éclore) à Bastognac. Il y a 4 places, les œufs avancent à chaque pas, et les œufs déposés se voient sous le dôme de chaque couveuse. À la première utilisation, l'infirmière (ou la Prof) explique le principe.
 Test : `tools/test_ranch.py` (12 vérifications).
+
+## Version 2.0 : chapitres 8 à 10, le jeu complet
+- **`tools/test_fin.py`** joue la fin du jeu de bout en bout, en **36 vérifications** :
+  - Route 8, Gandoux, la Comtesse, le Gala, le coffre, Brutus, le panneau rendu (Agnelys) ;
+  - Route 9, la Côte, la pêche à la crevette (jouée par un bot), Jef, Captain, le cargo, Visser ;
+  - Nour, Dolba, le Conseil des Quatre (grilles), le Président-Champion, l'épilogue, le générique, l'après-jeu, la sauvegarde.
+- **Audit** : 50 espèces, 44 attaques, 53 objets, 55 cartes, 28 dresseurs, **114 arrivées de cartes** vérifiées.
+- **Bot bavard** : il parle à tous les PNJ à la fin du chapitre 7 et après la Ligue.
+- **Captures en vrai 3D** des 16 nouveaux lieux et du générique (`tools/vrai3d.py fin`).
+
+| # | Où | Problème trouvé pendant l'écriture | Ce qui a été fait |
+|---|---|---|---|
+| 15 | Ligue, Champion | Le combat du Champion utilisait une fonction (`dope`) qui n'existe que dans la scène du Baron : **le combat final ne se lançait pas**. Le test de la fin l'a vu tout de suite. | **Corrigé** : le Champion a sa propre fonction (Lumons « traités à l'Éclat », un peu moins forts que ceux du Baron, pour rester juste). |
+| 16 | Écran titre, succès | Une apostrophe mal échappée (« l'aventure », « d'Ardenval ») cassait le chargement du jeu. | **Corrigé** avant publication (vu par l'audit). |
+| 17 | Arène de Jef | Les éoliennes de la salle étaient à la taille de celles de la mer : elles traversaient tout l'écran. | **Corrigé** : réduites (vu en vrai 3D). |
+| 18 | Tests | Le pilote automatique des tests joue toujours la 1ʳᵉ attaque : il perdait contre le Masque (Spectre) et le Président, même avec une équipe niveau 68. | **Noté** : ce n'est pas un bug du jeu (un joueur choisit ses attaques). Les tests rangent les attaques de la plus forte à la plus faible et retentent une fois après une défaite. |

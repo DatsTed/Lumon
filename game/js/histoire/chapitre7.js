@@ -10,7 +10,7 @@ CH.helene={skin:'#f0d0b0',hair:'#a0522d',hs:'bun',shirt:'#2f5a3a',jacket:'#5a6a3
 CH.directrice={skin:'#f4dcc8',hair:'#e8e4e0',hs:'bun',shirt:'#e8eef4',coat:1,pants:'#2a2a30',boots:'#1a1a1a',glasses:1,eye:'#4a7aa0'};
 Object.assign(ICON,{laissezpasser:icoB('#2f5a3a','#f4f8ff','✓')});
 Object.assign(ITEMS,{laissezpasser:{n:'Laissez-passer forestier',d:"Signé par Hélène Noiset, garde forestière. Il ouvre la route de la réserve, jusqu'à la Fondation Ardenne. « Ne fais pas de bêtises dans ma forêt. »",price:0,quest:1}});
-function ch7Obj(){const f=F();if(f.ch7done)return"Chapitre 7 terminé · Gandoux t'attend · La suite bientôt";
+function ch7Obj(){const f=F();if(f.ch7done)return ch8Obj();
  if(!f.r7)return"Traverse le pont de Jambes (sud de Namuroc) : la Route 7 mène à Bastognac";if(!f.bast)return"Suis la Route 7 à travers les sapins jusqu'à Bastognac";
  if(!f.badge5)return"Défie l'arène de Bastognac : Hélène Noiset, la garde forestière (type Plante)";
  if(!f.fondCode)return"Entre à la Fondation Ardenne (est de Bastognac) et trouve le code de la porte du labo";
