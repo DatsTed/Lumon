@@ -1,4 +1,4 @@
-# Lumons – État du projet et suite (25 novembre 2026)
+# Lumons – État du projet et suite (28 novembre 2026, version 1.1)
 
 ## Contexte
 - Jeu de créatures façon Pokémon, 100 % belge, 3D Three.js r128, joué sur téléphone. Langue : français.
@@ -30,6 +30,10 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 8. Bruxellia : Alias l'avocat ; test d'embauche chez Nour (« Monsieur Nour ») ; colis de Cisoa pour Amin.
 9. Route 3 : un Pigeolet royal vole le colis et se pose sur la Rolls Ghost d'Alex (combat) ; Captain, chef des Pirates.
 10. Jourdanfritte : Amin révèle qu'il est le GRAND frère ; appel vidéo « Night White Family » ; pari perdu, Younes rasé par Fifi ; période d'essai (3 services), fin du chapitre 3.
+11. Chapitre 4 : PC Wagner d'Alex, Route 4 et l'éclusier, secret de Luciole (Captain est son père), Anversaille, arène de Marieke, grue du port, Snow s'enfuit vers Liègenoir.
+12. Chapitre 5 : Liègenoir dans le smog, Samira, arène de Lambert, Cokerie, Montagne de Bueren et Lil Perron, le Baron arrêté. Snow donne rendez-vous à Namuroc.
+13. Chapitre 6 (`histoire/chapitre6.js`) : Route 6 le long de la Meuse (agent Verhaegen, comptes du Baron -> Compagnie Grognon), Givrâle en manque sous le viaduc (l'aider change tout), Namuroc (appel d'Alex : factures si réglo, carnet de livraisons si combines), joute d'échasses + arène de Théo (Vol, Médaille Citadelle), téléphérique, Snow à la Citadelle (il arrête la Poudre si Givrâle a été aidé, sinon combat), herses des souterrains, Hector Grognon arrêté. Révélation : la Prof a travaillé à la Fondation Ardenne.
+14. Chapitre 7 (`histoire/chapitre7.js`) : Route 7 enneigée (Captain selon la voie de Luciole, marcassin piégé par la Fondation), Bastognac (la Noix, « Nuts ! »), arène d'Hélène Noiset (Plante, Médaille Sapin, laissez-passer), Fondation Ardenne (code 1407, cages), la Docteure Isaure Delcourt et le Prototype zéro (Prismalis rejoint l'équipe). Snow vient aider s'il est clean, déclaration de Luciole si ♥10. Teaser : les actionnaires sont à Gandoux, pour la Ligue.
 
 ## Personnages
 | Personnage | Rôle | Notes |
@@ -64,13 +68,16 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 ## Reste à faire
 Fait (novembre 2026) : lots 1 à 6 (`docs/PROMPT-LOT2.md`) et lot 3 + chapitre 4 (`docs/PROMPT-LOT3.md`). Voir `docs/CHANGELOG.md` Lot 4 (chapitre 5), lot 5 (liens, Ranch) et lot 6 (flipper) le 26 novembre.
 
-**Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille, Liègenoir (faites) · Namuroc, Bastognac, Gandoux, Côte du Nord (à faire).
+**Les 10 villes** : Ixellette, Charleroc, Bruxellia, Jourdanfritte, Anversaille, Liègenoir, Namuroc, Bastognac (faites) · Gandoux, Côte du Nord (à faire).
 Entre chaque route et chaque ville : petit scénario, énigmes, quêtes, mini-jeux.
 
 À vérifier avec de vraies mains : flipper au doigt (vitesse sur téléphone, 3 Lumisphères la partie, fréquence des captures), équilibrage (test de Nour 18 pts, Snow en duo, économie, Smogule de Lambert immunisé aux attaques Normal de Laïka), son, manette Bluetooth, lisibilité du duo sur téléphone (bouton « Combat 2 contre 2 aléatoire » du mode test), mini-jeux de l'escalier et du rap au doigt. Lot 5 : rythme des cœurs (assez de choix pour atteindre ♥10 ?), lisibilité du Ranch et des Lumons des enclos, puissance des cadeaux (Ruber, Fromage, Pendentif).
 
+Chapitres 6 et 7 (v1.1), à vérifier avec de vraies mains : la joute d'échasses au doigt (15 s, assez dure ?), la lisibilité de la neige, les niveaux (dresseurs 32-40, Théo 35-37, Grognon 38-40, Hélène 39-42, la Directrice 43-45), le code de la Fondation (assez d'indices ?).
+
 À préparer / à jouer plus tard :
 - [x] Chapitre 5 : Liègenoir (lot 4). Fin : Snow, libéré du Baron, donne rendez-vous à Namuroc (chapitre 6).
-- [ ] Chapitre 6 : faire réagir l'histoire aux liens (`lienVoie('alex')`, `F().lucCouple` / `lucPote` / `lucFroid`). La coloc avec Alex existe déjà (Alex réglo, ♥10) ; `trameHistoire()` (const, basée sur `f.cisoaAlex`) n'est utilisée nulle part : la remplacer par la voie d'Alex.
-- [ ] Arènes et médailles restantes (3/8 : Terril, Diamant, Perron), Ligue d'Ardenval, plus de Lumons sauvages.
+- [x] Chapitres 6 et 7 (v1.1) : l'histoire réagit aux liens (voie d'Alex : factures / carnet ; Luciole : couple, cœur, complice, distante ; Captain).
+- [ ] Chapitre 8 : Gandoux, les actionnaires de la Fondation et la Ligue d'Ardenval. Le Prototype zéro (Prismalis) y a un rôle. `trameHistoire()` est toujours inutilisée (remplacée par `lienVoie('alex')`).
+- [ ] Arènes et médailles restantes (5/8 : Terril, Diamant, Perron, Citadelle, Sapin), Ligue d'Ardenval.
 - [ ] APK Android, PDF de présentation et feuille de suivi.

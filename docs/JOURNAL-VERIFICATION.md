@@ -1,4 +1,4 @@
-# Journal de vérification — version 1.0 (nuit du 28 novembre 2026)
+# Journal de vérification — versions 1.0 et 1.1 (nuit du 28 novembre 2026)
 
 Tout ce qui a été trouvé pendant le check-up complet du jeu (chapitres 1 à 5, flipper), et ce qui en a été fait.
 Légende : **corrigé** · **réglé** (choix d'équilibrage) · **noté** (pas un bug, ou à voir avec de vraies mains).
@@ -51,3 +51,22 @@ Le but : que le flipper reste **un plaisir à côté de l'aventure**, pas la mei
 - Flipper au doigt sur téléphone : vitesse, taille des flippers, lisibilité du compteur de captures.
 - Son et musique, manette Bluetooth.
 - Rythme réel du jeu : 3 captures par jour au flipper, est-ce que ça donne encore envie d'y revenir ?
+
+## Version 1.1 : chapitres 6 et 7
+Écrits cette nuit, puis passés aux mêmes contrôles que le reste du jeu.
+- **`tools/test_chapitre6.py`** joue les deux chapitres de bout en bout, en **35 vérifications** :
+  - Route 6, Givrâle, Namuroc, l'appel d'Alex ;
+  - la joute d'échasses (jouée par un bot), Théo, le téléphérique, Snow ;
+  - les herses (mauvais ordre puis bon ordre), Grognon ;
+  - Route 7, Captain, le piège, Bastognac, Hélène, le code de la Fondation (faux puis juste), la Directrice, Prismalis ;
+  - les défaites (Maison des Lumons la plus proche), la carte du monde, la sauvegarde.
+- **Audit** : 40 espèces, 41 attaques, 49 objets, 44 cartes, 21 dresseurs, **88 arrivées de cartes** vérifiées (aucune dans un mur, toujours une sortie).
+- **Bot bavard** : il parle aussi à tous les PNJ à la fin du chapitre 7.
+- **Captures en vrai 3D** des 17 nouveaux lieux (`tools/vrai3d.py ch67`) : aucune erreur.
+
+| # | Où | Problème trouvé pendant l'écriture | Ce qui a été fait |
+|---|---|---|---|
+| 10 | Bastognac, Route 7 | Le sol « neige » réutilisait le carrelage des intérieurs : en vrai 3D, la neige ressemblait à un carrelage mauve. | **Corrigé** : nouvelle case de neige (`'S'`) avec sa propre texture blanche. |
+| 11 | Namuroc, Citadelle, Bastognac | Panneaux (escargots, téléphérique, la Noix) posés une case à côté de l'objet : on ne pouvait pas les lire. | **Corrigé** avant publication (vérifié par le bot bavard). |
+| 12 | Fondation | Les indices du code étaient derrière la porte qu'ils servent à ouvrir. | **Corrigé** : ils sont sur la cloison et le bureau de l'entrée. |
+| 13 | Chapitre 5 | L'objectif de fin disait « La suite bientôt ». | **Corrigé** : il mène maintenant à la Route 6. |

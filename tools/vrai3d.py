@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes)."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes), ch67 (chapitres 6 et 7)."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -158,6 +158,17 @@ def tour(g, out):
         g.js('(k)=>{const [id,x,z]=WMTP[k];runScript(async()=>{await goMap(MAPS[id],x,z,"up")})}', k); g.p.clock.run_for(1600); g.js('()=>updateEnv()')
         snap(g, out + '/tour_%s.png' % k, 700)
     print('cartes vues :', g.js('()=>Object.keys(WMTP).length'))
+
+
+def ch67(g, out):
+    """Chapitres 6 et 7 : Route 6, Namuroc, Citadelle, souterrains, Route 7, Bastognac, arènes, Fondation."""
+    g.js('()=>{Object.assign(F(),{chapterDone:1,brux:1,ch3:1,ch4done:1,r5:1,lie:1,ch5done:1,r6:1,givrale:1,namu:1,badge4:1,cita:1,herseOK:1,r7:1,piege:1,bast:1,badge5:1});S.clock=12*60;refreshNPCs()}')
+    for nom, carte, x, z, d in (('route6', 'ROUTE6', 7, 18, 'up'), ('viaduc', 'ROUTE6', 7, 16, 'up'), ('namu_place', 'NAMU', 16, 15, 'up'), ('namu_halle', 'NAMU', 26, 10, 'up'),
+                                ('namu_station', 'NAMU', 8, 20, 'up'), ('namu_meuse', 'NAMU', 22, 22, 'down'), ('citadelle', 'CITA', 8, 9, 'up'), ('souterrains', 'SOUT', 6, 12, 'up'),
+                                ('gym_n', 'GYMN', 5, 9, 'up'), ('route7', 'ROUTE7', 10, 10, 'down'), ('bast_place', 'BAST', 15, 17, 'up'), ('bast_nord', 'BAST', 15, 6, 'down'),
+                                ('bast_fond', 'BAST', 24, 6, 'right'), ('gym_ba', 'GYMBA', 5, 9, 'up'), ('fondation', 'FOND', 7, 12, 'up'), ('fond_labo', 'FOND', 7, 7, 'up')):
+        g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/c67_%s.png' % nom, 700)
+    g.js('()=>{S.clock=22*60;runScript(async()=>{await goMap(BAST,15,17,"up")})}'); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/c67_bast_nuit.png', 700)
 
 
 if __name__ == '__main__':

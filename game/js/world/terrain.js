@@ -13,14 +13,16 @@ function groundTex(kind){if(TEXC[kind])return TEXC[kind];const c=document.create
  if(kind==='grass'){x.fillStyle='#e2e2e2';x.fillRect(0,0,128,128);for(let i=0;i<900;i++){const v=R(150,255)|0;x.fillStyle=`rgb(${v},${v},${v})`;x.fillRect(R(0,128),R(0,128),2,2)}
   for(let i=0;i<140;i++){const px=R(0,128),py=R(0,128),v=R(170,255)|0;x.strokeStyle=`rgba(${v},${v},${v},.9)`;x.lineWidth=1.4;x.beginPath();x.moveTo(px,py);x.lineTo(px+R(-3,3),py-R(4,9));x.stroke()}
   for(let i=0;i<10;i++){x.fillStyle='rgba(120,120,120,.18)';x.beginPath();x.arc(R(0,128),R(0,128),R(6,16),0,7);x.fill()}}
+ else if(kind==='snow'){x.fillStyle='#f4f6fa';x.fillRect(0,0,128,128);for(let i=0;i<14;i++){const g=x.createRadialGradient(R(0,128),R(0,128),1,R(0,128),R(0,128),R(14,30));g.addColorStop(0,'rgba(200,215,240,.35)');g.addColorStop(1,'rgba(200,215,240,0)');x.fillStyle=g;x.fillRect(0,0,128,128)}
+  for(let i=0;i<500;i++){const v=R(225,255)|0;x.fillStyle=`rgba(${v-12},${v-6},${v},.9)`;x.fillRect(R(0,128),R(0,128),1.5,1.5)}for(let i=0;i<60;i++){x.fillStyle='rgba(255,255,255,.95)';x.fillRect(R(0,128),R(0,128),2,2)}}
  else if(kind==='gravel'){x.fillStyle='#e8e2d8';x.fillRect(0,0,128,128);for(let i=0;i<260;i++){const v=R(150,255)|0;x.fillStyle=`rgb(${v},${v-6},${v-14})`;x.beginPath();x.ellipse(R(0,128),R(0,128),R(1.5,4.5),R(1.2,3.5),R(0,3),0,7);x.fill()}}
  else if(kind==='cobble'){x.fillStyle='#8a8580';x.fillRect(0,0,128,128);for(let r=0;r<6;r++)for(let k=0;k<5;k++){const ox=(r%2)*13,v=R(195,250)|0;x.fillStyle=`rgb(${v},${v-4},${v-10})`;x.beginPath();x.roundRect?x.roundRect(k*26+ox-12,r*21+2,23,18,5):x.rect(k*26+ox-12,r*21+2,23,18);x.fill()}}
  else if(kind==='dirt'){x.fillStyle='#d8d0c4';x.fillRect(0,0,128,128);for(let i=0;i<500;i++){const v=R(140,240)|0;x.fillStyle=`rgb(${v},${v-8},${v-18})`;x.fillRect(R(0,128),R(0,128),R(1,4),R(1,3))}for(let i=0;i<12;i++){x.fillStyle='rgba(60,50,40,.3)';x.beginPath();x.arc(R(0,128),R(0,128),R(2,5),0,7);x.fill()}}
  else if(kind==='wood'){x.fillStyle='#e6dccc';x.fillRect(0,0,128,128);for(let r=0;r<4;r++){x.fillStyle='rgba(90,60,30,.35)';x.fillRect(0,r*32,128,2);for(let i=0;i<14;i++){x.strokeStyle='rgba(120,80,40,.18)';x.beginPath();x.moveTo(0,r*32+R(4,30));x.bezierCurveTo(40,r*32+R(4,30),80,r*32+R(4,30),128,r*32+R(4,30));x.stroke()}x.fillRect(((r*53)%128),r*32,2,32)}}
  else if(kind==='tile'){x.fillStyle='#d0d0d8';x.fillRect(0,0,128,128);x.fillStyle='#f4f4f8';x.fillRect(3,3,58,58);x.fillRect(67,67,58,58);x.fillStyle='#e4e4ec';x.fillRect(67,3,58,58);x.fillRect(3,67,58,58)}
  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=4;return TEXC[kind]=t}
-const GTEX={'N':'tile','#':'gravel','=':'gravel','c':'cobble','D':'dirt','W':'wood','K':'tile'};
-const GCOL={'N':['#eeeef2','#e2e2e8'],'#':['#d8c494','#cfba88'],'c':['#d6ccb8','#c9bfab'],'D':['#8f7d68','#86745f'],'W':['#c89a6a','#bf905f'],'K':['#3d3756','#2c2842'],'T':['#6fb850','#6fb850'],'g':['#5fae45','#5fae45']};
+const GTEX={'S':'snow','N':'tile','#':'gravel','=':'gravel','c':'cobble','D':'dirt','W':'wood','K':'tile'};
+const GCOL={'S':['#f6f9ff','#f1f5fc'],'N':['#eeeef2','#e2e2e8'],'#':['#d8c494','#cfba88'],'c':['#d6ccb8','#c9bfab'],'D':['#8f7d68','#86745f'],'W':['#c89a6a','#bf905f'],'K':['#3d3756','#2c2842'],'T':['#6fb850','#6fb850'],'g':['#5fae45','#5fae45']};
 function terrain(m,T){const H=T.length,W=T[0].length,g=m.group,ox=m.ox,oz=m.oz;m.T=T;
  const groups={};const dm=new THREE.Object3D(),col=new THREE.Color();const trees=[],flowers=[],grass=[],water=[],deco=[];
  for(let z=0;z<H;z++)for(let x=0;x<W;x++){const t=T[z][x];let y=0;

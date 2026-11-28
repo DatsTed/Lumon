@@ -5,9 +5,9 @@
 let LIE=null,CENTREL=null,GYML=null,COKERIE=null,CLUB=null,BUEREN=null;
 const DARK_MAPS=new Set(['lie','bueren']);
 function buildLiegenoir(){
- {const W=32,H=28,m=LIE=makeMap('lie',W,H,1520,0,'town'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>x===0&&z>=13&&z<=15);
+ {const W=32,H=28,m=LIE=makeMap('lie',W,H,1520,0,'town'),g=m.group,T=grid(W,H);treesRim(T,W,H,(x,z)=>(x===0&&z>=13&&z<=15)||(z===H-1&&x>=14&&x<=16));
   rect(T,0,13,9,15,'#');rect(T,9,9,23,19,'c');rect(T,13,7,15,8,'c');rect(T,3,7,5,12,'c');rect(T,5,12,9,12,'c');rect(T,23,13,30,15,'#');rect(T,24,16,30,25,'c');
-  rect(T,26,8,28,12,'c');rect(T,5,19,9,24,'c');rect(T,14,20,16,26,'c');rect(T,9,19,14,20,'c');
+  rect(T,26,8,28,12,'c');rect(T,5,19,9,24,'c');rect(T,14,20,16,27,'c');rect(T,9,19,14,20,'c');
   [[1,1],[30,1],[1,26],[30,26],[21,24],[10,25]].forEach(([x,z])=>T[z][x]='T');terrain(m,T);
   // le Perron, au milieu de la place du Marché (colonne + pomme de pin dorée)
   {const X=m.ox+16,Z=m.oz+14;add(g,new THREE.CylinderGeometry(.9,1.1,.5,8),'#6a6a72',X,.3,Z,{ol:.03});add(g,new THREE.CylinderGeometry(.18,.22,2.6,10),'#8a8a92',X,1.8,Z,{ol:.02});
@@ -33,7 +33,9 @@ function buildLiegenoir(){
   house(g,m,19,20,4,3,'#c9b08a','#3a2a22',20);m.doors['20,22']=async()=>say('Friterie « Chez Tchantchès »',"Fermé. « Réouverture quand le Baron arrêtera de racketter les friteries. » Écrit à la main, souligné trois fois.");
   [[9,9],[23,9],[9,19],[23,19],[3,13],[20,14],[25,13]].forEach(([x,z])=>lamp(g,m,x,z));
   sg(m,2,12,"Liègenoir — « La Cité Ardente ». Place du Marché · Arène · Maison des Lumons · Cokerie",true);
-  for(let z=13;z<=15;z++)m.steps['0,'+z]=()=>goMap(ROUTE5,34,11,'left');arrows(m,[[0,13],[0,14],[0,15]],'left');
+  for(let z=13;z<=15;z++)m.steps['0,'+z]=()=>goMap(ROUTE5,34,11,'left');
+  // sortie sud (derrière l'arène) : la Route 6 vers Namuroc, ouverte quand le Baron est tombé (chapitre 6)
+  for(let x=14;x<=16;x++)m.steps[x+','+(H-1)]=lieSud;arrows(m,[[14,H-1],[15,H-1],[16,H-1]],'down');arrows(m,[[0,13],[0,14],[0,15]],'left');
   // habitants
   NPC.samira=npc(m,'samira',11,15,'right',samiraTalk);
   wand(npc(m,'kid',19,11,'down',gaminsRap));wand(npc(m,'kid',21,16,'left',gaminsRap));

@@ -63,7 +63,7 @@ def main():
         verif('videur : « Tchantchès » ouvre le club', g.attendre('cur===CLUB&&' + g.libre(), 60))
         g.js('()=>{const h=CLUB.hook(6,5);if(h)runScript(h)}')
         ok = g.attendre('F().ch5done&&' + g.libre(), 900)
-        verif('le Baron tombe -> fin du chapitre 5', ok and g.js('()=>cur===LIE&&objText().includes("Chapitre 5 terminé")'), g.js('()=>objText()'))
+        verif('le Baron tombe -> fin du chapitre 5 (objectif : la Route 6)', ok and g.js('()=>cur===LIE&&objText().includes("Route 6")'), g.js('()=>objText()'))
         verif('après le Baron : plus de smog', g.js('()=>{updateEnv();return !document.getElementById("clock").innerHTML.includes("Smog")}'))
         verif('défaite près de Liègenoir -> Maison des Lumons de Liègenoir', g.js('()=>respawnCentre(ROUTE5)===CENTREL&&respawnCentre(COKERIE)===CENTREL'))
         verif('carte du monde : Route 5 et Liègenoir', g.js('()=>WMN.some(n=>n.k==="r5")&&!WMN.find(n=>n.k==="li").wip&&WMTP.li'))

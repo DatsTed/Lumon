@@ -18,6 +18,8 @@ async function buildWorld(){
  buildLiegenoir();
  buildRanch();
  buildFlipper();
+ buildNamuroc();
+ buildBastognac();
  placePNJLuciole();
  nightSetup();
 }
@@ -40,6 +42,7 @@ function refreshNPCs(){const f=F();
 
 /* Défaite : Maison des Lumons la plus proche DÉJÀ DÉCOUVERTE (null = chez maman à Ixellette) */
 const RESPAWN={town:[],lab:[],nw_town:[],route:[],charl:['charl'],centre:['charl'],shop:['charl'],gym:['charl'],
- route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],smile:['jf'],route4:['anv','brux'],anv:['anv'],centre_a:['anv'],gym_a:['anv'],centre_j:['jf'],nw_jf:['jf'],route5:['lie','jf'],lie:['lie'],centre_l:['lie'],gym_l:['lie'],cokerie:['lie'],club:['lie'],bueren:['lie'],ranch:['lie','jf'],ferme:['lie','jf'],coloc:['jf','brux']};
-function respawnCentre(m){const f=F(),known={charl:!!f.charl,brux:!!f.brux,jf:!!(f.jfSeen||f.hired||f.ch3),anv:!!f.anv,lie:!!f.lie},C={charl:CENTRE,brux:CENTREB,jf:CENTREJ,anv:CENTREA,lie:CENTREL};
+ route2:['brux','charl'],brux:['brux'],centre_b:['brux'],nw_brux:['brux'],route3:['jf','brux'],jf:['jf'],smile:['jf'],route4:['anv','brux'],anv:['anv'],centre_a:['anv'],gym_a:['anv'],centre_j:['jf'],nw_jf:['jf'],route5:['lie','jf'],lie:['lie'],centre_l:['lie'],gym_l:['lie'],cokerie:['lie'],club:['lie'],bueren:['lie'],ranch:['lie','jf'],ferme:['lie','jf'],coloc:['jf','brux'],
+ route6:['namu','lie'],namu:['namu'],centre_n:['namu'],gym_n:['namu'],cita:['namu'],sout:['namu'],route7:['bast','namu'],bast:['bast'],centre_ba:['bast'],gym_ba:['bast'],fond:['bast']};
+function respawnCentre(m){const f=F(),known={charl:!!f.charl,brux:!!f.brux,jf:!!(f.jfSeen||f.hired||f.ch3),anv:!!f.anv,lie:!!f.lie,namu:!!f.namu,bast:!!f.bast},C={charl:CENTRE,brux:CENTREB,jf:CENTREJ,anv:CENTREA,lie:CENTREL,namu:CENTREN,bast:CENTREBA};
  const L=m&&RESPAWN[m.id];if(!L)return C[f.healAt]||null;for(const k of L)if(known[k])return C[k];return null}

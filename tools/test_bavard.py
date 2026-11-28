@@ -1,10 +1,10 @@
-"""Bot « bavard » : à trois moments de l'histoire (début, fin du chapitre 3, fin du chapitre 5), il va sur chaque carte,
+"""Bot « bavard » : à quatre moments de l'histoire (début, fin des chapitres 3, 5 et 7), il va sur chaque carte,
 parle à chaque PNJ visible et lit chaque panneau, en répondant toujours le 1er choix. Il relève :
   - les erreurs JavaScript,
   - les interactions qui ne rendent jamais la main (blocage),
   - les textes avec « undefined », « NaN » ou « [object ».
 Les combats lancés par une discussion sont joués par le pilote automatique (équipe niveau 40).
-Usage : python tools/test_bavard.py [debut|ch3|ch5 ...]"""
+Usage : python tools/test_bavard.py [debut|ch3|ch5|ch7 ...]"""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import test as T
 from test_histoire import partie, verif, OK
@@ -15,7 +15,9 @@ CH3 = dict(chapterDone=1, nilsBattle=1, gate1=1, keto1=1, r1=1, charl=1, gymIn=1
            trialDone=1, trial=3, prank=1, younesBald=1, younesSick=1, ch3=1, alex=1)
 CH5 = dict(CH3, pcWagner=1, ch4=1, pont4=1, lucR4=1, anv=1, badge2=1, grue=1, ch4done=1, r5=1, lie=1, samira=1, ranch=1, badge3=1,
            rudi=1, vanessa=1, cokerie=1, rap=1, baron=1, ch5done=1)
-ETATS = {'debut': {}, 'ch3': CH3, 'ch5': CH5}
+CH7 = dict(CH5, r6=1, givrale=1, givAide=1, namu=1, joute=1, badge4=1, citaVu=1, cita=1, snowClean=1, herseOK=1, ch6done=1,
+           r7=1, piege=1, bast=1, badge5=1, fondCode=1, ch7done=1)
+ETATS = {'debut': {}, 'ch3': CH3, 'ch5': CH5, 'ch7': CH7}
 
 # Liste des cibles d'une carte : PNJ visibles avec une discussion, panneaux-fonctions et panneaux-textes
 CIBLES = r"""(id)=>{const m=MAPS[id],L=[];

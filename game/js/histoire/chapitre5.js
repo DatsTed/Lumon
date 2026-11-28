@@ -19,7 +19,7 @@ const COKE_T=[1100,800,1250,950];
   ENV.stars.material.opacity=0;ENV.moon.visible=false;ENV.rain.visible=false;for(const k in TM){const m=TM[k];if(m.emissive&&k.includes('#ffd24a')||k.includes('#fff2b0')||k.includes('#c8f0ff')||k.includes('#fff3a0'))m.emissiveIntensity=3.5}
   n=1}
  ENV.smog=!!dark;na(n)}}
-function ch5Obj(){const f=F();if(f.ch5done)return'Chapitre 5 terminé · Snow t\'attend à Namuroc · La suite bientôt';
+function ch5Obj(){const f=F();if(f.ch5done)return ch6Obj();
  if(!f.r5)return"Prends la Route 5 (sortie est de Jourdanfritte), direction Liègenoir";if(!f.lie)return"Traverse la Route 5 jusqu'à Liègenoir";
  if(!f.samira)return"Liègenoir est plongée dans le smog : parle aux habitants de la place du Marché";
  if(!f.ranch&&!f.badge3)return f.oeufSamira?"Emmène l'œuf de Samira au Ranch du Pays de Herve (Route 5, chemin du sud)":"Visite le Ranch du Pays de Herve (Route 5, chemin du sud) : on y élève des Lumons";
