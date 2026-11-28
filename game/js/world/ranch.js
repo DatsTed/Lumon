@@ -1,7 +1,7 @@
 /* ---- Ranch du Pays de Herve (chapitre 5) : tout pour l'élevage ----
    Accès : Route 5, chemin du sud (x 23-25). Fermière Mariette (enclos), petit Arnaud (Carnet d'élevage), tante Huguette (soins + boutique).
    - 2 enclos (A et B) : on y confie un couple ; les Lumons s'y promènent en 3D ; un œuf environ tous les 100 pas (50 avec des pommes).
-   - Couveuse (ferme) : 4 œufs en plus des 3 qu'on porte ; ils avancent à chaque pas, où que tu sois.
+   - Couveuse (ferme + une dans chaque Maison des Lumons, toutes reliées) : 4 œufs en plus des 3 qu'on porte ; ils avancent à chaque pas, où que tu sois.
    - Nid du jour (grange) : un œuf surprise par jour dans le foin.  - Au Ranch, les œufs portés éclosent 2× plus vite.
    - Boutique : Panier de pommes, Couverture en laine (œufs plus rapides), Fromage de Herve (4 IV hérités + nature de la mère).
    - Ferme : soins, PC de stockage, couveuse, le Grand Livre de l'élevage.  - Appart d'Alex (coloc, voir liens.js) : porte du Garage Wagner.
@@ -25,7 +25,7 @@ function ranchEgg(ms){const mom=ms.find(m=>m.gender==='f')||ms[0],dad=ms.find(m=
 function ranchTick(){const R=S.ranch;if(!R||!R.pens)return;
  R.pens.forEach((P,k)=>{if(P.mons.length<2)return;P.steps++;P.mons.forEach(m=>{m.xp+=1;while(m.xp>=(m.lv+1)**3&&m.lv<100){m.lv++;calc(m);m.hp=m.mhp}});
   const c=compat(P.mons[0],P.mons[1]);if(!P.egg&&c&&P.steps%(P.boost?50:100)===0&&rnd()<(c===2?.7:.35)){P.egg=ranchEgg(P.mons);P.boost=0;toast('egg',`Mariette t'appelle : un œuf est apparu dans l'enclos ${k?'B':'A'} !`)}});
- for(const e of R.couv)if(e.left>0){e.left--;if(!e.left)toast('egg',"La couveuse du Ranch sonne : un œuf est prêt à éclore !")}}
+ for(const e of R.couv)if(e.left>0){e.left--;if(!e.left)toast('egg',"Une couveuse sonne : un œuf est prêt à éclore ! (Ranch ou Maison des Lumons)")}}
 {const bt=breedTick;breedTick=function(){bt();ranchTick()}}
 eggTick=async function(){if(!S.eggs||!S.eggs.length)return;const n=(1+(laika()&&(laika().fr||0)>=200?1:0)+(S.bag&&S.bag.couverture?1:0))*(cur===RANCH?2:1);
  for(const e of S.eggs)e.left=Math.max(0,e.left-n);const e=S.eggs.find(x=>x.left<=0);if(e&&!busy)await runScript(()=>hatch(e))};
@@ -104,7 +104,26 @@ function ranchPenAnim(t){if(!RANCH||cur!==RANCH)return;RANCH.pens.forEach(p=>p.m
  const dx=o.tx-o.x,dz=o.tz-o.z,d=Math.hypot(dx,dz);if(d>.05){const s=Math.min(d,.025);o.x+=dx/d*s;o.z+=dz/d*s;o.r.g.rotation.y=Math.atan2(dx,dz)}
  o.r.g.position.set(RANCH.ox+o.x,Math.abs(Math.sin(t*6+j))*(d>.05?.08:0),RANCH.oz+o.z)}))}
 function ranchRefresh(){if(!RANCH)return;const f=F();ranchPenSync();if(NPC.lucR)NPC.lucR.show(!!(f.ranch&&f.r5&&!f.lucFroid));
- if(FERME){const R=ranchS();FERME.couvEggs.forEach((e,k)=>e.visible=k<R.couv.length)}}
+ const R=ranchS();if(FERME)FERME.couvEggs.forEach((e,k)=>e.visible=k<R.couv.length);COUV_EGGS.forEach(L=>L.forEach((e,k)=>e.visible=k<R.couv.length))}
+// ---- couveuses des Maisons des Lumons : reliées à celle du Ranch (mêmes 4 places, comme le PC de stockage)
+const COUV_EGGS=[];
+function couvModel(g,X,Z){const cg=new THREE.Group();cg.position.set(X,0,Z);g.add(cg);box(cg,.8,.55,.7,0,.28,0,'#5a6a7a',{ol:.03});box(cg,.86,.06,.76,0,.57,0,'#c9ccd4',{ol:.02});
+ const dome=new THREE.Mesh(new THREE.SphereGeometry(.4,14,8,0,PI*2,0,PI/2),new THREE.MeshBasicMaterial({color:'#bfe8ff',transparent:true,opacity:.3,depthWrite:false}));dome.position.y=.6;cg.add(dome);
+ const eggs=[];for(let k=0;k<4;k++){const e=tp(cg,SPH,'#fbf6ea',-.18+(k%2)*.36,.7,-.1+((k/2)|0)*.2,.08,.11,.08,{ol:.01});e.visible=false;eggs.push(e)}
+ glowAt(cg,0,1,0,'#ffb84a',1,false);plane(cg,.7,.18,0,.32,.36,labelTex('COUVEUSE','#1a2430','#ffb84a',512,128,60));COUV_EGGS.push(eggs);return cg}
+function buildCouveuses(){for(const m of Object.values(MAPS)){if((!m.nurseN||m===FERME)&&m!==LAB)continue;
+  const libre=(x,z)=>!m.solid[z*m.W+x]&&!m.npcs.some(n=>n.x===x&&n.z===z)&&!(m.entry&&m.entry[0]===x&&m.entry[1]===z);
+  const p=[[7,4],[7,3],[1,3],[1,2],[1,4],[7,2]].find(([x,z])=>libre(x,z));if(!p)continue;const[x,z]=p;couvModel(m.group,m.ox+x,m.oz+z);setSolid(m,x,z);m.signs[x+','+z]=couveuseMaison}
+ ranchRefresh()}
+async function couveuseMaison(){const f=F();if(!f.couvIntro){f.couvIntro=1;const N=cur===LAB?'Prof. Verhaegen':cur.nurseN||'Infirmière';
+  await say(N,"Ça ? C'est la couveuse de Mariette, la fermière du Ranch du Pays de Herve. Elle en a installé une dans chaque Maison des Lumons d'Ardenval !");
+  await say(N,"Elles sont toutes reliées entre elles, comme le PC : un œuf déposé ici, tu peux le reprendre à n'importe quelle autre Maison des Lumons, ou au Ranch. Quatre places, et les œufs avancent à chaque pas que tu fais.")}
+ return couveuse()}
+// Laïka ne va ni dans un enclos ni à la Pension (anciennes sauvegardes : on la ramène dans l'équipe)
+function laikaRetour(){const isL=m=>m&&m.sp&&m.sp.startsWith('laik');let L=null;
+ for(const P of [...((S.ranch&&S.ranch.pens)||[]),S.pension].filter(Boolean)){const i=(P.mons||[]).findIndex(isL);if(i>=0){L=P.mons.splice(i,1)[0];P.steps=0}}
+ if(!L||S.party.some(isL))return;if(S.party.length>=6)boxOf().push(S.party.pop());S.party.unshift(L);refreshFollower()}
+{const cg=continueGame;continueGame=function(sv){const p=cg(sv);try{laikaRetour()}catch(e){}return p}}
 {const rn=refreshNPCs;refreshNPCs=function(){rn();ranchRefresh()}}
 
 // ---- scènes et menus
@@ -134,14 +153,14 @@ async function enclos(k){const R=ranchS(),P=R.pens[k],N=`Enclos ${k?'B':'A'}`;
   await say('Fermière Mariette',where.includes('box')?"Les voilà ! Ton équipe était pleine, alors j'en ai envoyé dans ton PC.":"Les voilà ! Ils ont bien profité du grand air.");return}
  if(o!=='Confier deux Lumons')return;
  if(S.party.length<3){await say('Fermière Mariette',"Il faut garder au moins un Lumon avec toi, mon petit. Reviens avec trois Lumons ou plus.");return}
- const pick=[];for(let j=0;j<2;j++){const i=await pickList(j?'Le 2e Lumon à confier':'Le 1er Lumon à confier',S.party.map(m=>({html:partyRow(m)+`<small>${m.gender==='m'?'♂':m.gender==='f'?'♀':''}</small>`,dis:pick.includes(m)})));if(i<0)return;pick.push(S.party[i])}
+ const pick=[];for(let j=0;j<2;j++){const i=await pickList(j?'Le 2e Lumon à confier':'Le 1er Lumon à confier',S.party.map(m=>({html:partyRow(m)+`<small>${m.gender==='m'?'♂':m.gender==='f'?'♀':''}</small>`,dis:pick.includes(m)||m.sp.startsWith('laik')})));if(i<0)return;pick.push(S.party[i])}
  S.party=S.party.filter(m=>!pick.includes(m));P.mons=pick;P.steps=0;refreshFollower();ranchRefresh();sfx(523,.1);
  await say('Fermière Mariette',`Allez, ${pick.map(nm).join(' et ')}, dans l'enclos ! ${compatTxt(pick)}`)}
 async function couveuse(){const R=ranchS(),C=e=>`${ico('egg',30)}<span class="grow"><b>Œuf</b><br><small>${e.left<=0?'<b style="color:#ffd84a">Prêt à éclore !</b>':eggHint(e)}</small></span>`;
  for(;;){const rows=R.couv.map(e=>({html:C(e)}));
   rows.push({html:`<span class="grow">➕ <b>Déposer un œuf</b> <small>(${(S.eggs||[]).length} sur toi)</small></span>`,dis:!(S.eggs||[]).length||R.couv.length>=4});
   rows.push({html:`<span class="grow">🎒 <b>Reprendre un œuf</b></span>`,dis:!R.couv.length||(S.eggs||[]).length>=3});
-  const i=await pickList(`Couveuse · ${R.couv.length}/4 œufs · ils avancent à chaque pas`,rows);if(i<0)break;
+  const i=await pickList(`Couveuse${cur===FERME?'':' (reliée au Ranch)'} · ${R.couv.length}/4 œufs · ils avancent à chaque pas`,rows);if(i<0)break;
   if(i<R.couv.length){const e=R.couv[i];if(e.left>0){await say('',"L'œuf est bien au chaud sous la lampe. "+eggHint(e));continue}
    if(S.party.length>=6){await say('',"L'œuf est prêt, mais ton équipe est pleine ! Range un Lumon dans le PC d'abord.");continue}R.couv.splice(i,1);ranchRefresh();await hatch(e);continue}
   if(i===R.couv.length){const j=await pickList('Quel œuf déposer ?',S.eggs.map(e=>({html:C(e)})));if(j>=0){R.couv.push(S.eggs.splice(j,1)[0]);sfx(660,.1)}ranchRefresh();continue}

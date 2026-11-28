@@ -70,3 +70,13 @@ Le but : que le flipper reste **un plaisir à côté de l'aventure**, pas la mei
 | 11 | Namuroc, Citadelle, Bastognac | Panneaux (escargots, téléphérique, la Noix) posés une case à côté de l'objet : on ne pouvait pas les lire. | **Corrigé** avant publication (vérifié par le bot bavard). |
 | 12 | Fondation | Les indices du code étaient derrière la porte qu'ils servent à ouvrir. | **Corrigé** : ils sont sur la cloison et le bureau de l'entrée. |
 | 13 | Chapitre 5 | L'objectif de fin disait « La suite bientôt ». | **Corrigé** : il mène maintenant à la Route 6. |
+
+## Ranch et couveuses (vérification demandée par Ted)
+- Le Ranch était déjà couvert par `tools/test_lot5.py` (enclos, couveuse, nid du jour, boutique, éclosion ×2, 41 vérifications) et par le bot bavard (tous les panneaux et PNJ du Ranch et de la ferme). J'ai relu tout le code du Ranch en plus.
+
+| # | Où | Problème | Gravité | Ce qui a été fait |
+|---|---|---|---|---|
+| 14 | Ranch (enclos) et Pension de Mamie Rose | **On pouvait confier Laïka** à un enclos ou à la Pension. Elle quittait alors l'équipe : plus de monture, plus de caresses, et elle disparaissait des scènes où elle compte. Le PC, lui, l'interdisait déjà. | Bug | **Corrigé** : Laïka est grisée dans les deux listes. Une ancienne sauvegarde où elle est restée dans un enclos ou à la Pension la ramène en tête d'équipe au chargement. |
+
+**Nouveau : une couveuse partout.** Il y en a une dans chacune des 7 Maisons des Lumons et dans le labo de la Prof. Elles sont toutes **reliées à la couveuse du Ranch**, comme le PC : on dépose un œuf à Charleroc, on le reprend (ou on le fait éclore) à Bastognac. Il y a 4 places, les œufs avancent à chaque pas, et les œufs déposés se voient sous le dôme de chaque couveuse. À la première utilisation, l'infirmière (ou la Prof) explique le principe.
+Test : `tools/test_ranch.py` (12 vérifications).

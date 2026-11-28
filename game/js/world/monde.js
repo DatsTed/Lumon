@@ -20,6 +20,7 @@ async function buildWorld(){
  buildFlipper();
  buildNamuroc();
  buildBastognac();
+ buildCouveuses();
  placePNJLuciole();
  nightSetup();
 }

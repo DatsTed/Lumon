@@ -57,6 +57,7 @@ On avance toujours vers le haut de l'écran : Ixellette (sud, départ) → Route
 - Combats tour par tour, 12 types, statuts, effets visuels, XP partagée, revanches, Lumons uniques des boss.
 - 21 espèces, captures, shiny, évolutions épiques (musique, zoom, fanfare), geste « maintiens pour évoluer », Lumidex avec voix et étymologie.
 - Fusions : Fusionneur verrouillé jusqu'à médaille + Lumisphère, cinématique, musique, décor sombre, fusions uniques, 3 formes dont une forme ultime avec aura ; deux identiques = amélioration des IV.
+- Couveuses reliées : une dans chaque Maison des Lumons et au labo, partagées avec celle du Ranch (`buildCouveuses`, `couveuseMaison` dans `world/ranch.js`).
 - Œufs, sexes, Pension de Mamie Rose ; Ranch du Pays de Herve (Route 5, sud : 2 enclos, couveuse, nid du jour, boutique, éclosion ×2) ; œufs donnés dans le chapitre 5 (Samira, Cokerie).
 - Liens (`systemes/liens.js`) : Luciole (tendre / complice / froide) et Alex (réglo / combines). Cadeaux différents selon la voie à ♥3, ♥6, ♥10 ; menu « Liens ». Luciole peut finir en couple ou meilleure amie, ou partir si on est trop froid. Sources : choix des chapitres 2 à 5, discussion du jour au garage, balades au Ranch.
 - Flipper Lumons au Smile and Eat (`systemes/flipper.js` + dossier `game/flipper/`, voir `game/flipper/LISEZMOI.md`) : le flipper de High & Rouillé, billes Lumisphères, captures de Lumons et d'œufs, Tour du Légendaire.

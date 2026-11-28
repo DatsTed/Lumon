@@ -86,6 +86,11 @@ def main():
         verif('code 1407 (expérience 14, juillet) : porte ouverte', g.attendre('F().fondCode&&' + g.libre(), 60) and g.js('()=>FOND.solid[8*FOND.W+7]===0'))
         g.js(heal); g.js('()=>{window.__choix=[0];const h=FOND.hook(7,6);if(h)runScript(h)}')
         ok = g.attendre('F().ch7done&&' + g.libre(), 900)
+        if not ok:  # le pilote automatique joue toujours la 1re attaque : s'il perd, il retente une fois, comme un joueur
+            print('     1er essai perdu :', g.js('()=>cur.id'))
+            g.attendre(g.libre(), 120); g.js(heal)
+            g.js('()=>{window.__choix=[0];runScript(async()=>{await goMap(FOND,7,7,"up");const h=FOND.hook(7,6);if(h)await h()})}')
+            ok = g.attendre('F().ch7done&&' + g.libre(), 900)
         verif('la Directrice tombe -> fin du chapitre 7', ok and g.js('()=>objText().includes("Chapitre 7 terminé")'), g.js('()=>objText()'))
         verif('Prismalis rejoint l’équipe', g.js('()=>S.party.concat(boxOf()).some(m=>m.sp==="prismalis")'))
         verif('défaite près de Bastognac -> Maison des Lumons de Bastognac', g.js('()=>respawnCentre(ROUTE7)===CENTREBA&&respawnCentre(FOND)===CENTREBA'))

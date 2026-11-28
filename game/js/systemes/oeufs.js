@@ -19,7 +19,7 @@ async function talkPension(){const N='Mamie Rose',f=F();S.pension=S.pension||{mo
  const c=await choose(N,"Qu'est-ce que je peux faire pour toi ?",opts);if(c)return;
  if(P.mons.length){if(S.party.length+P.mons.length>6){await say(N,"Ton équipe est trop pleine pour les reprendre tous les deux !");return}S.party.push(...P.mons);P.mons=[];P.steps=0;refreshFollower();await say(N,"Les voilà ! Ils ont bien profité. Reviens quand tu veux.");return}
  if(S.party.length<3){await say(N,"Il faut garder au moins un Lumon avec toi, mon petit. Reviens avec trois Lumons ou plus.");return}
- const pick=[];for(let k=0;k<2;k++){const i=await pickList(k?'Le 2e Lumon à confier':'Le 1er Lumon à confier',S.party.map((m,j)=>({html:partyRow(m),dis:pick.includes(m)})));if(i<0)return;pick.push(S.party[i])}
+ const pick=[];for(let k=0;k<2;k++){const i=await pickList(k?'Le 2e Lumon à confier':'Le 1er Lumon à confier',S.party.map((m,j)=>({html:partyRow(m),dis:pick.includes(m)||m.sp.startsWith('laik')})));if(i<0)return;pick.push(S.party[i])}
  S.party=S.party.filter(m=>!pick.includes(m));P.mons=pick;P.steps=0;refreshFollower();await say(N,`C'est noté ! Je garde ${pick.map(m=>nm(m)).join(' et ')}. ${compatTxt(pick)}`)}
 function compat(a,b){if(!a||!b)return 0;ensureGenes(a);ensureGenes(b);const A=SP[a.sp],Bd=SP[b.sp];if(A.unique||Bd.unique||A.fusion||Bd.fusion)return 0;if(!a.gender||!b.gender||a.gender===b.gender)return 0;if(baseOf(a.sp)===baseOf(b.sp))return 2;return A.t.some(t=>Bd.t.includes(t))?1:0}
 function compatTxt(ms){const c=compat(ms[0],ms[1]);return c===2?"Ils ont l'air de beaucoup s'apprécier !":c===1?"Ils s'entendent plutôt bien.":"Ils préfèrent jouer chacun de leur côté."}

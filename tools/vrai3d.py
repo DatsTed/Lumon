@@ -1,6 +1,6 @@
 """Captures en VRAI rendu 3D (Three.js depuis le CDN, WebGL logiciel SwiftShader).
 Usage : python tools/vrai3d.py <scenario> [dossier_sortie]
-Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes), ch67 (chapitres 6 et 7)."""
+Scénarios : duo (combat 2 contre 2), interieur (maison la nuit), fusions (galerie de fusions), attaques (une capture par technique), liege (Liègenoir), ranch (Ranch du Pays de Herve), flipper (flipper du Smile and Eat), tour (toutes les villes et routes), ch67 (chapitres 6 et 7), couveuses."""
 import os, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); sys.stdout.reconfigure(encoding='utf-8')
 import test as T
 from playwright.sync_api import sync_playwright
@@ -169,6 +169,13 @@ def ch67(g, out):
                                 ('bast_fond', 'BAST', 24, 6, 'right'), ('gym_ba', 'GYMBA', 5, 9, 'up'), ('fondation', 'FOND', 7, 12, 'up'), ('fond_labo', 'FOND', 7, 7, 'up')):
         g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/c67_%s.png' % nom, 700)
     g.js('()=>{S.clock=22*60;runScript(async()=>{await goMap(BAST,15,17,"up")})}'); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/c67_bast_nuit.png', 700)
+
+
+def couveuses(g, out):
+    """Couveuses reliées : Maison des Lumons (Charleroc, Bastognac), labo de la Prof, ferme du Ranch, avec 3 œufs dedans."""
+    g.js('()=>{Object.assign(F(),{charl:1,ranch:1,bast:1});ranchS().couv=[mkEgg("ratoir"),mkEgg("pigeolet"),mkEgg("cokelin")];ranchRefresh();S.clock=12*60}')
+    for nom, carte, x, z, d in (('charleroc', 'CENTRE', 6, 4, 'right'), ('bastognac', 'CENTREBA', 6, 4, 'right'), ('labo', 'LAB', 4, 5, 'up'), ('ferme', 'FERME', 7, 5, 'right')):
+        g.js('()=>{runScript(async()=>{await goMap(%s,%d,%d,"%s")})}' % (carte, x, z, d)); g.p.clock.run_for(1600); g.js('()=>updateEnv()'); snap(g, out + '/couv_%s.png' % nom, 700)
 
 
 if __name__ == '__main__':
